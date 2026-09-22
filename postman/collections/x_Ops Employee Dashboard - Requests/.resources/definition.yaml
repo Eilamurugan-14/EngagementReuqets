@@ -1,0 +1,10 @@
+$kind: collection
+name: 'x_Ops Employee Dashboard - Requests'
+description: |-
+  Collection for the x_Ops Employee Dashboard backend API.
+  Covers all CRUD operations for employee requests (events, workshops, celebrations, team outings, etc.)
+  running on the local Express server.
+variables:
+  - key: base_url
+    value: 'http://localhost:5000'
+    description: 'Base URL for the local backend server'

@@ -1,0 +1,19 @@
+$kind: http-request
+method: PUT
+url: '{{base_url}}/api/requests/:id'
+order: 3000
+pathVariables:
+  - key: id
+    value: 'ENG-010'
+    description: 'The unique ID of the request (e.g. ENG-010)'
+headers:
+  - key: Content-Type
+    value: application/json
+body:
+  type: json
+  content: |-
+    {
+      "status": "Approved",
+      "managerComments": "Approved by manager",
+      "actionDate": "2026-09-17"
+    }

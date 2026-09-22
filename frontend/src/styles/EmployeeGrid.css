@@ -1,0 +1,51 @@
+.employee-grid-shell {
+  background: #ffffff;
+  border: 1px solid #dbe2ea;
+  border-radius: 14px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
+  margin-top: 20px;
+  overflow: hidden;
+  padding: 12px;
+}
+
+.employee-grid {
+  width: 100%;
+}
+
+.employee-grid .ag-root-wrapper {
+  border: 0;
+  border-radius: 8px;
+}
+
+.employee-grid .ag-header-cell-text,
+.employee-grid .ag-floating-filter-input {
+  font-size: 13px;
+}
+
+.employee-grid .ag-header-cell-text {
+  color: #1f2937;
+  font-weight: 600;
+}
+
+.employee-grid .ag-cell {
+  align-items: center;
+  color: #4b5563;
+  display: flex;
+}
+
+.employee-grid .ag-cell[col-id="action"] {
+  justify-content: center;
+}
+
+.employee-grid .ag-row-hover {
+  background-color: #f8fafc !important;
+}
+
+.employee-grid .ag-paging-panel {
+  color: #4b5563;
+  min-height: 44px;
+}
+
+.employee-grid .status-badge {
+  line-height: 1.2;
+}

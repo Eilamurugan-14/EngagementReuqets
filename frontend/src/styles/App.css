@@ -1,0 +1,5 @@
+.app-layout {
+  display: flex;
+  min-height: calc(100vh - 60px);
+  background-color: #f5f6f8;
+}

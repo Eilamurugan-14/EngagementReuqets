@@ -1,0 +1,28 @@
+.sidebar {
+  width: 220px;
+  background: #ffffff;
+  border-right: 1px solid #ddd;
+  padding: 20px;
+  min-height: calc(100vh - 70px);
+}
+
+.menu-item {
+  color: inherit;
+  display: block;
+  margin-bottom: 15px;
+  padding: 10px;
+  text-decoration: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: 0.3s ease;
+}
+
+.menu-item:hover {
+  background-color: #f0f7fb;
+}
+
+.menu-item.active {
+  background-color: #dff3fb;
+  color: #0077a6;
+  font-weight: 600;
+}

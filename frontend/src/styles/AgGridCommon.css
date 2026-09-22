@@ -1,0 +1,153 @@
+
+
+/* =========================================
+   AG GRID COMMON STYLING
+========================================= */
+
+.ag-theme-quartz {
+  --ag-font-family: "Noto Sans", sans-serif;
+  --ag-cell-font-family: "Noto Sans", sans-serif;
+
+  --ag-header-background-color: #ffffff;
+  --ag-header-foreground-color: #1f2937;
+
+  --ag-border-color: #d9d9d9;
+
+  --ag-header-height: 52px;
+
+  /* Alternate row color */
+  --ag-odd-row-background-color: #f7f7f7;
+}
+
+/* =========================================
+   HEADER
+========================================= */
+
+.ag-theme-quartz .ag-header {
+  background: #ffffff;
+  border-bottom: 1px solid #d9d9d9;
+}
+
+/* Center header content */
+
+.ag-theme-quartz .ag-header-cell-label {
+  justify-content: center;
+}
+
+/* Header text styling */
+
+.ag-theme-quartz .ag-header-cell-text {
+  font-family: "Noto Sans", sans-serif;
+  font-size: 14px;
+  font-weight: 600;
+  color: #181D1F;
+  text-align: center;
+}
+
+/* =========================================
+   FILTER / MENU ICONS
+========================================= */
+
+/* Hide by default */
+
+.ag-theme-quartz .ag-header-icon,
+.ag-theme-quartz .ag-header-cell-menu-button,
+.ag-theme-quartz .ag-header-cell-filter-button {
+  opacity: 0;
+  transition: opacity 0.15s ease;
+}
+
+/* Show on hover */
+
+.ag-theme-quartz .ag-header-cell:hover .ag-header-icon,
+.ag-theme-quartz .ag-header-cell:hover .ag-header-cell-menu-button,
+.ag-theme-quartz .ag-header-cell:hover .ag-header-cell-filter-button {
+  opacity: 1;
+}
+
+/* =========================================
+   ROWS
+========================================= */
+
+.ag-theme-quartz .ag-row {
+  font-family: "Noto Sans", sans-serif;
+  font-size: 13px;
+}
+
+/* Hover effect */
+
+.ag-theme-quartz .ag-row:hover {
+  background-color: #eef5ff !important;
+}
+
+/* =========================================
+   CELLS
+========================================= */
+
+.ag-theme-quartz .ag-cell {
+  display: flex;
+  color: #181D1F;
+  align-items: center;
+}
+
+/* =========================================
+   PAGINATION
+========================================= */
+
+.ag-theme-quartz .ag-paging-panel {
+  font-family: "Noto Sans", sans-serif;
+  font-size: 13px;
+}
+
+/* =========================================
+   OVERLAYS
+========================================= */
+
+.ag-theme-quartz .ag-overlay {
+  font-family: "Noto Sans", sans-serif;
+}
+
+/* Pagination footer */
+
+.ag-theme-quartz .ag-paging-panel {
+  font-family: "Noto Sans", sans-serif;
+  font-size: 13px;
+  font-weight: 600;
+  color: #1f2937;
+}
+
+/* Page size dropdown */
+
+.ag-theme-quartz .ag-picker-field-wrapper,
+.ag-theme-quartz .ag-select {
+  font-weight: 600;
+}
+
+/* Page information */
+
+.ag-theme-quartz .ag-paging-row-summary-panel,
+.ag-theme-quartz .ag-paging-description,
+.ag-theme-quartz .ag-paging-page-summary-panel {
+  font-weight: 600;
+}
+
+/* =========================================
+   GRID BORDER
+========================================= */
+
+.ag-theme-quartz {
+  border: 1px solid #d9d9d9;
+  border-radius: 4px;
+  overflow: hidden;
+
+  --ag-font-family: "Noto Sans", sans-serif;
+  --ag-cell-font-family: "Noto Sans", sans-serif;
+
+  --ag-header-background-color: #f8f8f8;
+  --ag-header-foreground-color: #f3f4f6;
+
+  --ag-border-color: #d9d9d9;
+  --ag-header-height: 52px;
+
+  --ag-odd-row-background-color: #f7f7f7;
+}

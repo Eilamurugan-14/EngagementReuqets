@@ -1,0 +1,59 @@
+.gcc-grid-shell {
+  background: #ffffff;
+  border: 1px solid #dbe2ea;
+  border-radius: 14px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
+  margin-top: 14px;
+  overflow: hidden;
+  padding: 8px;
+}
+
+.gcc-grid {
+  --ag-cell-horizontal-padding: 6px;
+  width: 100%;
+}
+
+.gcc-grid .ag-root-wrapper {
+  border: 0;
+  border-radius: 8px;
+}
+
+.gcc-grid .ag-header-cell-text,
+.gcc-grid .ag-floating-filter-input {
+  font-size: 12px;
+}
+
+.gcc-grid .ag-header-cell-text {
+  color: #1f2937;
+  font-weight: 600;
+}
+
+.gcc-grid .ag-cell {
+  align-items: center;
+  color: #4b5563;
+  display: flex;
+  font-size: 12px;
+}
+
+.gcc-grid .ag-header-cell,
+.gcc-grid .ag-cell {
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.gcc-grid .ag-cell[col-id="action"] {
+  justify-content: center;
+}
+
+.gcc-grid .ag-row-hover {
+  background-color: #f8fafc !important;
+}
+
+.gcc-grid .ag-paging-panel {
+  color: #4b5563;
+  min-height: 44px;
+}
+
+.gcc-grid .status-badge {
+  line-height: 1.2;
+}
