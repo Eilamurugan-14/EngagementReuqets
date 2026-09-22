@@ -144,3 +144,38 @@
   .gcc-button-group { justify-content: stretch; }
   .gcc-button-group button { flex: 1 1 100%; }
 }
+
+.gcc-grid-container {
+  background: #ffffff;
+  border: 1px solid #dbe2ea;
+  border-radius: 8px;
+
+  padding: 12px;
+  margin-top: 8px;
+}
+
+.gcc-filter-row {
+  align-items: flex-end;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-bottom: 10px;
+}
+
+.gcc-alert-banner {
+  margin-top: 0;
+  margin-bottom: 10px;
+}
+.gcc-alert-banner {
+  display: none;
+}
+.gcc-filter-select {
+  background: #fff;
+  border: 1px solid #d1d5db;
+  border-radius: 6px;
+
+  height: 40px;
+  padding: 0 11px;
+
+  flex: 1 1 130px;
+}

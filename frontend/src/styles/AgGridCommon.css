@@ -71,7 +71,8 @@
 
 .ag-theme-quartz .ag-row {
   font-family: "Noto Sans", sans-serif;
-  font-size: 13px;
+  font-size: 14px;
+  
 }
 
 /* Hover effect */
@@ -136,7 +137,7 @@
 ========================================= */
 
 .ag-theme-quartz {
-  border: 1px solid #d9d9d9;
+  border: 1px solid rgb(186, 191, 199);
   border-radius: 4px;
   overflow: hidden;
 

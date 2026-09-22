@@ -1,20 +1,18 @@
 .employee-grid-shell {
-  background: #ffffff;
-  border: 1px solid #dbe2ea;
-  border-radius: 14px;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
-  margin-top: 20px;
-  overflow: hidden;
-  padding: 12px;
+  background: transparent;
+  border: none;
+  border-radius: 0;
+  box-shadow: none;
+  margin-top: 0;
+  overflow: visible;
+  padding: 0;
 }
-
 .employee-grid {
   width: 100%;
 }
-
 .employee-grid .ag-root-wrapper {
   border: 0;
-  border-radius: 8px;
+  border-radius: 0;
 }
 
 .employee-grid .ag-header-cell-text,

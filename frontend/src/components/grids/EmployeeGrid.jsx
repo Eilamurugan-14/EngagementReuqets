@@ -33,7 +33,7 @@ const employeeColumnDefs = [
   {
     headerName: "Status",
     field: "status",
-    minWidth: 125,
+    minWidth: 80,
     cellRenderer: EmployeeStatusRenderer,
   },
 ];

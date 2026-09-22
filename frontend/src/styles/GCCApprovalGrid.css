@@ -1,11 +1,11 @@
 .gcc-grid-shell {
-  background: #ffffff;
-  border: 1px solid #dbe2ea;
-  border-radius: 14px;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
-  margin-top: 14px;
-  overflow: hidden;
-  padding: 8px;
+  background: transparent;
+  border: none;
+  border-radius: 0;
+  box-shadow: none;
+  margin-top: 0;
+  overflow: visible;
+  padding: 0;
 }
 
 .gcc-grid {
@@ -15,7 +15,7 @@
 
 .gcc-grid .ag-root-wrapper {
   border: 0;
-  border-radius: 8px;
+  border-radius: 0;
 }
 
 .gcc-grid .ag-header-cell-text,
@@ -57,3 +57,8 @@
 .gcc-grid .status-badge {
   line-height: 1.2;
 }
+
+.gcc-grid {
+  height: auto;
+}
+

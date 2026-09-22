@@ -27,71 +27,77 @@ function EngagementRequests() {
 
   return (
     <div className="page-container">
-      <div style={{ marginBottom: "20px" }}>
-        <h2 className="page-title">
-          My Engagement Requests
-        </h2>
+      <div className="page-header">
+        <div className="page-header-content">
+          <div>
+            <h2 className="page-title">
+              My Engagement Requests
+            </h2>
 
-        <p className="page-subtitle">
-          View and manage your engagement requests
-        </p>
+            <p className="page-subtitle">
+              View and manage your engagement requests
+            </p>
+          </div>
+
+          <button
+            className="new-btn"
+            onClick={() => {
+              setEditingRequest(null);
+              setViewMode(false);
+              setIsModalOpen(true);
+            }}
+          >
+            + New Request
+          </button>
+        </div>
       </div>
 
-      <div className="toolbar">
-        <input
-          type="text"
-          placeholder="Search by Employee, Category or Event"
-          className="search-box"
-          value={searchTerm}
-          onChange={(e) =>
-            setSearchTerm(e.target.value)
-          }
-        />
+      <div className="grid-container">
+        <div className="grid-toolbar">
+          <input
+            type="text"
+            placeholder="Search by Employee, Category or Event"
+            className="search-box"
+            value={searchTerm}
+            onChange={(e) =>
+              setSearchTerm(e.target.value)
+            }
+          />
 
-        <select
-          value={userType}
-          onChange={(e) =>
-            setUserType(e.target.value)
-          }
-          className="role-dropdown"
-        >
-          <option value="Employee">
-            Employee
-          </option>
-          <option value="Manager">
-            Manager
-          </option>
-          <option value="GCC Leader">
-            GCC Leader
-          </option>
-        </select>
+          <select
+            value={userType}
+            onChange={(e) =>
+              setUserType(e.target.value)
+            }
+            className="role-dropdown"
+          >
+            <option value="Employee">
+              Employee
+            </option>
+            <option value="Manager">
+              Manager
+            </option>
+            <option value="GCC Leader">
+              GCC Leader
+            </option>
+          </select>
+        </div>
 
-        <button
-          className="new-btn"
-          onClick={() => {
-            setEditingRequest(null);
+        <EmployeeGrid
+          requests={requests}
+          searchTerm={searchTerm}
+          onEdit={(request) => {
+            setEditingRequest(request);
             setViewMode(false);
             setIsModalOpen(true);
           }}
-        >
-          + New Request
-        </button>
+          onView={(request) => {
+            setEditingRequest(request);
+            setViewMode(true);
+            setIsModalOpen(true);
+          }}
+        />
       </div>
-
-      <EmployeeGrid
-        requests={requests}
-        searchTerm={searchTerm}
-        onEdit={(request) => {
-          setEditingRequest(request);
-          setViewMode(false);
-          setIsModalOpen(true);
-        }}
-        onView={(request) => {
-          setEditingRequest(request);
-          setViewMode(true);
-          setIsModalOpen(true);
-        }}
-      />
 
       <RequestModal
         isOpen={isModalOpen}
