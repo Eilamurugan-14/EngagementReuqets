@@ -15,7 +15,8 @@ const employeeColumnDefs = [
     sortable: false,
     filter: false,
     width: 105,
-    pinned: "left",
+    suppressHeaderMenuButton: true,
+    
     cellRenderer: EmployeeActionRenderer,
   },
   { headerName: "ID", field: "id", minWidth: 125 },

@@ -12,7 +12,7 @@ const managerActionColumn = {
   sortable: false,
   filter: false,
   width: 105,
-  pinned: "left",
+  
   cellRenderer: ManagerActionRenderer,
 };
 

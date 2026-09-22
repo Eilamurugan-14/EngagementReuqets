@@ -14,7 +14,7 @@ const gccActionColumn = {
   width: 60,
   minWidth: 60,
   maxWidth: 60,
-  pinned: "left",
+  
   cellRenderer: GCCActionRenderer,
 };
 

@@ -151,3 +151,18 @@
 
   --ag-odd-row-background-color: #f7f7f7;
 }
+
+.ag-theme-quartz {
+  --ag-odd-row-background-color: #fcfcfc;
+}
+.ag-theme-quartz,
+.ag-theme-quartz .ag-root-wrapper {
+  border-radius: 2px;
+}
+
+.ag-theme-quartz .ag-cell {
+  border-right-color: transparent !important;
+}
+
+/* Remove header separator only for first column */
+
