@@ -7,7 +7,7 @@ function Header() {
     <header className="header">
       <div className="header-left">
         <MenuIcon />
-        <h3 className="logo">xylem xOps</h3>
+        <h2 className="logo">xOps</h2>
       </div>
 
       <div className="header-right">

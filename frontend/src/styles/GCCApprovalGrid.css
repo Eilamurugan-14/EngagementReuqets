@@ -20,7 +20,7 @@
 
 .gcc-grid .ag-header-cell-text,
 .gcc-grid .ag-floating-filter-input {
-  font-size: 12px;
+  font-size: 14px;
 }
 
 .gcc-grid .ag-header-cell-text {
@@ -32,7 +32,7 @@
   align-items: center;
   color: #4b5563;
   display: flex;
-  font-size: 12px;
+  font-size: 14px;
 }
 
 .gcc-grid .ag-header-cell,
