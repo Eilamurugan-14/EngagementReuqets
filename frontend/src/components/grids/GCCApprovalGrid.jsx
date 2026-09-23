@@ -24,8 +24,8 @@ const gccDataColumns = [
   { headerName: "Department", field: "department", minWidth: 90, valueFormatter: ({ value }) => value || "-" },
   { headerName: "Category", field: "category", minWidth: 95 },
   {
-    headerName: "Title",
-    field: "title",
+    headerName: "Event",
+    field: "event",
     minWidth: 125,
     flex: 1,
     valueGetter: ({ data }) => data?.title || data?.event || null,

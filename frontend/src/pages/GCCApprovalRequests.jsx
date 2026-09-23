@@ -12,7 +12,7 @@ const GCC_EXPORT_COLUMNS = [
   "employee",
   "department",
   "category",
-  "title",
+  "event",
   "eventDate",
   "budget",
   "status",
@@ -26,7 +26,7 @@ const GCC_EXPORT_HEADERS = {
   employee: "Employee Name",
   department: "Department",
   category: "Category",
-  title: "Event Title",
+  event: "Event",
   eventDate: "Event Date",
   budget: "Budget",
   status: "Status",
@@ -111,7 +111,7 @@ function GCCApprovalRequests() {
       request.employee,
       request.department,
       request.category,
-      request.title || request.event,
+      request.event,
     ]
       .join(" ")
       .toLowerCase();
@@ -226,7 +226,7 @@ function GCCApprovalRequests() {
       <div className="gcc-page-heading">
         <div>
           <h2 className="page-title">
-            Approval Requests
+            GCC Approval Requests
           </h2>
 
           <p className="page-subtitle">
@@ -421,7 +421,7 @@ function GCCApprovalRequests() {
             }
             aria-label="Dismiss notification"
           >
-            ×
+            
           </button>
         </div>
       )}
