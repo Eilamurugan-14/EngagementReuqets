@@ -11,15 +11,14 @@ const gccActionColumn = {
   field: "action",
   sortable: false,
   filter: false,
-  width: 60,
-  minWidth: 60,
-  maxWidth: 60,
+  width: 80,
+
   
   cellRenderer: GCCActionRenderer,
 };
 
 const gccDataColumns = [
-  { headerName: "Request ID", field: "id", minWidth: 85 },
+  { headerName: "Request ID", field: "id", width: 125 },
   { headerName: "Employee Name", field: "employee", minWidth: 110 },
   { headerName: "Department", field: "department", minWidth: 90, valueFormatter: ({ value }) => value || "-" },
   { headerName: "Category", field: "category", minWidth: 95 },

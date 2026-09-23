@@ -11,28 +11,28 @@ const managerActionColumn = {
   field: "action",
   sortable: false,
   filter: false,
-  width: 105,
+  width: 80,
   
   cellRenderer: ManagerActionRenderer,
 };
 
 const managerDataColumns = [
-  { headerName: "Request ID", field: "id", minWidth: 130 },
+  { headerName: "Request ID", field: "id", width: 125},
   { headerName: "Employee Name", field: "employee", minWidth: 165 },
-  { headerName: "Department", field: "department", hide: true },
+  { headerName: "Department", field: "department", minWidth: 100, valueFormatter: ({ value }) => value || "-" },
   { headerName: "Category", field: "category", minWidth: 145 },
-  { headerName: "Event", field: "event", minWidth: 180, flex: 1 },
+  { headerName: "Event", field: "event", width: 150, flex: 1 },
   { headerName: "Event Date", field: "eventDate", minWidth: 135 },
   {
     headerName: "Budget",
     field: "budget",
-    minWidth: 125,
+    width: 120,
     valueFormatter: ({ value }) => `₹${value ?? ""}`,
   },
   {
     headerName: "Status",
     field: "status",
-    minWidth: 145,
+    width: 130,
     cellRenderer: ManagerStatusRenderer,
   },
   { headerName: "Manager Comments", field: "managerComments", hide: true },

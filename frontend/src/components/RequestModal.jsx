@@ -192,6 +192,47 @@ function RequestModal({
             />
             {renderError("employee")}
           </div>
+          <div className="form-group">
+  <label>
+    Department
+    <span className="required">*</span>
+  </label>
+
+  <select
+    name="department"
+    value={formData.department}
+    onChange={handleChange}
+    onBlur={handleBlur}
+    className={getFieldClassName("department")}
+    disabled={viewMode}
+  >
+    <option value="">
+      Select Department
+    </option>
+
+    <option value="Engineering">
+      Engineering
+    </option>
+
+    <option value="Operations">
+      Operations
+    </option>
+
+    <option value="Finance">
+      Finance
+    </option>
+
+    <option value="HR">
+      HR
+    </option>
+
+    <option value="Marketing">
+      Marketing
+    </option>
+  </select>
+
+  {renderError("department")}
+</div>
 
           <div className="form-group">
             <label>
