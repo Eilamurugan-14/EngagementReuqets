@@ -1,5 +1,13 @@
 const { all, get, run } = require("../config/database");
 
+const {
+  validateRequest,
+} = require("../utils/requestValidator");
+
+const {
+  isValidTransition,
+} = require("../utils/statusValidator");
+
 function parseQuarter(value) {
   if (!value) return [];
 
@@ -69,25 +77,23 @@ async function createRequest(req, res) {
   try {
     const body = req.body;
 
-    const latest = await get(`
-      SELECT TOP 1 Id
-      FROM Requests
-      ORDER BY CAST(REPLACE(Id,'ENG-','') AS INT) DESC
-    `);
+    const validationErrors =
+      validateRequest(body);
 
-    const nextNumber =
-      (latest
-        ? Number(
-            latest.Id.replace(
-              "ENG-",
-              ""
-            )
-          )
-        : 0) + 1;
+    if (validationErrors.length) {
+      return res.status(400).json({
+        success: false,
+        errors: validationErrors,
+      });
+    }
 
-    const id = `ENG-${String(
-      nextNumber
-    ).padStart(3, "0")}`;
+    const sequenceResult = await get(`
+  SELECT NEXT VALUE FOR RequestIdSequence AS NextId
+`);
+
+const id = `ENG-${String(
+  sequenceResult.NextId
+).padStart(3, "0")}`;
 
     await run(
       `
@@ -161,6 +167,41 @@ async function updateRequest(req, res) {
     const body = req.body;
     const id = req.params.id;
 
+    const requiresValidation =
+      body.employee !== undefined ||
+      body.department !== undefined ||
+      body.category !== undefined ||
+      body.event !== undefined ||
+      body.eventDate !== undefined ||
+      body.venue !== undefined ||
+      body.headcount !== undefined ||
+      body.budget !== undefined ||
+      body.quarter !== undefined;
+
+    if (requiresValidation) {
+      const validationErrors =
+        validateRequest({
+          employee: body.employee ?? "",
+          department: body.department ?? "",
+          category: body.category ?? "",
+          event: body.event ?? "",
+          eventDate: body.eventDate ?? "",
+          venue: body.venue ?? "",
+          headcount: body.headcount ?? 0,
+          budget: body.budget ?? 0,
+          description:
+            body.description ?? "",
+          quarter: body.quarter ?? [],
+        });
+
+    if (validationErrors.length) {
+      return res.status(400).json({
+        success: false,
+        errors: validationErrors,
+      });
+    }
+}
+
     const current = await get(
       `
       SELECT *
@@ -175,6 +216,19 @@ async function updateRequest(req, res) {
         message: "Request not found",
       });
     }
+
+    if (
+  body.status &&
+  !isValidTransition(
+    current.Status,
+    body.status
+  )
+) {
+  return res.status(400).json({
+    success: false,
+    message: `Invalid status transition from '${current.Status}' to '${body.status}'.`,
+  });
+}
 
     const values = {
       employee:
