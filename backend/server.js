@@ -6,12 +6,16 @@ const { initializeDatabase } = require("./config/database");
 
 const requestRoutes = require("./routes/requestRoutes");
 
+const auditRoutes = require("./routes/auditRoutes");
+
 const app = express();
 
 app.use(cors());
 app.use(express.json());
 
 app.use("/api/requests", requestRoutes);
+
+app.use("/api/audit", auditRoutes);
 
 app.get("/", (req, res) => {
   res.send("Backend Running...");

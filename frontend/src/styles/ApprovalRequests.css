@@ -283,3 +283,27 @@
   align-items: center;
   gap: 16px;
 }
+
+.audit-history-section {
+  border-top: 1px solid #e5e7eb;
+  margin-top: 18px;
+  padding-top: 14px;
+}
+
+.audit-history-section h3 {
+  color: #1f2937;
+  font-size: 15px;
+  font-weight: 600;
+  margin-bottom: 12px;
+}
+
+.audit-history-item {
+  border: 1px solid #e5e7eb;
+  border-radius: 6px;
+  margin-bottom: 10px;
+  padding: 10px;
+}
+
+.audit-history-item div {
+  margin-bottom: 4px;
+}

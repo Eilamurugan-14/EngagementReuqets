@@ -1,16 +1,58 @@
 import { useEffect, useState } from "react";
-import { updateRequest } from "../services/api";
+import {
+  updateRequest,
+  getAuditHistory,
+} from "../services/api";
 import "../styles/ApprovalRequests.css";
 
-function ApprovalModal({ request, onClose, refreshRequests }) {
+function ApprovalModal({
+  request,
+  onClose,
+  refreshRequests,
+  isHistoryView = false,
+})  {
   const [comments, setComments] = useState("");
   const [isSaving, setIsSaving] = useState(false);
+  const [auditHistory, setAuditHistory] = useState([]);
 
   useEffect(() => {
-    setComments(request?.managerComments || "");
-  }, [request]);
+  setComments(request?.managerComments || "");
+
+  async function loadAuditHistory() {
+    if (!request?.id) {
+      return;
+    }
+    const history = await getAuditHistory(
+  request.id
+);
+
+console.log("REQUEST ID:", request.id);
+console.log("AUDIT HISTORY:", history);
+
+setAuditHistory(history);
+    try {
+      const history =
+        await getAuditHistory(
+          request.id
+        );
+
+      setAuditHistory(history);
+    } catch (error) {
+      console.error(
+        "Error loading audit history:",
+        error
+      );
+
+      setAuditHistory([]);
+    }
+  }
+
+  loadAuditHistory();
+}, [request]);
 
   if (!request) return null;
+
+  
 
   const handleAction = async (status) => {
     setIsSaving(true);
@@ -54,32 +96,118 @@ function ApprovalModal({ request, onClose, refreshRequests }) {
           <Detail label="Description" value={request.description || "-"} fullWidth />
         </div>
 
-        <label className="approval-comments-label" htmlFor="manager-comments">
-          Manager Comments
-        </label>
-        <textarea
-          id="manager-comments"
-          className="approval-comments"
-          placeholder="Add comments..."
-          value={comments}
-          onChange={(event) => setComments(event.target.value)}
-          disabled={isSaving}
-        />
+        <div className="audit-history-section">
+  <h3>Approval History</h3>
+
+  {auditHistory.length === 0 ? (
+    <p>No history available.</p>
+  ) : (
+    auditHistory.map((item) => (
+      <div
+        key={item.AuditId}
+        className="audit-history-item"
+      >
+        <div>
+          <strong>
+            {item.ActionBy}
+          </strong>
+        </div>
+
+        <div>
+          {item.OldStatus}
+          {" → "}
+          {item.NewStatus}
+        </div>
+
+        <div>
+          {new Date(
+  item.ActionDate
+).toLocaleString("en-IN", {
+  dateStyle: "medium",
+  timeStyle: "medium",
+})}
+        </div>
+
+        {item.Comments && (
+          <div>
+            {item.Comments}
+          </div>
+        )}
+      </div>
+    ))
+  )}
+</div>
+
+
+        {!isHistoryView && (
+  <>
+    <label
+      className="approval-comments-label"
+      htmlFor="manager-comments"
+    >
+      Manager Comments
+    </label>
+
+    <textarea
+      id="manager-comments"
+      className="approval-comments"
+      placeholder="Add comments..."
+      value={comments}
+      onChange={(event) =>
+        setComments(event.target.value)
+      }
+      disabled={isSaving}
+    />
+  </>
+)}
 
         <div className="approval-button-group">
-          <button type="button" className="cancel-btn" onClick={onClose} disabled={isSaving}>
-            Cancel
-          </button>
-          <button type="button" className="escalate-btn" onClick={() => handleAction("Pending GCC Leader")} disabled={isSaving}>
-            Escalate to GCC Leader
-          </button>
-          <button type="button" className="reject-btn" onClick={() => handleAction("Rejected")} disabled={isSaving}>
-            Reject
-          </button>
-          <button type="button" className="approve-btn" onClick={() => handleAction("Approved")} disabled={isSaving}>
-            Approve
-          </button>
-        </div>
+  <button
+    type="button"
+    className="cancel-btn"
+    onClick={onClose}
+    disabled={isSaving}
+  >
+    {isHistoryView ? "Close" : "Cancel"}
+  </button>
+
+  {!isHistoryView && (
+    <>
+      <button
+        type="button"
+        className="escalate-btn"
+        onClick={() =>
+          handleAction("Pending GCC Leader")
+        }
+        disabled={isSaving}
+      >
+        Escalate to GCC Leader
+      </button>
+
+      <button
+        type="button"
+        className="reject-btn"
+        onClick={() =>
+          handleAction("Rejected")
+        }
+        disabled={isSaving}
+      >
+        Reject
+      </button>
+
+      <button
+        type="button"
+        className="approve-btn"
+        onClick={() =>
+          handleAction("Approved")
+        }
+        disabled={isSaving}
+      >
+        Approve
+      </button>
+    </>
+  )}
+</div>
       </div>
     </div>
   );

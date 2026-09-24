@@ -43,6 +43,14 @@ const managerDataColumns = [
 const managerColumnDefs = [managerActionColumn, ...managerDataColumns];
 const managerHistoryColumnDefs = [
   {
+    headerName: "Action",
+    field: "action",
+    sortable: false,
+    filter: false,
+    width: 80,
+    cellRenderer: ManagerActionRenderer,
+  },
+  {
     headerName: "Request ID",
     field: "id",
     minWidth: 140,

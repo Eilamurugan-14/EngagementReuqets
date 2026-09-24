@@ -402,11 +402,15 @@ function GCCApprovalRequests() {
 
       <GCCApprovalModal
         request={selectedRequest}
+        isHistoryView={
+          activeTab === "history"
+        }
         onClose={() =>
           setSelectedRequest(null)
         }
         refreshRequests={loadRequests}
       />
+
 
       {toast && (
         <div

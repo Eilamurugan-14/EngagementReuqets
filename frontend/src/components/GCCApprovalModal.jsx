@@ -1,14 +1,47 @@
 import { useEffect, useState } from "react";
-import { updateRequest } from "../services/api";
+import {
+  updateRequest,
+  getAuditHistory,
+} from "../services/api";
 import "../styles/GCCApprovalRequests.css";
 
-function GCCApprovalModal({ request, onClose, refreshRequests }) {
+function GCCApprovalModal({
+  request,
+  onClose,
+  refreshRequests,
+  isHistoryView = false,
+})  {
   const [comments, setComments] = useState("");
   const [isSaving, setIsSaving] = useState(false);
+  const [auditHistory, setAuditHistory] = useState([]);
 
   useEffect(() => {
-    setComments(request?.gccLeaderComments || "");
-  }, [request]);
+  setComments(request?.gccLeaderComments || "");
+
+  async function loadAuditHistory() {
+    if (!request?.id) {
+      return;
+    }
+
+    try {
+      const history =
+        await getAuditHistory(
+          request.id
+        );
+
+      setAuditHistory(history);
+    } catch (error) {
+      console.error(
+        "Error loading audit history:",
+        error
+      );
+
+      setAuditHistory([]);
+    }
+  }
+
+  loadAuditHistory();
+}, [request]);
 
   if (!request) return null;
 
@@ -54,29 +87,109 @@ function GCCApprovalModal({ request, onClose, refreshRequests }) {
           <Detail label="Description" value={request.description || "-"} fullWidth />
         </div>
 
-        {!isReadOnly && (
-          <>
-            <label className="gcc-comments-label" htmlFor="gcc-comments">Comments (optional)</label>
-            <textarea
-              id="gcc-comments"
-              className="gcc-comments"
-              placeholder="Comments (optional)"
-              value={comments}
-              onChange={(event) => setComments(event.target.value)}
-              disabled={isSaving}
-            />
-          </>
+        <div className="audit-history-section">
+  <h3>Approval History</h3>
+
+  {auditHistory.length === 0 ? (
+    <p>No history available.</p>
+  ) : (
+    auditHistory.map((item) => (
+      <div
+        key={item.AuditId}
+        className="audit-history-item"
+      >
+        <div>
+          <strong>
+            {item.ActionBy}
+          </strong>
+        </div>
+
+        <div>
+          {item.OldStatus}
+          {" → "}
+          {item.NewStatus}
+        </div>
+
+        <div>
+          {new Date(
+            item.ActionDate
+          ).toLocaleString("en-IN", {
+            dateStyle: "medium",
+            timeStyle: "medium",
+          })}
+        </div>
+
+        {item.Comments && (
+          <div>
+            {item.Comments}
+          </div>
         )}
+      </div>
+    ))
+  )}
+</div>
+
+
+        {!isReadOnly && !isHistoryView && (
+  <>
+    <label
+      className="gcc-comments-label"
+      htmlFor="gcc-comments"
+    >
+      Comments (optional)
+    </label>
+
+    <textarea
+      id="gcc-comments"
+      className="gcc-comments"
+      placeholder="Comments (optional)"
+      value={comments}
+      onChange={(event) =>
+        setComments(event.target.value)
+      }
+      disabled={isSaving}
+    />
+  </>
+)}
 
         <div className="gcc-button-group">
-          <button type="button" className="cancel-btn" onClick={onClose} disabled={isSaving}>{isReadOnly ? "Close" : "Cancel"}</button>
-          {!isReadOnly && (
-            <>
-              <button type="button" className="gcc-reject-btn" onClick={() => handleAction("Rejected")} disabled={isSaving}>Reject</button>
-              <button type="button" className="gcc-approve-btn" onClick={() => handleAction("Approved")} disabled={isSaving}>Approve</button>
-            </>
-          )}
-        </div>
+  <button
+    type="button"
+    className="cancel-btn"
+    onClick={onClose}
+    disabled={isSaving}
+  >
+    {isHistoryView || isReadOnly
+      ? "Close"
+      : "Cancel"}
+  </button>
+
+  {!isReadOnly && !isHistoryView && (
+    <>
+      <button
+        type="button"
+        className="gcc-reject-btn"
+        onClick={() =>
+          handleAction("Rejected")
+        }
+        disabled={isSaving}
+      >
+        Reject
+      </button>
+
+      <button
+        type="button"
+        className="gcc-approve-btn"
+        onClick={() =>
+          handleAction("Approved")
+        }
+        disabled={isSaving}
+      >
+        Approve
+      </button>
+    </>
+  )}
+</div>
       </div>
     </div>
   );

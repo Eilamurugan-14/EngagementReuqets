@@ -29,7 +29,9 @@ async function logAudit({
       newStatus,
       comments || "",
       actionBy,
-      new Date().toISOString(),
+      new Date().toLocaleString("sv-SE", {
+  timeZone: "Asia/Kolkata",
+}),
     ]
   );
 }

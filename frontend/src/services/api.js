@@ -1,6 +1,7 @@
 import axios from "axios";
 
 const API_URL = "http://localhost:5000/api/requests";
+const AUDIT_API_URL = "http://localhost:5000/api/audit";
 
 // Get all requests
 export const getRequests = async () => {
@@ -28,6 +29,14 @@ export const updateRequest = async (id, requestData) => {
 export const deleteRequest = async (id) => {
   const response = await axios.delete(
     `${API_URL}/${id}`
+  );
+
+  return response.data;
+};
+
+export const getAuditHistory = async (id) => {
+  const response = await axios.get(
+    `${AUDIT_API_URL}/${id}`
   );
 
   return response.data;

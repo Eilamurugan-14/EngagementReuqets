@@ -14,7 +14,10 @@ let connection;
 async function getConnection() {
   if (!connection) {
     connection = await odbc.connect(connectionString);
-    console.log("SQL Server database connected successfully");
+
+    console.log(
+      "SQL Server database connected successfully"
+    );
   }
 
   return connection;
@@ -26,7 +29,10 @@ function formatQuery(sql, parameters = []) {
   return sql.replace(/\?/g, () => {
     const value = parameters[index++];
 
-    if (value === null || value === undefined) {
+    if (
+      value === null ||
+      value === undefined
+    ) {
       return "NULL";
     }
 
@@ -34,14 +40,20 @@ function formatQuery(sql, parameters = []) {
       return value;
     }
 
-    return `'${String(value).replace(/'/g, "''")}'`;
+    return `'${String(value).replace(
+      /'/g,
+      "''"
+    )}'`;
   });
 }
 
 async function run(sql, parameters = []) {
   const conn = await getConnection();
 
-  const query = formatQuery(sql, parameters);
+  const query = formatQuery(
+    sql,
+    parameters
+  );
 
   const result = await conn.query(query);
 
@@ -53,7 +65,10 @@ async function run(sql, parameters = []) {
 async function all(sql, parameters = []) {
   const conn = await getConnection();
 
-  const query = formatQuery(sql, parameters);
+  const query = formatQuery(
+    sql,
+    parameters
+  );
 
   const result = await conn.query(query);
 
@@ -63,7 +78,10 @@ async function all(sql, parameters = []) {
 }
 
 async function get(sql, parameters = []) {
-  const rows = await all(sql, parameters);
+  const rows = await all(
+    sql,
+    parameters
+  );
 
   return rows.length
     ? rows[0]
@@ -72,7 +90,8 @@ async function get(sql, parameters = []) {
 
 async function initializeDatabase() {
   try {
-    const conn = await getConnection();
+    const conn =
+      await getConnection();
 
     await conn.query(`
       IF OBJECT_ID('dbo.Requests', 'U') IS NULL
@@ -99,7 +118,9 @@ async function initializeDatabase() {
       END
     `);
 
-    console.log("Requests table verified");
+    console.log(
+      "Requests table verified"
+    );
   } catch (error) {
     console.error(
       "SQL Server database initialization failed:",

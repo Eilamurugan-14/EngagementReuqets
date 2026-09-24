@@ -4,6 +4,7 @@ import VisibilityIcon from "@mui/icons-material/Visibility";
 import "../../styles/RequestTable.css";
 import "../../styles/GCCApprovalGrid.css";
 
+
 ModuleRegistry.registerModules([AllCommunityModule]);
 
 const gccActionColumn = {
@@ -52,6 +53,7 @@ const gccDataColumns = [
 
 const gccColumnDefs = [gccActionColumn, ...gccDataColumns];
 const gccHistoryColumnDefs = [
+ gccActionColumn,
   {
     headerName: "Request ID",
     field: "id",

@@ -353,23 +353,23 @@ async function updateRequest(req, res) {
     );
 
     
+if (current.Status !== values.status) {
+  const actionBy =
+    current.Status ===
+    "Pending GCC Leader"
+      ? "GCC Leader"
+      : "Manager";
 
-    const actionBy =
-  current.Status === "Pending GCC Leader"
-    ? "GCC Leader"
-    : "Manager";
-
-console.log("ACTION BY:", actionBy);
-
-await logAudit({
-  requestId: id,
-  oldStatus: current.Status,
-  newStatus: values.status,
-  comments:
-    values.gccLeaderComments ||
-    values.managerComments,
-  actionBy,
-});
+  await logAudit({
+    requestId: id,
+    oldStatus: current.Status,
+    newStatus: values.status,
+    comments:
+      values.gccLeaderComments ||
+      values.managerComments,
+    actionBy,
+  });
+}
 
     
 
