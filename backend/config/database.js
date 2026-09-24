@@ -1,11 +1,13 @@
+require("dotenv").config();
+
 const odbc = require("odbc");
 
 const connectionString =
-  "Driver={ODBC Driver 18 for SQL Server};" +
-  "Server=LOB-JH0S6C2\\SQLEXPRESS01;" +
-  "Database=EmployeeEngagementRequests;" +
+  `Driver={${process.env.DB_DRIVER}};` +
+  `Server=${process.env.DB_SERVER};` +
+  `Database=${process.env.DB_DATABASE};` +
   "Trusted_Connection=Yes;" +
-  "TrustServerCertificate=Yes;";
+  `TrustServerCertificate=${process.env.DB_TRUST_CERT};`;
 
 let connection;
 
@@ -55,13 +57,17 @@ async function all(sql, parameters = []) {
 
   const result = await conn.query(query);
 
-  return Array.isArray(result) ? result : [];
+  return Array.isArray(result)
+    ? result
+    : [];
 }
 
 async function get(sql, parameters = []) {
   const rows = await all(sql, parameters);
 
-  return rows.length ? rows[0] : null;
+  return rows.length
+    ? rows[0]
+    : null;
 }
 
 async function initializeDatabase() {
@@ -99,6 +105,7 @@ async function initializeDatabase() {
       "SQL Server database initialization failed:",
       error.message
     );
+
     throw error;
   }
 }

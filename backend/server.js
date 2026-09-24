@@ -1,3 +1,5 @@
+require("dotenv").config();
+
 const express = require("express");
 const cors = require("cors");
 const { initializeDatabase } = require("./config/database");
@@ -20,12 +22,19 @@ const PORT = process.env.PORT || 5000;
 async function startServer() {
   try {
     await initializeDatabase();
+
     app.listen(PORT, () => {
-      console.log(`Server running on http://localhost:${PORT}`);
+      console.log(
+        `Server running on http://localhost:${PORT}`
+      );
     });
   } catch (error) {
-    console.error("Server startup aborted because SQLite initialization failed:", error.message);
-    process.exitCode = 1;
+    console.error(
+      "Server startup aborted because SQL Server initialization failed:",
+      error.message
+    );
+
+    process.exit(1);
   }
 }
 
