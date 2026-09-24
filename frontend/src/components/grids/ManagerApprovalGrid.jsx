@@ -17,22 +17,24 @@ const managerActionColumn = {
 };
 
 const managerDataColumns = [
-  { headerName: "Request ID", field: "id", width: 125},
-  { headerName: "Employee Name", field: "employee", minWidth: 165 },
-  { headerName: "Department", field: "department", minWidth: 100, valueFormatter: ({ value }) => value || "-" },
-  { headerName: "Category", field: "category", minWidth: 145 },
-  { headerName: "Event", field: "event", width: 150, flex: 1 },
-  { headerName: "Event Date", field: "eventDate", minWidth: 135 },
+  { headerName: "Request ID", field: "id", minWidth: 125,width:140},
+  { headerName: "Employee Name", field: "employee", minWidth: 165,width:220 },
+  { headerName: "Department", field: "department", minWidth: 150,width:200, valueFormatter: ({ value }) => value || "-" },
+  { headerName: "Category", field: "category", minWidth: 145,width:200 },
+  { headerName: "Event", field: "event", minWidth: 150,width:200 },
+  { headerName: "Event Date", field: "eventDate", minWidth: 135,width:180 },
   {
     headerName: "Budget",
     field: "budget",
-    width: 120,
+    minWidth: 120,
+    width: 150,
     valueFormatter: ({ value }) => `₹${value ?? ""}`,
   },
   {
     headerName: "Status",
     field: "status",
-    width: 130,
+    minWidth: 220,
+    width: 220,
     cellRenderer: ManagerStatusRenderer,
   },
   { headerName: "Manager Comments", field: "managerComments", hide: true },

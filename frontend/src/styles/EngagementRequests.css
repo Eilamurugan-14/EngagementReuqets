@@ -17,7 +17,7 @@
 .page-header-content {
   display: flex;
   justify-content: space-between;
-  align-items: center;
+  align-items: flex-end;
 }
 
 .page-title {
@@ -88,7 +88,7 @@
   border-radius: 8px;
 
   padding: 12px 12px;
-
+  transform: translateY(8px);
   cursor: pointer;
   font-weight: 600;
 }
@@ -102,7 +102,7 @@
   background: #ffffff;
   border: 1px solid #dbe2ea;
   border-radius: 8px;
- padding: 10px;
+  padding: 10px;
   margin-top: 20px;}
 
 .grid-toolbar {

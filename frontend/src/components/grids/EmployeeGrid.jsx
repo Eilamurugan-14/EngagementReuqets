@@ -19,26 +19,29 @@ const employeeColumnDefs = [
     
     cellRenderer: EmployeeActionRenderer,
   },
-  { headerName: "ID", field: "id", width: 125 },
-  { headerName: "Employee", field: "employee", minWidth: 160 },
+  { headerName: "ID", field: "id", minWidth: 125,width:140 },
+  { headerName: "Employee", field: "employee", minWidth: 170,width:220 },
   {
   headerName: "Department",
   field: "department",
-  minWidth: 140,
+  minWidth: 150,
+  width:200
 },
-  { headerName: "Category", field: "category", minWidth: 145 },
-  { headerName: "Event", field: "event", width: 120, flex: 1 },
-  { headerName: "Event Date", field: "eventDate", width: 135 },
+  { headerName: "Category", field: "category", minWidth: 180,width:200 },
+  { headerName: "Event", field: "event", minWidth: 150,width:200 },
+  { headerName: "Event Date", field: "eventDate", minWidth: 140,width:180 },
   {
     headerName: "Budget",
     field: "budget",
-    width: 125,
+    minWidth: 120,
+    width: 150,
     valueFormatter: ({ value }) => `₹${value ?? ""}`,
   },
   {
     headerName: "Status",
     field: "status",
-    width: 160,
+    minWidth: 200,
+    width: 220,
     cellRenderer: EmployeeStatusRenderer,
   },
 ];

@@ -18,29 +18,31 @@ const gccActionColumn = {
 };
 
 const gccDataColumns = [
-  { headerName: "Request ID", field: "id", width: 125 },
-  { headerName: "Employee Name", field: "employee", minWidth: 110 },
-  { headerName: "Department", field: "department", minWidth: 90, valueFormatter: ({ value }) => value || "-" },
-  { headerName: "Category", field: "category", minWidth: 95 },
+  { headerName: "Request ID", field: "id", minWidth: 125,width:140 },
+  { headerName: "Employee Name", field: "employee", minWidth: 110,width:220 },
+  { headerName: "Department", field: "department", minWidth: 90,width:200, valueFormatter: ({ value }) => value || "-" },
+  { headerName: "Category", field: "category", minWidth: 95,width:200 },
   {
     headerName: "Event",
     field: "event",
     minWidth: 125,
-    flex: 1,
+    width:200,
     valueGetter: ({ data }) => data?.title || data?.event || null,
     valueFormatter: ({ value }) => value || "-",
   },
-  { headerName: "Event Date", field: "eventDate", minWidth: 100 },
+  { headerName: "Event Date", field: "eventDate", minWidth: 100,width:180 },
   {
     headerName: "Budget (INR)",
     field: "budget",
     minWidth: 100,
+    width: 150,
     valueFormatter: ({ value }) => `₹${Number(value || 0).toLocaleString("en-IN")}`,
   },
   {
     headerName: "Status",
     field: "status",
-    minWidth: 105,
+    minWidth: 200,
+    width: 220,
     cellRenderer: GCCStatusRenderer,
   },
   { headerName: "Manager Comments", field: "managerComments", hide: true },

@@ -262,12 +262,12 @@
 }
 
 .approval-search {
-  flex: 2;
+  flex: 1 1 190px;
   min-width: 280px;
 }
 
 .approval-filter-select {
-  flex: 1;
+  flex: 1 1 130px;
   min-width: 140px;
 }
 
