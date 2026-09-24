@@ -41,7 +41,59 @@ const managerDataColumns = [
 ];
 
 const managerColumnDefs = [managerActionColumn, ...managerDataColumns];
-const managerHistoryColumnDefs = managerDataColumns;
+const managerHistoryColumnDefs = [
+  {
+    headerName: "Request ID",
+    field: "id",
+    minWidth: 140,
+    width: 160,
+  },
+  {
+    headerName: "Employee Name",
+    field: "employee",
+    minWidth: 200,
+    width: 220,
+  },
+  {
+    headerName: "Department",
+    field: "department",
+    minWidth: 200,
+    width: 220,
+  },
+  {
+    headerName: "Category",
+    field: "category",
+    minWidth: 180,
+    width: 200,
+  },
+  {
+    headerName: "Event",
+    field: "event",
+    minWidth: 200,
+    flex: 1,   // absorbs the missing Action-column space
+  },
+  {
+    headerName: "Event Date",
+    field: "eventDate",
+    minWidth: 140,
+    width: 180,
+  },
+  {
+    headerName: "Budget",
+    field: "budget",
+    minWidth: 140,
+    width: 160,
+    valueFormatter: ({ value }) => `₹${value ?? ""}`,
+  },
+  {
+    headerName: "Status",
+    field: "status",
+    minWidth: 200,
+    width: 220,
+    cellRenderer: ManagerStatusRenderer,
+  },
+];
+
 
 function ManagerActionRenderer({ data, context }) {
   if (!data) return null;

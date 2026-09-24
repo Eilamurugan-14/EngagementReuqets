@@ -51,8 +51,60 @@ const gccDataColumns = [
 ];
 
 const gccColumnDefs = [gccActionColumn, ...gccDataColumns];
-const gccHistoryColumnDefs = gccDataColumns;
-
+const gccHistoryColumnDefs = [
+  {
+    headerName: "Request ID",
+    field: "id",
+    minWidth: 140,
+    width: 160,
+  },
+  {
+    headerName: "Employee Name",
+    field: "employee",
+    minWidth: 200,
+    width: 220,
+  },
+  {
+    headerName: "Department",
+    field: "department",
+    minWidth: 200,
+    width: 220,
+  },
+  {
+    headerName: "Category",
+    field: "category",
+    minWidth: 200,
+    width: 220,
+  },
+  {
+    headerName: "Event",
+    field: "event",
+    minWidth: 180,
+    width: 200,
+    valueGetter: ({ data }) => data?.title || data?.event || null,
+    valueFormatter: ({ value }) => value || "-",
+    
+  },
+  {
+    headerName: "Event Date",
+    field: "eventDate",
+    minWidth: 140,
+    width: 180,
+  },
+  {
+    headerName: "Budget (INR)",
+    field: "budget",
+    minWidth: 140,
+    width: 160,
+  },
+  {
+    headerName: "Status",
+    field: "status",
+    minWidth: 200,
+    width: 220,
+    cellRenderer: GCCStatusRenderer,
+  },
+];
 function GCCActionRenderer({ data, context }) {
   if (!data) return null;
 
