@@ -48,3 +48,7 @@
 .manager-grid .status-badge {
   line-height: 1.2;
 }
+.manager-grid .ag-center-cols-viewport,
+.manager-grid .ag-body-viewport {
+  min-height: unset !important;
+}

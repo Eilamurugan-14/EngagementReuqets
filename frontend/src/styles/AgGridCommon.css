@@ -164,6 +164,9 @@
 .ag-theme-quartz .ag-cell {
   border-right-color: transparent !important;
 }
+.ag-theme-quartz {
+  --ag-auto-height-min-body-height: 0px;
+}
 
 /* Remove header separator only for first column */
 

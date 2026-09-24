@@ -99,3 +99,23 @@ textarea:disabled {
   background-color: #f8fafc;
   cursor: not-allowed;
 }
+
+.status-pending-manager {
+  background-color: #fef3c7;
+  color: #b45309;
+}
+
+.status-pending-gcc-leader {
+  background-color: #ffedd5;
+  color: #c2410c;
+}
+
+.status-approved {
+  background-color: #dcfce7;
+  color: #15803d;
+}
+
+.status-rejected {
+  background-color: #fee2e2;
+  color: #b91c1c;
+}

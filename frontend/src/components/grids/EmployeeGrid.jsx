@@ -67,8 +67,12 @@ function EmployeeActionRenderer({ data, context }) {
 }
 
 function EmployeeStatusRenderer({ value }) {
+  const statusClass = `status-${value
+    ?.toLowerCase()
+    .replaceAll(" ", "-")}`;
+
   return (
-    <span className={`status-badge ${value === "Approved" ? "status-approved" : "status-pending"}`}>
+    <span className={`status-badge ${statusClass}`}>
       {value}
     </span>
   );
