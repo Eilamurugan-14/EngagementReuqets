@@ -1,7 +1,8 @@
 const ALLOWED_TRANSITIONS = {
   "Pending Manager": [
-    "Pending GCC Leader",
+    "Approved",
     "Rejected",
+    "Pending GCC Leader",
   ],
 
   "Pending GCC Leader": [

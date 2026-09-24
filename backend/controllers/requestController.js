@@ -8,6 +8,10 @@ const {
   isValidTransition,
 } = require("../utils/statusValidator");
 
+const {
+  logAudit,
+} = require("../utils/auditLogger");
+
 function parseQuarter(value) {
   if (!value) return [];
 
@@ -163,6 +167,7 @@ const id = `ENG-${String(
 }
 
 async function updateRequest(req, res) {
+ 
   try {
     const body = req.body;
     const id = req.params.id;
@@ -305,6 +310,7 @@ async function updateRequest(req, res) {
           : current.GCCLeaderActionDate,
     };
 
+    
     await run(
       `
       UPDATE Requests
@@ -346,6 +352,27 @@ async function updateRequest(req, res) {
       ]
     );
 
+    
+
+    const actionBy =
+  current.Status === "Pending GCC Leader"
+    ? "GCC Leader"
+    : "Manager";
+
+console.log("ACTION BY:", actionBy);
+
+await logAudit({
+  requestId: id,
+  oldStatus: current.Status,
+  newStatus: values.status,
+  comments:
+    values.gccLeaderComments ||
+    values.managerComments,
+  actionBy,
+});
+
+    
+
     const updated = await get(
       `
       SELECT *
@@ -355,14 +382,16 @@ async function updateRequest(req, res) {
       [id]
     );
 
+    
+
+
     res.json(
       mapRequest(updated)
     );
   } catch (error) {
-    console.error(
-      "Database error while updating request:",
-      error
-    );
+    console.error("FULL ERROR:");
+console.error(error);
+console.error(error.message);
 
     res.status(500).json({
       message: "Unable to update request",
