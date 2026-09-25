@@ -1,0 +1,30 @@
+$kind: http-request
+description: ""
+url: "{{requestAPI}}"
+method: POST
+body:
+  type: json
+  content: "{\r
+
+    \  \"employee\": \"Vignesh\",\r
+
+    \  \"department\": \"Engineering\",\r
+
+    \  \"category\": \"Workshop\",\r
+
+    \  \"event\": \"React Workshop\",\r
+
+    \  \"eventDate\": \"2026-10-15\",\r
+
+    \  \"venue\": \"Chennai\",\r
+
+    \  \"headcount\": 20,\r
+
+    \  \"budget\": 50000,\r
+
+    \  \"description\": \"React training\",\r
+
+    \  \"quarter\": [\"Q1\"]\r
+
+    }"
+order: 2956808645683594

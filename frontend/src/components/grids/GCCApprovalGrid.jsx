@@ -91,19 +91,19 @@ const gccHistoryColumnDefs = [
     headerName: "Event Date",
     field: "eventDate",
     minWidth: 140,
-    width: 180,
+    width: 160,
   },
   {
     headerName: "Budget (INR)",
     field: "budget",
     minWidth: 140,
-    width: 160,
+    width: 140,
   },
   {
     headerName: "Status",
     field: "status",
     minWidth: 200,
-    width: 220,
+    width: 200,
     cellRenderer: GCCStatusRenderer,
   },
 ];

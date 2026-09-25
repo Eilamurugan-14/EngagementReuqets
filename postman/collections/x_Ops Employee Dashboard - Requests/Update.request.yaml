@@ -1,0 +1,30 @@
+$kind: http-request
+description: ""
+url: "{{requestAPI}}/ENG-002"
+method: PUT
+body:
+  type: json
+  content: "{\r
+
+    \  \"employee\": \"Vignesh\",\r
+
+    \  \"department\": \"Engineering\",\r
+
+    \  \"category\": \"Workshop\",\r
+
+    \  \"event\": \"React Workshop\",\r
+
+    \  \"eventDate\": \"2026-10-1\",\r
+
+    \  \"venue\": \"Chennai\",\r
+
+    \  \"headcount\": 20,\r
+
+    \  \"budget\": 50000,\r
+
+    \  \"description\": \"React training\",\r
+
+    \  \"quarter\": [\"Q1\"]\r
+
+    }"
+order: 1790314001946

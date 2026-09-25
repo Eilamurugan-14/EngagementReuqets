@@ -121,11 +121,11 @@ setAuditHistory(history);
 
         <div>
           {new Date(
-  item.ActionDate
-).toLocaleString("en-IN", {
-  dateStyle: "medium",
-  timeStyle: "medium",
-})}
+            item.ActionDate
+          ).toLocaleString("en-IN", {
+            dateStyle: "medium",
+            timeStyle: "medium",
+          })}
         </div>
 
         {item.Comments && (

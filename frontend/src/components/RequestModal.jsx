@@ -20,6 +20,7 @@ function RequestModal({
 }) {
   const [formData, setFormData] = useState({
     employee: "",
+    department: "",
     category: "",
     event: "",
     eventDate: "",
@@ -37,6 +38,7 @@ function RequestModal({
     if (editingRequest) {
       setFormData({
         employee: editingRequest.employee || "",
+        department: editingRequest.department || "",
         category: editingRequest.category || "",
         event: editingRequest.event || "",
         eventDate: editingRequest.eventDate || "",
@@ -53,6 +55,7 @@ function RequestModal({
     } else {
       setFormData({
         employee: "",
+        department: "",
         category: "",
         event: "",
         eventDate: "",

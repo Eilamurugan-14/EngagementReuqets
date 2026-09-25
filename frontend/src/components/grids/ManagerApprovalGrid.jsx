@@ -90,14 +90,14 @@ const managerHistoryColumnDefs = [
     headerName: "Budget",
     field: "budget",
     minWidth: 140,
-    width: 160,
+    width: 140,
     valueFormatter: ({ value }) => `₹${value ?? ""}`,
   },
   {
     headerName: "Status",
     field: "status",
     minWidth: 200,
-    width: 220,
+    width: 200,
     cellRenderer: ManagerStatusRenderer,
   },
 ];
