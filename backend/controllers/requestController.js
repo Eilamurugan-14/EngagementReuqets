@@ -60,7 +60,7 @@ async function getRequests(req, res) {
   try {
     const rows = await all(`
       SELECT *
-      FROM Requests
+      FROM Requests WHERE IsDeleted = 0
       ORDER BY CreatedDate DESC, Id DESC
     `);
 
@@ -211,9 +211,9 @@ async function updateRequest(req, res) {
       `
       SELECT *
       FROM Requests
-      WHERE Id = ?
+      WHERE Id = ? AND IsDeleted = 0
       `,
-      [id]
+      [req.params.id]
     );
 
     if (!current) {
@@ -348,7 +348,7 @@ async function updateRequest(req, res) {
         values.gccLeaderComments,
         values.managerActionDate,
         values.gccLeaderActionDate,
-        id,
+        req.params.id,
       ]
     );
 
@@ -361,7 +361,7 @@ if (current.Status !== values.status) {
       : "Manager";
 
   await logAudit({
-    requestId: id,
+    requestId: req.params.id,
     oldStatus: current.Status,
     newStatus: values.status,
     comments:
@@ -378,8 +378,9 @@ if (current.Status !== values.status) {
       SELECT *
       FROM Requests
       WHERE Id = ?
+      AND IsDeleted = 0
       `,
-      [id]
+      [req.params.id]
     );
 
     
@@ -401,19 +402,32 @@ console.error(error.message);
 
 async function deleteRequest(req, res) {
   try {
-    const result = await run(
+    const current = await get(
       `
-      DELETE FROM Requests
+      SELECT *
+      FROM Requests
       WHERE Id = ?
+        AND IsDeleted = 0
       `,
       [req.params.id]
     );
 
-    if (!result.changes) {
+    if (!current) {
       return res.status(404).json({
         message: "Request not found",
       });
     }
+
+   
+
+    await run(
+      `
+      UPDATE Requests
+      SET IsDeleted = 1
+      WHERE Id = ?
+      `,
+      [req.params.id]
+    );
 
     res.json({
       message:
@@ -430,6 +444,7 @@ async function deleteRequest(req, res) {
     });
   }
 }
+
 
 module.exports = {
   getRequests,
