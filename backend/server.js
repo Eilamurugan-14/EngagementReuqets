@@ -8,6 +8,10 @@ const requestRoutes = require("./routes/requestRoutes");
 
 const auditRoutes = require("./routes/auditRoutes");
 
+const skillsRoutes = require("./routes/skillsRoutes");
+
+const profileRoutes = require("./routes/profileRoutes");
+
 const app = express();
 
 app.use(cors());
@@ -16,6 +20,10 @@ app.use(express.json());
 app.use("/api/requests", requestRoutes);
 
 app.use("/api/audit", auditRoutes);
+
+app.use("/api/skills", skillsRoutes);
+  
+app.use("/api/profile", profileRoutes);
 
 app.get("/", (req, res) => {
   res.send("Backend Running...");

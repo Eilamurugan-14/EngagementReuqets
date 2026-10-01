@@ -2,6 +2,11 @@ import axios from "axios";
 
 const API_URL = "http://localhost:5000/api/requests";
 const AUDIT_API_URL = "http://localhost:5000/api/audit";
+const SKILLS_API_URL =
+  "http://localhost:5000/api/skills";
+
+const PROFILE_API_URL =
+  "http://localhost:5000/api/profile";
 
 // Get all requests
 export const getRequests = async () => {
@@ -41,3 +46,39 @@ export const getAuditHistory = async (id) => {
 
   return response.data;
 };
+
+export const getSkills = async () => {
+  const response = await axios.get(
+    SKILLS_API_URL
+  );
+
+  return response.data;
+};
+
+export const getEmployeeSkills =
+  async (employeeId) => {
+    const response = await axios.get(
+      `${PROFILE_API_URL}/skills/${employeeId}`
+    );
+
+    return response.data;
+  };
+
+export const addEmployeeSkill =
+  async (skillData) => {
+    const response = await axios.post(
+      `${PROFILE_API_URL}/skills`,
+      skillData
+    );
+
+    return response.data;
+  };
+
+export const deleteEmployeeSkill =
+  async (id) => {
+    const response = await axios.delete(
+      `${PROFILE_API_URL}/skills/${id}`
+    );
+
+    return response.data;
+  };

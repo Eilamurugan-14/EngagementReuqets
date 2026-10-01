@@ -4,10 +4,12 @@ import { NavLink } from "react-router-dom";
 function Sidebar() {
   const menuItems = [
     { label: "Dashboard", path: "/" },
+    { label: "Profile", path: "/profile" },
     { label: "Engagement Request", path: "/requests" },
     { label: "My Requests", path: "/requests" },
     { label: "Approvals", path: "/approvals" },
     { label: "GCC Approvals", path: "/gcc-approvals" },
+    
   ];
 
   return (
