@@ -309,64 +309,47 @@ function renderStars(level) {
       </ProfileSection>
 
       <ProfileSection
-  title="Skills & Competencies"
-  icon={<PsychologyIcon />}
->
-  <div className="skills-list">
-
-    {skills.map((skill) => (
-      <div
-        key={skill.EmployeeSkillId}
-
-        className="skill-card"
+        title="Skills & Competencies"
+        icon={<PsychologyIcon />}
       >
-        <div className="skill-header">
-  <strong>
-    {skill.SkillName}
-  </strong>
 
-  <div className="skill-actions">
+  <div className="skill-form">
 
-    <button
-      type="button"
-      className="skill-edit-btn"
-      onClick={() => {
-        setEditingSkillId(
-          skill.EmployeeSkillId
-        );
-
-        setEditingLevel(
-          skill.ProficiencyLevel
-        );
-      }}
-    >
-      <EditIcon />
-    </button>
-
-    <button
-      type="button"
-      className="skill-delete-btn"
-      onClick={() =>
-        deleteSkill(
-          skill.EmployeeSkillId
-        )
+    <Autocomplete
+      options={allSkills}
+      value={selectedSkill}
+      onChange={(_, value) =>
+        setSelectedSkill(value)
       }
-    >
-      <DeleteIcon />
-    </button>
+      getOptionLabel={(option) =>
+        option.SkillName || ""
+      }
+      renderInput={(params) => (
+        <TextField
+          {...params}
+          placeholder="Search Skill"
+          size="small"
+        />
+      )}
+      sx={{
+        minWidth: 300,
+        flex: 1,
 
-  </div>
-</div>
+        "& .MuiOutlinedInput-root": {
+          backgroundColor: "#fff",
+          borderRadius: "8px",
+        },
 
-        {editingSkillId ===
-skill.EmployeeSkillId ? (
-
-  <div className="edit-skill-section">
+        "& fieldset": {
+          border: "1px solid #d1d5db",
+        },
+      }}
+    />
 
     <select
-      value={editingLevel}
+      value={newLevel}
       onChange={(event) =>
-        setEditingLevel(
+        setNewLevel(
           Number(
             event.target.value
           )
@@ -394,157 +377,184 @@ skill.EmployeeSkillId ? (
       </option>
     </select>
 
-    <div className="edit-buttons">
-
-      <button
-        className="save-btn"
-        onClick={() =>
-          saveSkillLevel(
-            skill.EmployeeSkillId
-          )
-        }
-      >
-        Save
-      </button>
-
-      <button
-        className="cancel-btn"
-        onClick={() =>
-          setEditingSkillId(null)
-        }
-      >
-        Cancel
-      </button>
-
-    </div>
+    <button
+      type="button"
+      className="add-skill-btn"
+      onClick={addSkill}
+    >
+      Add Skill
+    </button>
 
   </div>
 
-) : (
+  <div className="skills-list">
 
-  <>
-    <Tooltip
-      arrow
-      placement="top-start"
-      title={
-        <div>
-          <strong>
-            {
-              proficiencyDescriptions[
-                skill.ProficiencyLevel
-              ].title
-            }
-          </strong>
+    {skills.map((skill) => (
+      <div
+        key={skill.EmployeeSkillId}
+        className={`skill-card ${
+          editingSkillId ===
+          skill.EmployeeSkillId
+            ? "editing"
+            : ""
+        }`}
+      >
 
-          <br />
+        {editingSkillId ===
+        skill.EmployeeSkillId ? (
 
-          {
-            proficiencyDescriptions[
-              skill.ProficiencyLevel
-            ].description
-          }
-        </div>
-      }
-    >
-      <span className="skill-stars">
-        {renderStars(
-          skill.ProficiencyLevel
+          <div className="edit-skill-section">
+
+            <select
+              value={editingLevel}
+              onChange={(event) =>
+                setEditingLevel(
+                  Number(
+                    event.target.value
+                  )
+                )
+              }
+            >
+              <option value={1}>
+                1 - Basic Awareness
+              </option>
+
+              <option value={2}>
+                2 - Beginner
+              </option>
+
+              <option value={3}>
+                3 - Working Knowledge
+              </option>
+
+              <option value={4}>
+                4 - Advanced
+              </option>
+
+              <option value={5}>
+                5 - Expert / Can Give KT
+              </option>
+            </select>
+
+            <div className="edit-buttons">
+
+              <button
+                className="save-btn"
+                onClick={() =>
+                  saveSkillLevel(
+                    skill.EmployeeSkillId
+                  )
+                }
+              >
+                Save
+              </button>
+
+              <button
+                className="cancel-btn"
+                onClick={() =>
+                  setEditingSkillId(
+                    null
+                  )
+                }
+              >
+                Cancel
+              </button>
+
+            </div>
+
+          </div>
+
+        ) : (
+
+          <div className="skill-grid-card">
+
+            <div className="skill-grid-header">
+
+              <div className="skill-name">
+                {skill.SkillName}
+              </div>
+
+              <div className="skill-actions">
+
+                <button
+                  type="button"
+                  className="skill-edit-btn"
+                  onClick={() => {
+                    setEditingSkillId(
+                      skill.EmployeeSkillId
+                    );
+
+                    setEditingLevel(
+                      skill.ProficiencyLevel
+                    );
+                  }}
+                >
+                  <EditIcon />
+                </button>
+
+                <button
+                  type="button"
+                  className="skill-delete-btn"
+                  onClick={() =>
+                    deleteSkill(
+                      skill.EmployeeSkillId
+                    )
+                  }
+                >
+                  <DeleteIcon />
+                </button>
+
+              </div>
+
+            </div>
+
+            <Tooltip
+              arrow
+              placement="top"
+              title={
+                <div>
+                  <strong>
+                    {
+                      proficiencyDescriptions[
+                        skill.ProficiencyLevel
+                      ].title
+                    }
+                  </strong>
+
+                  <br />
+
+                  {
+                    proficiencyDescriptions[
+                      skill.ProficiencyLevel
+                    ].description
+                  }
+                </div>
+              }
+            >
+              <div className="skill-stars">
+                {renderStars(
+                  skill.ProficiencyLevel
+                )}
+              </div>
+            </Tooltip>
+
+            <div className="skill-level">
+              {
+                proficiencyLabels[
+                  skill.ProficiencyLevel
+                ]
+              }
+            </div>
+
+          </div>
+
         )}
-      </span>
-    </Tooltip>
 
-    <div className="skill-level">
-      {
-        proficiencyLabels[
-          skill.ProficiencyLevel
-        ]
-      }
-    </div>
-  </>
-
-)}
-
-        
       </div>
     ))}
 
-    <div className="skill-form">
-
-      <Autocomplete
-        options={allSkills}
-        value={selectedSkill}
-        onChange={(
-          _,
-          value
-        ) =>
-          setSelectedSkill(value)
-        }
-        getOptionLabel={(option) =>
-          option.SkillName || ""
-        }
-        renderInput={(params) => (
-          <TextField
-            {...params}
-            label="Skill"
-            size="small"
-          />
-        )}
-        sx={{
-          minWidth: 250,
-          flex: 1,
-          "& .MuiOutlinedInput-root": {
-            backgroundColor: "#fff",
-            borderRadius: "6px",
-            },
-            "& fieldset": {
-            border: "none",
-            },
-           
-        }}
-      />
-
-      <select
-        value={newLevel}
-        onChange={(event) =>
-          setNewLevel(
-            Number(
-              event.target.value
-            )
-          )
-        }
-      >
-        <option value={1}>
-          1 - Basic Awareness
-        </option>
-
-        <option value={2}>
-          2 - Beginner
-        </option>
-
-        <option value={3}>
-          3 - Working Knowledge
-        </option>
-
-        <option value={4}>
-          4 - Advanced
-        </option>
-
-        <option value={5}>
-          5 - Expert / Can Give KT
-        </option>
-      </select>
-
-      <button
-        type="button"
-        className="add-skill-btn"
-        onClick={addSkill}
-      >
-        Add Skill
-      </button>
-
-    </div>
-
   </div>
+
 </ProfileSection>
 
       <ProfileSection

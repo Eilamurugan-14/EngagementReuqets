@@ -27,17 +27,25 @@ function ProfileSection({
         </div>
 
         {open ? (
-          <KeyboardArrowUpIcon />
+          <KeyboardArrowUpIcon
+            className="section-arrow"
+          />
         ) : (
-          <KeyboardArrowDownIcon />
+          <KeyboardArrowDownIcon
+            className={`section-arrow ${
+              open ? "open" : ""
+            }`}
+          />
         )}
       </button>
 
-      {open && (
-        <div className="profile-section-body">
+      <div
+          className={`profile-section-body ${
+            open ? "open" : ""
+          }`}
+        >
           {children}
         </div>
-      )}
 
     </section>
   );

@@ -1,11 +1,16 @@
 .profile-page {
   flex: 1;
   padding: 24px;
-  background: #f5f7fa;
+  background: #f2f2f2;
 }
 
 .profile-title {
-  margin-bottom: 20px;
+  margin-bottom: 16px;
+  padding-bottom: 12px;
+  font-size: 24px;
+  font-weight: 500;
+
+  border-bottom: 1px solid #d1d5db;
 }
 
 .profile-header-card {
@@ -22,7 +27,7 @@
   width: 72px;
   height: 72px;
   border-radius: 50%;
-  background: #0078d4;
+  background: rgb(0, 125, 163);
   color: white;
   display: flex;
   align-items: center;
@@ -55,13 +60,14 @@
 .profile-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 16px;
+  gap: 12px;
 }
 
 .profile-item {
-  background: #f5f7fa;
-  padding: 16px;
+  background:  rgb(247, 250, 252);
+  padding: 14px;
   border-radius: 8px;
+  font-weight: 500;
 }
 
 .profile-item span {
@@ -87,7 +93,7 @@
   width: 100%;
   border: none;
   background: white;
-  padding: 18px 20px;
+  padding: 14px 20px;
 
   display: flex;
   justify-content: space-between;
@@ -101,147 +107,174 @@
   align-items: center;
   gap: 10px;
 
-  font-weight: 600;
+  font-weight: 400;
 }
 
 .profile-section-body {
+  max-height: 0;
+
+  overflow: hidden;
+
+  
+
+  padding: 0 20px;
+
+  transition:
+    max-height 0.3s ease-in-out,
+    
+    padding 0.3s ease-in-out;
+}
+
+.profile-section-body.open {
+  max-height: 2000px;
+
+  opacity: 1;
+
   padding: 0 20px 20px;
 }
 
-.skills-list {
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-}
-
-.skill-card {
-  background: #f5f7fa;
-  border-radius: 8px;
-  padding: 14px;
-}
-
-.skill-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.skill-delete-btn {
-  border: none;
-  background: transparent;
-  cursor: pointer;
-  color: #d32f2f;
-}
-
-.skill-stars {
-  margin-top: 8px;
-  font-size: 18px;
-  color: #f59e0b;
-}
-
-.skill-level {
-  margin-top: 4px;
-  color: #6b7280;
-}
+/* ---------- Skills Toolbar ---------- */
 
 .skill-form {
   display: flex;
+  align-items: center;
   gap: 12px;
-  margin-top: 10px;
+
+  margin-bottom: 16px;
+  padding-bottom: 12px;
+
+  border-bottom: 1px solid #e5e7eb;
 }
 
-.skill-form input,
 .skill-form select {
-  padding: 10px;
-  border: 1px solid #d1d5db;
-  border-radius: 6px;
-}
-
-.skill-form input {
-  flex: 1;
-}
-
-.add-skill-btn {
-  border: none;
-  background: #0078d4;
-  color: white;
-  padding: 10px 16px;
-  border-radius: 6px;
-  cursor: pointer;
-}
-
-.add-skill-btn:hover {
-  background: #0062ad;
-}
-
-.skill-stars {
-  margin-top: 8px;
-  font-size: 18px;
-  color: #f59e0b;
-
-  display: inline-block;
-  width: fit-content;
-
-  cursor: help;
-}
-
-.edit-skill-section {
-  margin-top: 12px;
-}
-
-.edit-skill-section select {
-  width: 100%;
-  padding: 10px 12px;
+  height: 42px;
 
   border: 1px solid #d1d5db;
   border-radius: 8px;
 
   background: white;
 
-  font-size: 14px;
+  padding: 0 12px;
+
+  min-width: 220px;
 }
 
-.edit-buttons {
-  display: flex;
-  gap: 10px;
-  margin-top: 12px;
-}
-
-.save-btn {
-  background: #0078d4;
-  color: white;
+.add-skill-btn {
+  height: 42px;
 
   border: none;
   border-radius: 6px;
 
-  padding: 8px 16px;
+  background: rgb(0, 125, 163);
+  color: white;
+
+  padding: 0 20px;
+
+  font-weight: 600;
 
   cursor: pointer;
+  white-space: nowrap;
+  transition: 0.2s ease;
 }
 
-.save-btn:hover {
+.add-skill-btn:hover {
   background: #106ebe;
 }
 
-.cancel-btn {
-  background: #f3f4f6;
+/* ---------- Skills Grid ---------- */
 
-  border: 1px solid #d1d5db;
-  border-radius: 6px;
+.skills-list {
+  display: grid;
 
-  padding: 8px 16px;
+  grid-template-columns:
+    repeat(
+      auto-fill,
+      minmax(260px, 1fr)
+    );
 
-  cursor: pointer;
+  gap: 14px;
 }
+
+/* ---------- Skill Card ---------- */
+
+.skill-card {
+  background: rgb(247, 250, 252);
+
+  border-radius: 8px;
+
+  padding: 12px;
+
+  min-height: 50px;
+}
+
+.skill-card:hover {
+  box-shadow:
+    0 4px 12px
+    rgba(0, 0, 0, 0.08);
+}
+
+.skill-card.editing {
+  border: 2px solid rgb(0, 125, 163);
+
+  background: #f8fbff;
+}
+
+/* ---------- Card Layout ---------- */
+
+.skill-grid-card {
+  display: flex;
+  flex-direction: column;
+
+  height: 100%;
+}
+
+.skill-grid-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+/* ---------- Skill Name ---------- */
+
+.skill-name {
+  font-size: 15px;
+  font-weight: 400;
+
+  color: #111827;
+}
+/* ---------- Stars ---------- */
+
+.skill-stars {
+  margin-top: 12px;
+
+  color: #f59e0b;
+
+  font-size: 18px;
+
+  cursor: help;
+}
+
+/* ---------- Level ---------- */
+
+.skill-level {
+  color: #6b7280;
+  font-size: 13px;
+}
+/* ---------- Actions ---------- */
 
 .skill-actions {
   display: flex;
-  gap: 8px;
+  gap: 6px;
 }
 
 .skill-edit-btn,
 .skill-delete-btn {
+  width: 32px;
+  height: 32px;
+
   border: none;
+  border-radius: 6px;
+
   background: transparent;
 
   cursor: pointer;
@@ -252,19 +285,94 @@
 }
 
 .skill-edit-btn {
-  color: #0078d4;
-}
-
-.skill-delete-btn {
-  color: #d32f2f;
+  color: rgb(0, 125, 163);
 }
 
 .skill-edit-btn:hover {
-  color: #106ebe;
+  background: #e6f4ff;
 }
 
-.skill-card {
-  background: #f5f7fa;
-  border-radius: 10px;
-  padding: 16px;
+.skill-delete-btn {
+  color: #dc2626;
+}
+
+.skill-delete-btn:hover {
+  background: #fef2f2;
+}
+
+/* ---------- Edit Mode ---------- */
+
+.edit-skill-section select {
+  width: 100%;
+
+  height: 42px;
+
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+
+  padding: 0 12px;
+
+  background: white;
+}
+
+.edit-buttons {
+  display: flex;
+  gap: 8px;
+
+  margin-top: 12px;
+}
+
+.save-btn {
+  background: rgb(0, 125, 163);
+  color: white;
+
+  border: none;
+  border-radius: 8px;
+
+  padding: 8px 16px;
+
+  cursor: pointer;
+}
+
+.save-btn:hover {
+  background: rgb(0, 125, 163);
+}
+
+.cancel-btn {
+  background: white;
+
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+
+  padding: 8px 16px;
+
+  cursor: pointer;
+}
+
+.cancel-btn:hover {
+  background: #f3f4f6;
+}
+
+.skill-edit-btn svg,
+.skill-delete-btn svg {
+  font-size: 18px;
+}
+
+
+
+.section-arrow {
+  color: rgb(0, 125, 163);
+  transition: transform 0.3s ease;
+}
+
+.section-arrow.open {
+  transform: rotate(180deg);
+}
+
+.profile-item strong {
+  font-weight: 500;
+}
+
+.profile-section-title svg {
+  color: rgb(0, 125, 163);
 }
