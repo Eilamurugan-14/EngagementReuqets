@@ -1,5 +1,7 @@
 USE EmployeeEngagementRequests;
 
+TRUNCATE TABLE EmployeeSkills;
+
 IF OBJECT_ID('dbo.EmployeeSkills', 'U') IS NULL
 BEGIN
     CREATE TABLE EmployeeSkills

@@ -13,11 +13,16 @@ import HistoryIcon from "@mui/icons-material/History";
 import Autocomplete from "@mui/material/Autocomplete";
 import TextField from "@mui/material/TextField";
 
+import Tooltip from "@mui/material/Tooltip";
+
+import EditIcon from "@mui/icons-material/Edit";
+
 import {
   getSkills,
   getEmployeeSkills,
   addEmployeeSkill,
   deleteEmployeeSkill,
+  updateEmployeeSkill,
 } from "../services/api";
 
 function Profile() {
@@ -59,12 +64,50 @@ const [
 const [newLevel, setNewLevel] =
   useState(3);
 
+const [editingSkillId, setEditingSkillId] =
+  useState(null);
+
+const [editingLevel, setEditingLevel] =
+  useState(3);
+
 const proficiencyLabels = {
   1: "Basic Awareness",
   2: "Beginner",
   3: "Working Knowledge",
   4: "Advanced",
   5: "Expert / Can Give KT",
+};
+
+const proficiencyDescriptions = {
+  1: {
+    title: "Basic Awareness",
+    description:
+      "Understands fundamental concepts and terminology.",
+  },
+
+  2: {
+    title: "Beginner",
+    description:
+      "Can perform simple tasks with guidance.",
+  },
+
+  3: {
+    title: "Working Knowledge",
+    description:
+      "Can work independently on routine tasks.",
+  },
+
+  4: {
+    title: "Advanced",
+    description:
+      "Can handle complex work and mentor team members.",
+  },
+
+  5: {
+    title: "Expert / Can Give KT",
+    description:
+      "Subject matter expert capable of training and guiding others.",
+  },
 };
 
 useEffect(() => {
@@ -127,6 +170,23 @@ async function addSkill() {
 async function deleteSkill(id) {
   try {
     await deleteEmployeeSkill(id);
+
+    await loadEmployeeSkills();
+  } catch (error) {
+    console.error(error);
+  }
+}
+
+async function saveSkillLevel(
+  employeeSkillId
+) {
+  try {
+    await updateEmployeeSkill(
+      employeeSkillId,
+      editingLevel
+    );
+
+    setEditingSkillId(null);
 
     await loadEmployeeSkills();
   } catch (error) {
@@ -261,32 +321,150 @@ function renderStars(level) {
         className="skill-card"
       >
         <div className="skill-header">
+  <strong>
+    {skill.SkillName}
+  </strong>
+
+  <div className="skill-actions">
+
+    <button
+      type="button"
+      className="skill-edit-btn"
+      onClick={() => {
+        setEditingSkillId(
+          skill.EmployeeSkillId
+        );
+
+        setEditingLevel(
+          skill.ProficiencyLevel
+        );
+      }}
+    >
+      <EditIcon />
+    </button>
+
+    <button
+      type="button"
+      className="skill-delete-btn"
+      onClick={() =>
+        deleteSkill(
+          skill.EmployeeSkillId
+        )
+      }
+    >
+      <DeleteIcon />
+    </button>
+
+  </div>
+</div>
+
+        {editingSkillId ===
+skill.EmployeeSkillId ? (
+
+  <div className="edit-skill-section">
+
+    <select
+      value={editingLevel}
+      onChange={(event) =>
+        setEditingLevel(
+          Number(
+            event.target.value
+          )
+        )
+      }
+    >
+      <option value={1}>
+        1 - Basic Awareness
+      </option>
+
+      <option value={2}>
+        2 - Beginner
+      </option>
+
+      <option value={3}>
+        3 - Working Knowledge
+      </option>
+
+      <option value={4}>
+        4 - Advanced
+      </option>
+
+      <option value={5}>
+        5 - Expert / Can Give KT
+      </option>
+    </select>
+
+    <div className="edit-buttons">
+
+      <button
+        className="save-btn"
+        onClick={() =>
+          saveSkillLevel(
+            skill.EmployeeSkillId
+          )
+        }
+      >
+        Save
+      </button>
+
+      <button
+        className="cancel-btn"
+        onClick={() =>
+          setEditingSkillId(null)
+        }
+      >
+        Cancel
+      </button>
+
+    </div>
+
+  </div>
+
+) : (
+
+  <>
+    <Tooltip
+      arrow
+      placement="top-start"
+      title={
+        <div>
           <strong>
-            {skill.SkillName}
+            {
+              proficiencyDescriptions[
+                skill.ProficiencyLevel
+              ].title
+            }
           </strong>
 
-          <button
-            type="button"
-            className="skill-delete-btn"
-            onClick={() =>
-              deleteSkill(skill.EmployeeSkillId)
-            }
-          >
-            <DeleteIcon />
-          </button>
-        </div>
+          <br />
 
-        <div className="skill-stars">
-          {renderStars(skill.ProficiencyLevel)}
-        </div>
-
-        <div className="skill-level">
           {
-            proficiencyLabels[
+            proficiencyDescriptions[
               skill.ProficiencyLevel
-            ]
+            ].description
           }
         </div>
+      }
+    >
+      <span className="skill-stars">
+        {renderStars(
+          skill.ProficiencyLevel
+        )}
+      </span>
+    </Tooltip>
+
+    <div className="skill-level">
+      {
+        proficiencyLabels[
+          skill.ProficiencyLevel
+        ]
+      }
+    </div>
+  </>
+
+)}
+
+        
       </div>
     ))}
 

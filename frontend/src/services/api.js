@@ -82,3 +82,19 @@ export const deleteEmployeeSkill =
 
     return response.data;
   };
+
+  export const updateEmployeeSkill =
+  async (
+    id,
+    proficiencyLevel
+  ) => {
+    const response =
+      await axios.put(
+        `${PROFILE_API_URL}/skills/${id}`,
+        {
+          proficiencyLevel,
+        }
+      );
+
+    return response.data;
+  };

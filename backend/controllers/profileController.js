@@ -122,8 +122,72 @@ async function deleteEmployeeSkill(
   }
 }
 
+async function updateEmployeeSkill(
+  req,
+  res
+) {
+  try {
+    const {
+      proficiencyLevel,
+    } = req.body;
+
+    if (
+      !proficiencyLevel ||
+      proficiencyLevel < 1 ||
+      proficiencyLevel > 5
+    ) {
+      return res.status(400).json({
+        message:
+          "Proficiency level must be between 1 and 5",
+      });
+    }
+
+    const existing = await get(
+      `
+      SELECT *
+      FROM EmployeeSkills
+      WHERE EmployeeSkillId = ?
+      `,
+      [req.params.id]
+    );
+
+    if (!existing) {
+      return res.status(404).json({
+        message:
+          "Skill not found",
+      });
+    }
+
+    await run(
+      `
+      UPDATE EmployeeSkills
+      SET ProficiencyLevel = ?
+      WHERE EmployeeSkillId = ?
+      `,
+      [
+        proficiencyLevel,
+        req.params.id,
+      ]
+    );
+
+    res.json({
+      message:
+        "Skill updated successfully",
+    });
+  } catch (error) {
+    console.error(error);
+
+    res.status(500).json({
+      message:
+        "Unable to update skill",
+    });
+  }
+}
+
+
 module.exports = {
   getEmployeeSkills,
   addEmployeeSkill,
   deleteEmployeeSkill,
+  updateEmployeeSkill,
 };

@@ -9,21 +9,10 @@ const connectionString =
   "Trusted_Connection=Yes;" +
   `TrustServerCertificate=${process.env.DB_TRUST_CERT};`;
 
-let connection;
-
-async function getConnection() {
-  if (!connection) {
-    connection = await odbc.connect(connectionString);
-
-    console.log(
-      "SQL Server database connected successfully"
-    );
-  }
-
-  return connection;
-}
-
-function formatQuery(sql, parameters = []) {
+function formatQuery(
+  sql,
+  parameters = []
+) {
   let index = 0;
 
   return sql.replace(/\?/g, () => {
@@ -47,37 +36,65 @@ function formatQuery(sql, parameters = []) {
   });
 }
 
-async function run(sql, parameters = []) {
-  const conn = await getConnection();
+async function run(
+  sql,
+  parameters = []
+) {
+  const conn =
+    await odbc.connect(
+      connectionString
+    );
 
-  const query = formatQuery(
-    sql,
-    parameters
-  );
+  try {
+    const query =
+      formatQuery(
+        sql,
+        parameters
+      );
 
-  const result = await conn.query(query);
+    const result =
+      await conn.query(query);
 
-  return {
-    changes: result.count || 0,
-  };
+    return {
+      changes:
+        result.count || 0,
+    };
+  } finally {
+    await conn.close();
+  }
 }
 
-async function all(sql, parameters = []) {
-  const conn = await getConnection();
+async function all(
+  sql,
+  parameters = []
+) {
+  const conn =
+    await odbc.connect(
+      connectionString
+    );
 
-  const query = formatQuery(
-    sql,
-    parameters
-  );
+  try {
+    const query =
+      formatQuery(
+        sql,
+        parameters
+      );
 
-  const result = await conn.query(query);
+    const result =
+      await conn.query(query);
 
-  return Array.isArray(result)
-    ? result
-    : [];
+    return Array.isArray(result)
+      ? result
+      : [];
+  } finally {
+    await conn.close();
+  }
 }
 
-async function get(sql, parameters = []) {
+async function get(
+  sql,
+  parameters = []
+) {
   const rows = await all(
     sql,
     parameters
@@ -89,9 +106,17 @@ async function get(sql, parameters = []) {
 }
 
 async function initializeDatabase() {
+  let conn;
+
   try {
-    const conn =
-      await getConnection();
+    conn =
+      await odbc.connect(
+        connectionString
+      );
+
+    console.log(
+      "SQL Server database connected successfully"
+    );
 
     await conn.query(`
       IF OBJECT_ID('dbo.Requests', 'U') IS NULL
@@ -128,6 +153,10 @@ async function initializeDatabase() {
     );
 
     throw error;
+  } finally {
+    if (conn) {
+      await conn.close();
+    }
   }
 }
 

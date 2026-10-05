@@ -6,6 +6,7 @@ const {
   getEmployeeSkills,
   addEmployeeSkill,
   deleteEmployeeSkill,
+  updateEmployeeSkill,
 } = require(
   "../controllers/profileController"
 );
@@ -18,6 +19,11 @@ router.get(
 router.post(
   "/skills",
   addEmployeeSkill
+);
+
+router.put(
+  "/skills/:id",
+  updateEmployeeSkill
 );
 
 router.delete(
