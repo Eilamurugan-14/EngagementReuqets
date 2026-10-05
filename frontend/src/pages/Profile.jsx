@@ -17,6 +17,12 @@ import Tooltip from "@mui/material/Tooltip";
 
 import EditIcon from "@mui/icons-material/Edit";
 
+import Dialog from "@mui/material/Dialog";
+import DialogTitle from "@mui/material/DialogTitle";
+import DialogContent from "@mui/material/DialogContent";
+import DialogActions from "@mui/material/DialogActions";
+import Button from "@mui/material/Button";
+
 import {
   getSkills,
   getEmployeeSkills,
@@ -69,6 +75,12 @@ const [editingSkillId, setEditingSkillId] =
 
 const [editingLevel, setEditingLevel] =
   useState(3);
+
+const [deleteDialogOpen, setDeleteDialogOpen] =
+  useState(false);
+
+const [skillToDelete, setSkillToDelete] =
+  useState(null);
 
 const proficiencyLabels = {
   1: "Basic Awareness",
@@ -167,11 +179,31 @@ async function addSkill() {
   }
 }
 
-async function deleteSkill(id) {
+
+
+function openDeleteDialog(skill) {
+  setSkillToDelete(skill);
+  setDeleteDialogOpen(true);
+}
+
+function closeDeleteDialog() {
+  setDeleteDialogOpen(false);
+  setSkillToDelete(null);
+}
+
+async function confirmDeleteSkill() {
+  if (!skillToDelete) {
+    return;
+  }
+
   try {
-    await deleteEmployeeSkill(id);
+    await deleteEmployeeSkill(
+      skillToDelete.EmployeeSkillId
+    );
 
     await loadEmployeeSkills();
+
+    closeDeleteDialog();
   } catch (error) {
     console.error(error);
   }
@@ -496,9 +528,7 @@ function renderStars(level) {
                   type="button"
                   className="skill-delete-btn"
                   onClick={() =>
-                    deleteSkill(
-                      skill.EmployeeSkillId
-                    )
+                    openDeleteDialog(skill)
                   }
                 >
                   <DeleteIcon />
@@ -554,6 +584,45 @@ function renderStars(level) {
     ))}
 
   </div>
+
+  <Dialog
+  open={deleteDialogOpen}
+  onClose={closeDeleteDialog}
+  maxWidth="xs"
+  fullWidth
+>
+  <DialogTitle>
+    Delete Skill
+  </DialogTitle>
+
+  <DialogContent>
+    Are you sure you want to delete
+    <strong>
+      {" "}
+      {skillToDelete?.SkillName}
+    </strong>
+    ?
+    <br />
+    <br />
+    This action cannot be undone.
+  </DialogContent>
+
+  <DialogActions>
+    <Button
+      onClick={closeDeleteDialog}
+    >
+      Cancel
+    </Button>
+
+    <Button
+      color="error"
+      variant="contained"
+      onClick={confirmDeleteSkill}
+    >
+      Delete
+    </Button>
+  </DialogActions>
+</Dialog>
 
 </ProfileSection>
 
