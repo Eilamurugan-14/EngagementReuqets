@@ -12,6 +12,7 @@ async function getEmployeeSkills(
         es.EmployeeSkillId,
         es.SkillId,
         sm.SkillName,
+        sm.Category,
         es.ProficiencyLevel
       FROM EmployeeSkills es
       INNER JOIN SkillsMaster sm

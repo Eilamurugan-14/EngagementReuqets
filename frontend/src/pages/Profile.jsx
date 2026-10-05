@@ -501,10 +501,17 @@ function renderStars(level) {
           <div className="skill-grid-card">
 
             <div className="skill-grid-header">
+                <div className="skill-title-section">
 
-              <div className="skill-name">
-                {skill.SkillName}
-              </div>
+                  <div className="skill-name">
+                    {skill.SkillName}
+                  </div>
+
+                  <div className="skill-category">
+                    {skill.Category}
+                  </div>
+
+                </div>
 
               <div className="skill-actions">
 
