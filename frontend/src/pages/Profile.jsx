@@ -9,6 +9,13 @@ import ProfileSection from "../components/ProfileSection";
 import PersonIcon from "@mui/icons-material/Person";
 import GroupsIcon from "@mui/icons-material/Groups";
 import HistoryIcon from "@mui/icons-material/History";
+import BadgeIcon from "@mui/icons-material/Badge";
+import EmailIcon from "@mui/icons-material/Email";
+import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
+import BusinessIcon from "@mui/icons-material/Business";
+import PersonOutlineIcon from "@mui/icons-material/PersonOutlineOutlined";
+import SupervisorAccountIcon from "@mui/icons-material/SupervisorAccount";
+import LocationOnIcon from "@mui/icons-material/LocationOn";
 
 import Autocomplete from "@mui/material/Autocomplete";
 import TextField from "@mui/material/TextField";
@@ -227,8 +234,14 @@ async function saveSkillLevel(
 }
 
 function renderStars(level) {
-  return "★".repeat(level) +
-    "☆".repeat(5 - level);
+  return Array.from({ length: 5 }, (_, starIndex) => (
+    <span
+      key={starIndex}
+      className={starIndex < level ? "star filled" : "star"}
+    >
+      {starIndex < level ? "★" : "☆"}
+    </span>
+  ));
 }
 
   return (
@@ -260,26 +273,31 @@ function renderStars(level) {
       >
         <div className="profile-grid">
           <ProfileItem
+            icon={<BadgeIcon />}
             label="Employee ID"
             value={profile.employeeId}
           />
 
           <ProfileItem
+            icon={<EmailIcon />}
             label="Email ID"
             value={profile.email}
           />
 
           <ProfileItem
+            icon={<CalendarMonthIcon />}
             label="Date of Joining"
             value={profile.dateOfJoining}
           />
 
           <ProfileItem
+            icon={<BusinessIcon />}
             label="Organization"
             value={profile.organization}
           />
 
           <ProfileItem
+            icon={<PersonOutlineIcon />}
             label="Gender"
             value={profile.gender}
           />
@@ -292,41 +310,49 @@ function renderStars(level) {
       >
         <div className="profile-grid">
           <ProfileItem
+            icon={<GroupsIcon />}
             label="Project / Team"
             value={profile.projectTeam}
           />
 
           <ProfileItem
+            icon={<BusinessIcon />}
             label="Group Name"
             value={profile.groupName}
           />
 
           <ProfileItem
+            icon={<BadgeIcon />}
             label="Segment"
             value={profile.segment}
           />
 
           <ProfileItem
+            icon={<BadgeIcon />}
             label="HFM Code"
             value={profile.hfmCode}
           />
 
           <ProfileItem
+            icon={<BadgeIcon />}
             label="IND Cost Center"
             value={profile.indCostCenter}
           />
 
           <ProfileItem
+            icon={<BadgeIcon />}
             label="US Cost Center"
             value={profile.usCostCenter}
           />
 
           <ProfileItem
+            icon={<SupervisorAccountIcon />}
             label="Manager Name"
             value={profile.manager}
           />
 
           <ProfileItem
+            icon={<SupervisorAccountIcon />}
             label="Next Level Manager"
             value={
               profile.nextLevelManager
@@ -334,6 +360,7 @@ function renderStars(level) {
           />
 
           <ProfileItem
+            icon={<LocationOnIcon />}
             label="Work Location"
             value={profile.location}
           />
@@ -341,7 +368,7 @@ function renderStars(level) {
       </ProfileSection>
 
       <ProfileSection
-        title="Skills & Competencies"
+        title={`Skills & Competencies (${skills.length})`}
         icon={<PsychologyIcon />}
       >
 
@@ -421,7 +448,11 @@ function renderStars(level) {
 
   <div className="skills-list">
 
-    {skills.map((skill) => (
+    {skills.length === 0 ? (
+      <div className="skills-empty-state">
+        No skills added yet. Add a skill using the form above.
+      </div>
+    ) : skills.map((skill) => (
       <div
         key={skill.EmployeeSkillId}
         className={`skill-card ${
@@ -568,7 +599,11 @@ function renderStars(level) {
                 </div>
               }
             >
-              <div className="skill-stars">
+              <div
+                className={`skill-stars level-${skill.ProficiencyLevel}`}
+                role="img"
+                aria-label={`${skill.ProficiencyLevel} out of 5 stars`}
+              >
                 {renderStars(
                   skill.ProficiencyLevel
                 )}
@@ -647,12 +682,16 @@ function renderStars(level) {
 }
 
 function ProfileItem({
+  icon,
   label,
   value,
 }) {
   return (
     <div className="profile-item">
-      <span>{label}</span>
+      <div className="profile-item-label">
+        {icon}
+        <span>{label}</span>
+      </div>
 
       <strong>{value}</strong>
     </div>

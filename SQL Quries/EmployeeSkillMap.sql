@@ -56,3 +56,5 @@ SELECT
 FROM EmployeeSkills es
 INNER JOIN SkillsMaster sm
     ON es.SkillId = sm.SkillId;
+
+SELECT * FROM EmployeeSkills;

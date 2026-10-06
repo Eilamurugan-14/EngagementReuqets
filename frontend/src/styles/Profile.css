@@ -70,10 +70,21 @@
   font-weight: 500;
 }
 
-.profile-item span {
+.profile-item-label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+
+.profile-item-label span {
   display: block;
   color: #6b7280;
-  margin-bottom: 6px;
+}
+
+.profile-item-label svg {
+  color: rgb(0, 125, 163);
+  font-size: 18px;
 }
 
 .empty-card {
@@ -195,6 +206,13 @@
   gap: 14px;
 }
 
+.skills-empty-state {
+  grid-column: 1 / -1;
+  padding: 16px;
+  color: #6b7280;
+  text-align: center;
+}
+
 /* ---------- Skill Card ---------- */
 
 .skill-card {
@@ -247,11 +265,33 @@
 .skill-stars {
   margin-top: 12px;
 
-  color: #f59e0b;
-
   font-size: 18px;
 
   cursor: help;
+}
+
+.skill-stars .star {
+  color: #d1d5db;
+}
+
+.skill-stars.level-1 .filled {
+  color: #dc2626;
+}
+
+.skill-stars.level-2 .filled {
+  color: #ee4b4bb9;
+}
+
+.skill-stars.level-3 .filled {
+  color: #d97706;
+}
+
+.skill-stars.level-4 .filled {
+  color: #0891b2;
+}
+
+.skill-stars.level-5 .filled {
+  color: #16a34a;
 }
 
 /* ---------- Level ---------- */
