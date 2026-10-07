@@ -100,7 +100,7 @@ BEGIN
         N'Intern',
         N'sa.eilamurugan.sankar@xylem.com',
         '2026-08-26',
-        N'Xylem',
+        N'GCC',
         N'Male',
         N'-',
         N'-',
@@ -114,3 +114,6 @@ BEGIN
     );
 END;
 GO
+SELECT * FROM EmployeeProfile;
+
+UPDATE EmployeeProfile SET Organization='Xylem' WHERE Organization = 'GCC';

@@ -256,3 +256,76 @@ VALUES
 ('CRM Administration', 'ERP'),
 ('ERP Integration', 'ERP'),
 ('Business Process Management', 'ERP');
+
+
+INSERT INTO SkillsMaster
+(
+    SkillName,
+    Category
+)
+VALUES
+
+-- Mechanical Engineering
+('AutoCAD', 'Mechanical'),
+('SolidWorks', 'Mechanical'),
+('CATIA', 'Mechanical'),
+('Creo', 'Mechanical'),
+('Mechanical Design', 'Mechanical'),
+('Product Design', 'Mechanical'),
+('Sheet Metal Design', 'Mechanical'),
+('GD&T', 'Mechanical'),
+('Tolerance Stack-Up Analysis', 'Mechanical'),
+('Hydraulics', 'Mechanical'),
+('Pneumatics', 'Mechanical'),
+('Thermodynamics', 'Mechanical'),
+('Heat Transfer', 'Mechanical'),
+('Machine Design', 'Mechanical'),
+('Finite Element Analysis', 'Mechanical'),
+
+-- Manufacturing
+('Lean Manufacturing', 'Manufacturing'),
+('Six Sigma', 'Manufacturing'),
+('Kaizen', 'Manufacturing'),
+('5S Methodology', 'Manufacturing'),
+('Process Improvement', 'Manufacturing'),
+('Production Planning', 'Manufacturing'),
+('Value Stream Mapping', 'Manufacturing'),
+('Root Cause Analysis', 'Manufacturing'),
+('Capacity Planning', 'Manufacturing'),
+('Manufacturing Operations', 'Manufacturing'),
+
+-- Quality
+('Quality Management', 'Quality'),
+('ISO 9001', 'Quality'),
+('APQP', 'Quality'),
+('PPAP', 'Quality'),
+('SPC', 'Quality'),
+('MSA', 'Quality'),
+('8D Problem Solving', 'Quality'),
+('Internal Auditing', 'Quality'),
+('Supplier Quality Management', 'Quality'),
+('Corrective and Preventive Actions', 'Quality'),
+
+-- Electrical
+('PLC Programming', 'Electrical'),
+('SCADA', 'Electrical'),
+('Control Systems', 'Electrical'),
+('Instrumentation', 'Electrical'),
+('Electrical Design', 'Electrical'),
+('Motor Control Systems', 'Electrical'),
+('VFD Configuration', 'Electrical'),
+('Electrical Safety', 'Electrical'),
+('Power Distribution Systems', 'Electrical'),
+('Industrial Automation', 'Electrical'),
+
+-- General Engineering
+('Engineering Change Management', 'Engineering'),
+('Failure Analysis', 'Engineering'),
+('Design Review', 'Engineering'),
+('Technical Documentation', 'Engineering'),
+('Requirements Management', 'Engineering'),
+('Continuous Improvement', 'Engineering'),
+('Risk Assessment', 'Engineering'),
+('Engineering Standards', 'Engineering'),
+('Technical Drawing Interpretation', 'Engineering');
+SELECT * from SkillsMaster; 

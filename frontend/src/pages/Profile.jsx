@@ -401,8 +401,8 @@ function formatDate(date) {
         />
       )}
       sx={{
-        minWidth: 300,
-        flex: 1,
+        minWidth: 250,
+        
 
         "& .MuiOutlinedInput-root": {
           backgroundColor: "#fff",

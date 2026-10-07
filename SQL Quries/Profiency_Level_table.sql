@@ -51,4 +51,11 @@ VALUES
 );
 
 
-SELECT * FROM ProficiencyLevels;
+SELECT TOP 5
+    es.ProficiencyLevel,
+    pl.ProficiencyLevelId,
+    pl.LevelName
+FROM EmployeeSkills es
+INNER JOIN ProficiencyLevels pl
+    ON es.ProficiencyLevel =
+       pl.ProficiencyLevelId;
