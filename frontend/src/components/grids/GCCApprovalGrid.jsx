@@ -42,8 +42,8 @@ const gccDataColumns = [
   {
     headerName: "Status",
     field: "status",
-    minWidth: 200,
-    width: 220,
+    minWidth: 180,
+    width: 200,
     cellRenderer: GCCStatusRenderer,
   },
   { headerName: "Manager Comments", field: "managerComments", hide: true },
@@ -102,8 +102,8 @@ const gccHistoryColumnDefs = [
   {
     headerName: "Status",
     field: "status",
-    minWidth: 200,
-    width: 200,
+    minWidth: 160,
+    width: 180,
     cellRenderer: GCCStatusRenderer,
   },
 ];

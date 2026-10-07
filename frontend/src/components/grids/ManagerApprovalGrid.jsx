@@ -33,8 +33,8 @@ const managerDataColumns = [
   {
     headerName: "Status",
     field: "status",
-    minWidth: 220,
-    width: 220,
+    minWidth: 160,
+    width: 200,
     cellRenderer: ManagerStatusRenderer,
   },
   { headerName: "Manager Comments", field: "managerComments", hide: true },
@@ -96,8 +96,8 @@ const managerHistoryColumnDefs = [
   {
     headerName: "Status",
     field: "status",
-    minWidth: 200,
-    width: 200,
+    minWidth: 160,
+    width: 180,
     cellRenderer: ManagerStatusRenderer,
   },
 ];

@@ -1,5 +1,27 @@
 .app-layout {
   display: flex;
   min-height: calc(100vh - 60px);
-  background-color: #f5f6f8;
+  background-color: #f3f4f6;
+  position: relative;
+}
+
+.app-content {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+.sidebar-backdrop {
+  display: none;
+}
+
+@media (max-width: 767px) {
+  .sidebar-backdrop.visible {
+    position: fixed;
+    inset: 60px 0 0;
+    z-index: 19;
+    display: block;
+    border: 0;
+    background: rgb(17 24 39 / 32%);
+    cursor: pointer;
+  }
 }

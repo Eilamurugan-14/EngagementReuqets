@@ -250,6 +250,21 @@ function renderStars(level) {
   ));
 }
 
+function formatDate(date) {
+  if (!date) {
+    return "-";
+  }
+
+  return new Date(date).toLocaleDateString(
+    "en-US",
+    {
+      month: "short",
+      day: "numeric",
+      year: "numeric",
+    }
+  );
+}
+
   return (
     <main className="profile-page">
       <h1 className="profile-title">
@@ -316,7 +331,7 @@ function renderStars(level) {
           <ProfileItem
             icon={<CalendarMonthIcon />}
             label="Date of Joining"
-            value={profile.DateOfJoining}
+            value={formatDate(profile.DateOfJoining)}
           />
 
           <ProfileItem
@@ -704,8 +719,17 @@ function renderStars(level) {
         icon={<HistoryIcon />}
         defaultOpen={false}
       >
-        <div className="empty-card">
-          No assets assigned
+        <div className="asset-history-empty">
+
+          <HistoryIcon
+            className="asset-history-empty-icon"
+          />
+
+          <p>
+            Asset history tracking will
+            appear here. Coming Soon!
+          </p>
+
         </div>
       </ProfileSection>
     </main>

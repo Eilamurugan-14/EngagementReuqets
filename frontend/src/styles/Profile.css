@@ -1,6 +1,6 @@
 .profile-page {
   flex: 1;
-  padding: 24px;
+  padding: 16px;
   background: #f2f2f2;
 }
 
@@ -53,19 +53,19 @@
 .profile-section {
   background: white;
   border-radius: 12px;
-  padding: 20px;
+  padding: 4px;
   margin-bottom: 20px;
 }
 
 .profile-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 12px;
+  gap: 10px;
 }
 
 .profile-item {
   background:  rgb(247, 250, 252);
-  padding: 14px;
+  padding: 12px;
   border-radius: 8px;
   font-weight: 500;
 }
@@ -75,6 +75,12 @@
   align-items: center;
   gap: 8px;
   margin-bottom: 8px;
+}
+
+.profile-item strong {
+  display: block;
+
+  margin-left: 26px;
 }
 
 .profile-item-label span {
@@ -118,7 +124,7 @@
   align-items: center;
   gap: 10px;
 
-  font-weight: 400;
+  font-weight: 600;
 }
 
 .profile-section-body {
@@ -437,4 +443,32 @@
   display: flex;
   align-items: center;
   gap: 8px;
+}
+
+.asset-history-empty {
+  display: flex;
+  flex-direction: column;
+
+  align-items: center;
+  justify-content: center;
+
+  text-align: center;
+
+  min-height: 180px;
+}
+
+.asset-history-empty-icon {
+  font-size: 48px !important;
+
+  color: #c5ced6;
+
+  margin-bottom: 12px;
+}
+
+.asset-history-empty p {
+  color: #a0a9b3;
+
+  font-size: 15px;
+
+  margin: 0;
 }
