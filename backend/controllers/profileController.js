@@ -129,17 +129,19 @@ async function addEmployeeSkill(
       (
         EmployeeId,
         SkillId,
-        ProficiencyLevel
+        ProficiencyLevel,
+        CreatedBy
       )
       VALUES
       (
-        ?, ?, ?
+        ?, ?, ?, ?
       )
       `,
       [
         employeeId,
         skillId,
         proficiencyLevel,
+        employeeId,
       ]
     );
 
@@ -223,11 +225,15 @@ async function updateEmployeeSkill(
     await run(
       `
       UPDATE EmployeeSkills
-      SET ProficiencyLevel = ?
+      SET
+          ProficiencyLevel = ?,
+          ModifiedBy = ?,
+          ModifiedDate = GETDATE()
       WHERE EmployeeSkillId = ?
       `,
       [
         proficiencyLevel,
+        existing.EmployeeId,
         req.params.id,
       ]
     );

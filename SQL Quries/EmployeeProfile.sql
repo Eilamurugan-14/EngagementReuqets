@@ -117,3 +117,11 @@ GO
 SELECT * FROM EmployeeProfile;
 
 UPDATE EmployeeProfile SET Organization='Xylem' WHERE Organization = 'GCC';
+
+ALTER TABLE EmployeeProfile
+ADD
+
+CreatedBy NVARCHAR(100) NOT NULL
+DEFAULT 'SYSTEM',
+
+ModifiedBy NVARCHAR(100) NULL;

@@ -328,4 +328,25 @@ VALUES
 ('Risk Assessment', 'Engineering'),
 ('Engineering Standards', 'Engineering'),
 ('Technical Drawing Interpretation', 'Engineering');
+
 SELECT * from SkillsMaster; 
+
+SELECT
+    Category,
+    COUNT(*) AS SkillCount
+FROM SkillsMaster
+GROUP BY Category
+ORDER BY Category;
+
+ALTER TABLE SkillsMaster
+ADD
+
+CreatedBy NVARCHAR(100) NOT NULL
+DEFAULT 'SYSTEM',
+
+CreatedDate DATETIME NOT NULL
+DEFAULT GETDATE(),
+
+ModifiedBy NVARCHAR(100) NULL,
+
+ModifiedDate DATETIME NULL;

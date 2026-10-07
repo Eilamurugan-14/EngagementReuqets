@@ -19,6 +19,8 @@ import LocationOnIcon from "@mui/icons-material/LocationOn";
 
 import Autocomplete from "@mui/material/Autocomplete";
 import TextField from "@mui/material/TextField";
+import InputAdornment from "@mui/material/InputAdornment";
+import SearchIcon from "@mui/icons-material/Search";
 
 import Tooltip from "@mui/material/Tooltip";
 
@@ -29,6 +31,7 @@ import DialogTitle from "@mui/material/DialogTitle";
 import DialogContent from "@mui/material/DialogContent";
 import DialogActions from "@mui/material/DialogActions";
 import Button from "@mui/material/Button";
+import { toast } from "react-toastify";
 
 import {
   getSkills,
@@ -38,6 +41,8 @@ import {
   deleteEmployeeSkill,
   updateEmployeeSkill,
 } from "../services/api";
+
+const ITEMS_PER_PAGE = 15;
 
 function Profile() {
   const EMPLOYEE_ID = "INT001";
@@ -49,6 +54,8 @@ const [profileError, setProfileError] =
   useState("");
 
 const [skills, setSkills] = useState([]);
+const [searchTerm, setSearchTerm] = useState("");
+const [currentPage, setCurrentPage] = useState(1);
 const [allSkills, setAllSkills] =
   useState([]);
 
@@ -57,11 +64,15 @@ const [
   setSelectedSkill,
 ] = useState(null);
 
-const [newLevel, setNewLevel] =
-  useState(3);
+  const [newLevel, setNewLevel] =
+    useState("");
 
-const [editingSkillId, setEditingSkillId] =
-  useState(null);
+ const [addDialogOpen, setAddDialogOpen] =
+   useState(false);
+ const [editDialogOpen, setEditDialogOpen] =
+   useState(false);
+ const [skillToEdit, setSkillToEdit] =
+   useState(null);
 
 const [editingLevel, setEditingLevel] =
   useState(3);
@@ -71,6 +82,62 @@ const [deleteDialogOpen, setDeleteDialogOpen] =
 
 const [skillToDelete, setSkillToDelete] =
   useState(null);
+
+const normalizedSearchTerm =
+  searchTerm.trim().toLowerCase();
+const filteredSkills = skills.filter((skill) => {
+  const skillName =
+    skill.SkillName?.toLowerCase() || "";
+  const category =
+    skill.Category?.toLowerCase() || "";
+
+  return (
+    skillName.includes(normalizedSearchTerm) ||
+    category.includes(normalizedSearchTerm)
+  );
+});
+const sortedSkills = [...filteredSkills].sort((firstSkill, secondSkill) => {
+  const proficiencyDifference =
+    Number(secondSkill.ProficiencyLevel) -
+    Number(firstSkill.ProficiencyLevel);
+
+  if (proficiencyDifference !== 0) {
+    return proficiencyDifference;
+  }
+
+  return (firstSkill.SkillName || "").localeCompare(
+    secondSkill.SkillName || "",
+    undefined,
+    { sensitivity: "base" }
+  );
+});
+const totalPages = Math.ceil(
+  filteredSkills.length / ITEMS_PER_PAGE
+);
+const safeCurrentPage = Math.min(
+  currentPage,
+  Math.max(totalPages, 1)
+);
+const firstSkillIndex =
+  (safeCurrentPage - 1) * ITEMS_PER_PAGE;
+const paginatedSkills = sortedSkills.slice(
+  firstSkillIndex,
+  firstSkillIndex + ITEMS_PER_PAGE
+);
+const firstVisibleSkill =
+  filteredSkills.length === 0
+    ? 0
+    : firstSkillIndex + 1;
+const lastVisibleSkill = Math.min(
+  firstSkillIndex + ITEMS_PER_PAGE,
+  filteredSkills.length
+);
+
+useEffect(() => {
+  if (currentPage > Math.max(totalPages, 1)) {
+    setCurrentPage(Math.max(totalPages, 1));
+  }
+}, [currentPage, totalPages]);
 
 
 
@@ -128,35 +195,52 @@ async function loadEmployeeSkills() {
 }
 
 
+function openAddDialog() {
+  setSelectedSkill(null);
+  setNewLevel("");
+  setAddDialogOpen(true);
+}
+
+function closeAddDialog() {
+  setAddDialogOpen(false);
+  setSelectedSkill(null);
+  setNewLevel("");
+}
+
 async function addSkill() {
-  if (!selectedSkill) {
-    alert("Select a skill.");
+  if (!selectedSkill || !newLevel) {
+    toast.warning("Select a skill and proficiency level.");
     return;
   }
 
   try {
     await addEmployeeSkill({
       employeeId: EMPLOYEE_ID,
-      skillId:
-        selectedSkill.SkillId,
-      proficiencyLevel:
-        newLevel,
+      skillId: selectedSkill.SkillId,
+      proficiencyLevel: Number(newLevel),
     });
 
-    setSelectedSkill(null);
-    setNewLevel(3);
-
+    closeAddDialog();
     await loadEmployeeSkills();
+    toast.success("Skill added successfully");
   } catch (error) {
-    alert(
-      error?.response?.data
-        ?.message ||
+    toast.error(
+      error?.response?.data?.message ||
         "Unable to add skill"
     );
   }
 }
 
+function openEditDialog(skill) {
+  setSkillToEdit(skill);
+  setEditingLevel(skill.ProficiencyLevel);
+  setEditDialogOpen(true);
+}
 
+function closeEditDialog() {
+  setEditDialogOpen(false);
+  setSkillToEdit(null);
+}
 
 function openDeleteDialog(skill) {
   setSkillToDelete(skill);
@@ -179,39 +263,56 @@ async function confirmDeleteSkill() {
     );
 
     await loadEmployeeSkills();
-
     closeDeleteDialog();
+    toast.success("Skill deleted successfully");
   } catch (error) {
     console.error(error);
+    toast.error(
+      error?.response?.data?.message ||
+        "Unable to delete skill"
+    );
   }
 }
 
-async function saveSkillLevel(
-  employeeSkillId
-) {
+async function saveSkillLevel() {
+  if (!skillToEdit) {
+    return;
+  }
+
   try {
     await updateEmployeeSkill(
-      employeeSkillId,
+      skillToEdit.EmployeeSkillId,
       editingLevel
     );
 
-    setEditingSkillId(null);
-
     await loadEmployeeSkills();
+    closeEditDialog();
+    toast.success("Skill updated successfully");
   } catch (error) {
     console.error(error);
+    toast.error(
+      error?.response?.data?.message ||
+        "Unable to update skill"
+    );
   }
 }
 
-function renderStars(level) {
-  return Array.from({ length: 5 }, (_, starIndex) => (
-    <span
-      key={starIndex}
-      className={starIndex < level ? "star filled" : "star"}
-    >
-      {starIndex < level ? "★" : "☆"}
-    </span>
-  ));
+function renderProficiency(level) {
+  return Array.from(
+    { length: 5 },
+    (_, index) => (
+      <span
+        key={index}
+        className={
+          index < level
+            ? "proficiency-dot filled"
+            : "proficiency-dot"
+        }
+      >
+        ●
+      </span>
+    )
+  );
 }
 
 function formatDate(date) {
@@ -382,164 +483,51 @@ function formatDate(date) {
         icon={<PsychologyIcon />}
       >
 
-  <div className="skill-form">
-
-    <Autocomplete
-      options={allSkills}
-      value={selectedSkill}
-      onChange={(_, value) =>
-        setSelectedSkill(value)
-      }
-      getOptionLabel={(option) =>
-        option.SkillName || ""
-      }
-      renderInput={(params) => (
-        <TextField
-          {...params}
-          placeholder="Search Skill"
-          size="small"
-        />
-      )}
-      sx={{
-        minWidth: 250,
-        
-
-        "& .MuiOutlinedInput-root": {
-          backgroundColor: "#fff",
-          borderRadius: "8px",
-        },
-
-        "& fieldset": {
-          border: "1px solid #d1d5db",
-        },
+  <div className="skills-toolbar">
+    <TextField
+      className="skills-search"
+      size="small"
+      placeholder="Search skills by name or category..."
+      value={searchTerm}
+      onChange={(event) => {
+        setSearchTerm(event.target.value)
+        setCurrentPage(1);
+      }}
+      InputProps={{
+        startAdornment: (
+          <InputAdornment position="start">
+            <SearchIcon fontSize="small" />
+          </InputAdornment>
+        ),
       }}
     />
-
-    <select
-      value={newLevel}
-      onChange={(event) =>
-        setNewLevel(
-          Number(
-            event.target.value
-          )
-        )
-      }
-    >
-      <option value={1}>
-        1 - Basic Awareness
-      </option>
-
-      <option value={2}>
-        2 - Beginner
-      </option>
-
-      <option value={3}>
-        3 - Working Knowledge
-      </option>
-
-      <option value={4}>
-        4 - Advanced
-      </option>
-
-      <option value={5}>
-        5 - Expert / Can Give KT
-      </option>
-    </select>
-
     <button
       type="button"
       className="add-skill-btn"
-      onClick={addSkill}
+      onClick={openAddDialog}
     >
-      Add Skill
+      + Add Skill
     </button>
-
   </div>
 
   <div className="skills-list">
 
     {skills.length === 0 ? (
       <div className="skills-empty-state">
-        No skills added yet. Add a skill using the form above.
+        No skills added yet. Use Add Skill to get started.
       </div>
-    ) : skills.map((skill) => (
+    ) : filteredSkills.length === 0 ? (
+      <div className="skills-empty-state">
+        <strong>No matching skills found.</strong>
+        <p>Try searching with a different skill name or category.</p>
+      </div>
+    ) : paginatedSkills.map((skill) => (
       <div
         key={skill.EmployeeSkillId}
-        className={`skill-card ${
-          editingSkillId ===
-          skill.EmployeeSkillId
-            ? "editing"
-            : ""
-        }`}
+        className="skill-card"
       >
 
-        {editingSkillId ===
-        skill.EmployeeSkillId ? (
-
-          <div className="edit-skill-section">
-
-            <select
-              value={editingLevel}
-              onChange={(event) =>
-                setEditingLevel(
-                  Number(
-                    event.target.value
-                  )
-                )
-              }
-            >
-              <option value={1}>
-                1 - Basic Awareness
-              </option>
-
-              <option value={2}>
-                2 - Beginner
-              </option>
-
-              <option value={3}>
-                3 - Working Knowledge
-              </option>
-
-              <option value={4}>
-                4 - Advanced
-              </option>
-
-              <option value={5}>
-                5 - Expert / Can Give KT
-              </option>
-            </select>
-
-            <div className="edit-buttons">
-
-              <button
-                className="save-btn"
-                onClick={() =>
-                  saveSkillLevel(
-                    skill.EmployeeSkillId
-                  )
-                }
-              >
-                Save
-              </button>
-
-              <button
-                className="cancel-btn"
-                onClick={() =>
-                  setEditingSkillId(
-                    null
-                  )
-                }
-              >
-                Cancel
-              </button>
-
-            </div>
-
-          </div>
-
-        ) : (
-
-          <div className="skill-grid-card">
+        <div className="skill-grid-card">
 
             <div className="skill-grid-header">
                 <div className="skill-title-section">
@@ -559,15 +547,8 @@ function formatDate(date) {
                 <button
                   type="button"
                   className="skill-edit-btn"
-                  onClick={() => {
-                    setEditingSkillId(
-                      skill.EmployeeSkillId
-                    );
-
-                    setEditingLevel(
-                      skill.ProficiencyLevel
-                    );
-                  }}
+                  aria-label={`Edit ${skill.SkillName}`}
+                  onClick={() => openEditDialog(skill)}
                 >
                   <EditIcon />
                 </button>
@@ -606,9 +587,7 @@ function formatDate(date) {
                 role="img"
                 aria-label={`${skill.ProficiencyLevel} out of 5 stars`}
               >
-                {renderStars(
-                  skill.ProficiencyLevel
-                )}
+                {renderProficiency(skill.ProficiencyLevel)}
               </div>
             </Tooltip>
 
@@ -620,12 +599,183 @@ function formatDate(date) {
 
           </div>
 
-        )}
-
       </div>
     ))}
 
   </div>
+
+  <div className="skills-pagination-footer">
+    <div className="skills-count">
+      Displaying {firstVisibleSkill}-{lastVisibleSkill} of {filteredSkills.length} skills
+    </div>
+
+    {totalPages > 1 && (
+      <nav className="skills-pagination" aria-label="Skills pages">
+        <button
+          type="button"
+          className="skills-page-btn"
+          onClick={() => setCurrentPage(safeCurrentPage - 1)}
+          disabled={safeCurrentPage === 1}
+        >
+          {"< Previous"}
+        </button>
+
+        <div className="skills-page-numbers">
+          {Array.from(
+            { length: totalPages },
+            (_, index) => index + 1
+          ).map((page) => (
+            <button
+              key={page}
+              type="button"
+              className={`skills-page-btn ${
+                safeCurrentPage === page ? "active" : ""
+              }`}
+              aria-current={
+                safeCurrentPage === page ? "page" : undefined
+              }
+              onClick={() => setCurrentPage(page)}
+            >
+              {page}
+            </button>
+          ))}
+        </div>
+
+        <button
+          type="button"
+          className="skills-page-btn"
+          onClick={() => setCurrentPage(safeCurrentPage + 1)}
+          disabled={safeCurrentPage === totalPages}
+        >
+          {"Next >"}
+        </button>
+      </nav>
+    )}
+  </div>
+
+  <Dialog
+    open={addDialogOpen}
+    onClose={closeAddDialog}
+    maxWidth="sm"
+    fullWidth
+  >
+    <DialogTitle>Add Skill</DialogTitle>
+    <DialogContent className="skill-dialog-content">
+      <label
+        className="skill-dialog-label"
+        htmlFor="add-skill-autocomplete"
+      >
+        Skill Name
+      </label>
+      <Autocomplete
+        options={allSkills}
+        value={selectedSkill}
+        onChange={(_, value) => setSelectedSkill(value)}
+        getOptionLabel={(option) => option.SkillName || ""}
+        renderInput={(params) => (
+          <TextField
+            {...params}
+            id="add-skill-autocomplete"
+            placeholder="Search skill"
+            size="small"
+          />
+        )}
+      />
+
+      <label className="skill-dialog-label" htmlFor="add-skill-level">
+        Proficiency Level
+      </label>
+      <select
+        id="add-skill-level"
+        className="skill-dialog-select"
+        value={newLevel}
+        onChange={(event) => setNewLevel(event.target.value)}
+      >
+        <option value="" disabled>
+          Select Proficiency Level
+        </option>
+        <option value={1}>1 - Basic Awareness</option>
+        <option value={2}>2 - Beginner</option>
+        <option value={3}>3 - Working Knowledge</option>
+        <option value={4}>4 - Advanced</option>
+        <option value={5}>5 - Expert / Can Give KT</option>
+      </select>
+    </DialogContent>
+    <DialogActions>
+      <Button
+        className="skill-dialog-cancel-btn"
+        onClick={closeAddDialog}
+      >
+        Cancel
+      </Button>
+      <Button
+        className="skill-dialog-primary-btn"
+        variant="contained"
+        onClick={addSkill}
+        disabled={!selectedSkill || !newLevel}
+      >
+        Add Skill
+      </Button>
+    </DialogActions>
+  </Dialog>
+
+  <Dialog
+    open={editDialogOpen}
+    onClose={closeEditDialog}
+    maxWidth="sm"
+    fullWidth
+  >
+    <DialogTitle>Edit Skill</DialogTitle>
+    <DialogContent className="skill-dialog-content">
+      <label
+        className="skill-dialog-label"
+        htmlFor="edit-skill-name"
+      >
+        Skill Name
+      </label>
+      <TextField
+        id="edit-skill-name"
+        value={skillToEdit?.SkillName || ""}
+        fullWidth
+        size="small"
+        placeholder="Skill Name"
+        InputProps={{ readOnly: true }}
+      />
+
+      <label className="skill-dialog-label" htmlFor="edit-skill-level">
+        Proficiency Level
+      </label>
+      <select
+        id="edit-skill-level"
+        className="skill-dialog-select"
+        value={editingLevel}
+        onChange={(event) =>
+          setEditingLevel(Number(event.target.value))
+        }
+      >
+        <option value={1}>1 - Basic Awareness</option>
+        <option value={2}>2 - Beginner</option>
+        <option value={3}>3 - Working Knowledge</option>
+        <option value={4}>4 - Advanced</option>
+        <option value={5}>5 - Expert / Can Give KT</option>
+      </select>
+    </DialogContent>
+    <DialogActions>
+      <Button
+        className="skill-dialog-cancel-btn"
+        onClick={closeEditDialog}
+      >
+        Cancel
+      </Button>
+      <Button
+        className="skill-dialog-primary-btn"
+        variant="contained"
+        onClick={saveSkillLevel}
+      >
+        Save
+      </Button>
+    </DialogActions>
+  </Dialog>
 
   <Dialog
   open={deleteDialogOpen}
@@ -651,13 +801,14 @@ function formatDate(date) {
 
   <DialogActions>
     <Button
+      className="skill-dialog-cancel-btn"
       onClick={closeDeleteDialog}
     >
       Cancel
     </Button>
 
     <Button
-      color="error"
+      className="skill-dialog-primary-btn"
       variant="contained"
       onClick={confirmDeleteSkill}
     >

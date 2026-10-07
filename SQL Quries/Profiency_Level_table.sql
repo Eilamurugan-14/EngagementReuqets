@@ -59,3 +59,19 @@ FROM EmployeeSkills es
 INNER JOIN ProficiencyLevels pl
     ON es.ProficiencyLevel =
        pl.ProficiencyLevelId;
+
+
+ALTER TABLE ProficiencyLevels
+ADD
+
+CreatedBy NVARCHAR(100) NOT NULL
+DEFAULT 'SYSTEM',
+
+CreatedDate DATETIME NOT NULL
+DEFAULT GETDATE(),
+
+ModifiedBy NVARCHAR(100) NULL,
+
+ModifiedDate DATETIME NULL;
+
+select * from ProficiencyLevels;

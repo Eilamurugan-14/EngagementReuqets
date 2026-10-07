@@ -6,6 +6,8 @@ import GCCApprovalRequests from "./pages/GCCApprovalRequests";
 import Profile from "./pages/Profile";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { useEffect, useState } from "react";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import "./styles/App.css";
 
 
@@ -55,6 +57,13 @@ function App() {
 
   return (
     <BrowserRouter>
+      <ToastContainer
+        position="top-right"
+        autoClose={3000}
+        pauseOnHover
+        closeButton
+        theme="colored"
+      />
       <Header
         onMenuClick={handleMenuClick}
         mobileOpen={mobileOpen}

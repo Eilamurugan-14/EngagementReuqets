@@ -91,3 +91,13 @@ INNER JOIN SkillsMaster sm
     ON es.SkillId = sm.SkillId
 INNER JOIN ProficiencyLevels pl
     ON es.ProficiencyLevel = pl.ProficiencyLevelId
+
+ALTER TABLE EmployeeSkills
+ADD
+
+CreatedBy NVARCHAR(100) NOT NULL
+DEFAULT 'SYSTEM',
+
+ModifiedBy NVARCHAR(100) NULL,
+
+ModifiedDate DATETIME NULL;

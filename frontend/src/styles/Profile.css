@@ -152,28 +152,23 @@
 
 /* ---------- Skills Toolbar ---------- */
 
-.skill-form {
+.skills-toolbar {
   display: flex;
   align-items: center;
   gap: 12px;
-
   margin-bottom: 16px;
-  padding-bottom: 12px;
-
-  border-bottom: 1px solid #e5e7eb;
 }
 
-.skill-form select {
-  height: 42px;
+.skills-search {
+  flex: 0 1 360px;
+  width: 360px;
+  max-width: 360px;
+  min-width: 0;
+  background: #fff;
+}
 
-  border: 1px solid #d1d5db;
+.skills-search .MuiOutlinedInput-root {
   border-radius: 8px;
-
-  background: white;
-
-  padding: 0 12px;
-
-  min-width: 220px;
 }
 
 .add-skill-btn {
@@ -219,6 +214,108 @@
   text-align: center;
 }
 
+.skills-empty-state p {
+  margin-top: 4px;
+}
+
+.skills-count {
+  color: #6b7280;
+  font-size: 13px;
+  white-space: nowrap;
+}
+
+.skills-pagination-footer {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 20px;
+}
+
+.skills-pagination {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.skills-page-numbers {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 6px;
+}
+
+.skills-page-btn {
+  min-width: 38px;
+  height: 38px;
+  padding: 0 12px;
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+  background: #fff;
+  color: #374151;
+  cursor: pointer;
+  transition: background-color 160ms ease, color 160ms ease,
+    border-color 160ms ease;
+}
+
+.skills-page-btn:hover:not(:disabled) {
+  border-color: rgb(0, 125, 163);
+  background: #e6f4ff;
+  color: rgb(0, 125, 163);
+}
+
+.skills-page-btn.active {
+  border-color: rgb(0, 125, 163);
+  background: rgb(0, 125, 163);
+  color: #fff;
+}
+
+.skills-page-btn:disabled {
+  color: #9ca3af;
+  cursor: not-allowed;
+}
+
+.MuiDialogContent-root.skill-dialog-content {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding-top: 24px;
+}
+
+.skill-dialog-label {
+  margin-bottom: -10px;
+  color: #374151;
+  font-size: 14px;
+}
+
+.skill-dialog-select {
+  min-height: 42px;
+  padding: 0 12px;
+  border: 1px solid #d1d5db;
+  border-radius: 6px;
+  background: #fff;
+  color: #374151;
+  font: inherit;
+}
+
+.skill-dialog-primary-btn.MuiButton-contained:not(.Mui-disabled) {
+  background-color: rgb(0, 125, 163);
+}
+
+.skill-dialog-primary-btn.MuiButton-contained:not(.Mui-disabled):hover {
+  background-color: #006f8f;
+}
+
+.skill-dialog-cancel-btn.MuiButton-root {
+  color: rgb(0, 125, 163);
+}
+
+.skill-dialog-cancel-btn.MuiButton-root:hover {
+  background-color: #e6f4ff;
+}
+
 /* ---------- Skill Card ---------- */
 
 .skill-card {
@@ -235,12 +332,6 @@
   box-shadow:
     0 4px 12px
     rgba(0, 0, 0, 0.08);
-}
-
-.skill-card.editing {
-  border: 2px solid rgb(0, 125, 163);
-
-  background: #f8fbff;
 }
 
 /* ---------- Card Layout ---------- */
@@ -266,39 +357,15 @@
 
   color: #111827;
 }
-/* ---------- Stars ---------- */
-
-.skill-stars {
-  margin-top: 12px;
-
-  font-size: 18px;
-
-  cursor: help;
-}
-
-.skill-stars .star {
+.proficiency-dot {
   color: #d1d5db;
+  font-size: 14px;
+}
+.proficiency-dot.filled {
+  color: rgb(0, 125, 163);
 }
 
-.skill-stars.level-1 .filled {
-  color: #dc2626;
-}
 
-.skill-stars.level-2 .filled {
-  color: #ee4b4bb9;
-}
-
-.skill-stars.level-3 .filled {
-  color: #d97706;
-}
-
-.skill-stars.level-4 .filled {
-  color: #0891b2;
-}
-
-.skill-stars.level-5 .filled {
-  color: #16a34a;
-}
 
 /* ---------- Level ---------- */
 
@@ -344,44 +411,6 @@
 
 .skill-delete-btn:hover {
   background: #fef2f2;
-}
-
-/* ---------- Edit Mode ---------- */
-
-.edit-skill-section select {
-  width: 100%;
-
-  height: 42px;
-
-  border: 1px solid #d1d5db;
-  border-radius: 8px;
-
-  padding: 0 12px;
-
-  background: white;
-}
-
-.edit-buttons {
-  display: flex;
-  gap: 8px;
-
-  margin-top: 12px;
-}
-
-.save-btn {
-  background: rgb(0, 125, 163);
-  color: white;
-
-  border: none;
-  border-radius: 8px;
-
-  padding: 8px 16px;
-
-  cursor: pointer;
-}
-
-.save-btn:hover {
-  background: rgb(0, 125, 163);
 }
 
 .cancel-btn {
