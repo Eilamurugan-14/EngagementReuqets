@@ -72,45 +72,9 @@ const [deleteDialogOpen, setDeleteDialogOpen] =
 const [skillToDelete, setSkillToDelete] =
   useState(null);
 
-const proficiencyLabels = {
-  1: "Basic Awareness",
-  2: "Beginner",
-  3: "Working Knowledge",
-  4: "Advanced",
-  5: "Expert / Can Give KT",
-};
 
-const proficiencyDescriptions = {
-  1: {
-    title: "Basic Awareness",
-    description:
-      "Understands fundamental concepts and terminology.",
-  },
 
-  2: {
-    title: "Beginner",
-    description:
-      "Can perform simple tasks with guidance.",
-  },
 
-  3: {
-    title: "Working Knowledge",
-    description:
-      "Can work independently on routine tasks.",
-  },
-
-  4: {
-    title: "Advanced",
-    description:
-      "Can handle complex work and mentor team members.",
-  },
-
-  5: {
-    title: "Expert / Can Give KT",
-    description:
-      "Subject matter expert capable of training and guiding others.",
-  },
-};
 
 useEffect(() => {
   loadEmployeeProfile();
@@ -626,24 +590,16 @@ function formatDate(date) {
               arrow
               placement="top"
               title={
-                <div>
-                  <strong>
-                    {
-                      proficiencyDescriptions[
-                        skill.ProficiencyLevel
-                      ].title
-                    }
-                  </strong>
+                  <div>
+                    <strong>
+                      {skill.LevelName}
+                    </strong>
 
-                  <br />
+                    <br />
 
-                  {
-                    proficiencyDescriptions[
-                      skill.ProficiencyLevel
-                    ].description
-                  }
-                </div>
-              }
+                    {skill.Description}
+                  </div>
+                }
             >
               <div
                 className={`skill-stars level-${skill.ProficiencyLevel}`}
@@ -658,9 +614,7 @@ function formatDate(date) {
 
             <div className="skill-level">
               {
-                proficiencyLabels[
-                  skill.ProficiencyLevel
-                ]
+                skill.LevelName
               }
             </div>
 

@@ -60,16 +60,26 @@ async function getEmployeeSkills(
     const rows = await all(
       `
       SELECT
-        es.EmployeeSkillId,
-        es.SkillId,
-        sm.SkillName,
-        sm.Category,
-        es.ProficiencyLevel
-      FROM EmployeeSkills es
-      INNER JOIN SkillsMaster sm
-        ON es.SkillId = sm.SkillId
-      WHERE es.EmployeeId = ?
-      ORDER BY sm.SkillName
+    es.EmployeeSkillId,
+    es.SkillId,
+
+    sm.SkillName,
+    sm.Category,
+
+    es.ProficiencyLevel,
+
+    pl.LevelName,
+
+    pl.Description
+
+    FROM EmployeeSkills es
+
+    INNER JOIN SkillsMaster sm
+    ON es.SkillId = sm.SkillId
+
+    INNER JOIN ProficiencyLevels pl
+    ON es.ProficiencyLevel =
+      pl.ProficiencyLevelId
       `,
       [req.params.employeeId]
     );

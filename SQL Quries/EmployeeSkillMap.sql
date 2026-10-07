@@ -58,3 +58,36 @@ INNER JOIN SkillsMaster sm
     ON es.SkillId = sm.SkillId;
 
 SELECT * FROM EmployeeSkills;
+
+EXEC sp_rename
+'EmployeeSkills.ProficiencyLevel',
+'ProficiencyLevelId',
+'COLUMN';
+
+EXEC sp_help EmployeeSkills;
+
+ALTER TABLE EmployeeSkills
+ADD CONSTRAINT
+FK_EmployeeSkills_ProficiencyLevels
+
+FOREIGN KEY
+(
+    ProficiencyLevel
+)
+
+REFERENCES ProficiencyLevels
+(
+    ProficiencyLevelId
+);
+
+SELECT
+    sm.SkillName,
+     pl.ProficiencyLevelId,
+    pl.LevelName,
+    pl.Description
+   
+FROM EmployeeSkills es
+INNER JOIN SkillsMaster sm
+    ON es.SkillId = sm.SkillId
+INNER JOIN ProficiencyLevels pl
+    ON es.ProficiencyLevel = pl.ProficiencyLevelId
