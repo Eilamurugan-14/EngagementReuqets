@@ -3,12 +3,18 @@ const express = require("express");
 const router = express.Router();
 
 const {
+  getEmployeeProfile,
   getEmployeeSkills,
   addEmployeeSkill,
   deleteEmployeeSkill,
   updateEmployeeSkill,
 } = require(
   "../controllers/profileController"
+);
+
+router.get(
+  "/:employeeId",
+  getEmployeeProfile
 );
 
 router.get(

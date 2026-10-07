@@ -1,6 +1,57 @@
 const { all, get, run } =
   require("../config/database");
 
+async function getEmployeeProfile(
+  req,
+  res
+) {
+  try {
+    const profile = await get(
+      `
+      SELECT
+        EmployeeId,
+        EmployeeName,
+        Designation,
+        Email,
+        DateOfJoining,
+        Organization,
+        Gender,
+        ProjectTeam,
+        GroupName,
+        Segment,
+        HFMCode,
+        INDCostCenter,
+        USCostCenter,
+        ManagerName,
+        NextLevelManager,
+        Location,
+        CreatedDate,
+        ModifiedDate
+      FROM EmployeeProfile
+      WHERE EmployeeId = ?
+      `,
+      [req.params.employeeId]
+    );
+
+    if (!profile) {
+      return res.status(404).json({
+        message: "Employee profile not found",
+      });
+    }
+
+    res.json(profile);
+  } catch (error) {
+    console.error(
+      "Error fetching employee profile:",
+      error
+    );
+
+    res.status(500).json({
+      message: "Unable to fetch employee profile",
+    });
+  }
+}
+
 async function getEmployeeSkills(
   req,
   res
@@ -187,6 +238,7 @@ async function updateEmployeeSkill(
 
 
 module.exports = {
+  getEmployeeProfile,
   getEmployeeSkills,
   addEmployeeSkill,
   deleteEmployeeSkill,

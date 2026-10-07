@@ -33,37 +33,20 @@ import Button from "@mui/material/Button";
 import {
   getSkills,
   getEmployeeSkills,
+  getEmployeeProfile,
   addEmployeeSkill,
   deleteEmployeeSkill,
   updateEmployeeSkill,
 } from "../services/api";
 
 function Profile() {
-  const profile = {
-    name: "Eilamurugan S A",
-    designation: "Intern",
-    employeeId: "INT001",
-    email: "sa.eilamurugan.sankar@xylem.com",
-    dateOfJoining: "Aug 26, 2026",
-    organization: "Xylem",
-    gender: "Male",
-
-    projectTeam: "-",
-    groupName: "-",
-    segment: "-",
-
-    hfmCode: "-",
-    indCostCenter: "-",
-    usCostCenter: "-",
-
-    manager: "Venkateshwara Rao",
-    nextLevelManager:
-      "Ramakrishnan Purushothaman",
-
-    location: "Chennai",
-  };
-
   const EMPLOYEE_ID = "INT001";
+
+const [profile, setProfile] = useState(null);
+const [profileLoading, setProfileLoading] =
+  useState(true);
+const [profileError, setProfileError] =
+  useState("");
 
 const [skills, setSkills] = useState([]);
 const [allSkills, setAllSkills] =
@@ -130,9 +113,32 @@ const proficiencyDescriptions = {
 };
 
 useEffect(() => {
+  loadEmployeeProfile();
   loadSkills();
   loadEmployeeSkills();
 }, []);
+
+async function loadEmployeeProfile() {
+  try {
+    setProfileLoading(true);
+    setProfileError("");
+
+    const data = await getEmployeeProfile(
+      EMPLOYEE_ID
+    );
+
+    setProfile(data);
+  } catch (error) {
+    console.error(error);
+    setProfile(null);
+    setProfileError(
+      error?.response?.data?.message ||
+        "Unable to load employee profile."
+    );
+  } finally {
+    setProfileLoading(false);
+  }
+}
 
 async function loadSkills() {
   try {
@@ -252,21 +258,44 @@ function renderStars(level) {
 
       <div className="profile-header-card">
         <div className="profile-avatar">
-          EA
+          {profile
+            ? profile.EmployeeName
+                .trim()
+                .split(/\s+/)
+                .slice(0, 2)
+                .map((part) => part[0])
+                .join("")
+                .toUpperCase()
+            : ""}
         </div>
 
         <div>
-          <h2>{profile.name}</h2>
+          <h2>
+            {profile?.EmployeeName ||
+              (profileLoading
+                ? "Loading profile..."
+                : "Profile unavailable")}
+          </h2>
 
-          <p>{profile.designation}</p>
+          <p>{profile?.Designation || ""}</p>
 
           <div className="profile-tags">
-            <span>Intern</span>
-            <span>GCC</span>
+            <span>{profile?.Designation || ""}</span>
+            <span>{profile?.Organization || ""}</span>
           </div>
         </div>
       </div>
 
+      {profileLoading && (
+        <p role="status">Loading profile...</p>
+      )}
+
+      {profileError && (
+        <p role="alert">{profileError}</p>
+      )}
+
+      {profile && (
+        <>
       <ProfileSection
         title="Basic Details"
         icon={<PersonIcon />}
@@ -275,31 +304,31 @@ function renderStars(level) {
           <ProfileItem
             icon={<BadgeIcon />}
             label="Employee ID"
-            value={profile.employeeId}
+            value={profile.EmployeeId}
           />
 
           <ProfileItem
             icon={<EmailIcon />}
             label="Email ID"
-            value={profile.email}
+            value={profile.Email}
           />
 
           <ProfileItem
             icon={<CalendarMonthIcon />}
             label="Date of Joining"
-            value={profile.dateOfJoining}
+            value={profile.DateOfJoining}
           />
 
           <ProfileItem
             icon={<BusinessIcon />}
             label="Organization"
-            value={profile.organization}
+            value={profile.Organization}
           />
 
           <ProfileItem
             icon={<PersonOutlineIcon />}
             label="Gender"
-            value={profile.gender}
+            value={profile.Gender}
           />
         </div>
       </ProfileSection>
@@ -312,60 +341,62 @@ function renderStars(level) {
           <ProfileItem
             icon={<GroupsIcon />}
             label="Project / Team"
-            value={profile.projectTeam}
+            value={profile.ProjectTeam}
           />
 
           <ProfileItem
             icon={<BusinessIcon />}
             label="Group Name"
-            value={profile.groupName}
+            value={profile.GroupName}
           />
 
           <ProfileItem
             icon={<BadgeIcon />}
             label="Segment"
-            value={profile.segment}
+            value={profile.Segment}
           />
 
           <ProfileItem
             icon={<BadgeIcon />}
             label="HFM Code"
-            value={profile.hfmCode}
+            value={profile.HFMCode}
           />
 
           <ProfileItem
             icon={<BadgeIcon />}
             label="IND Cost Center"
-            value={profile.indCostCenter}
+            value={profile.INDCostCenter}
           />
 
           <ProfileItem
             icon={<BadgeIcon />}
             label="US Cost Center"
-            value={profile.usCostCenter}
+            value={profile.USCostCenter}
           />
 
           <ProfileItem
             icon={<SupervisorAccountIcon />}
             label="Manager Name"
-            value={profile.manager}
+            value={profile.ManagerName}
           />
 
           <ProfileItem
             icon={<SupervisorAccountIcon />}
             label="Next Level Manager"
             value={
-              profile.nextLevelManager
+              profile.NextLevelManager
             }
           />
 
           <ProfileItem
             icon={<LocationOnIcon />}
             label="Work Location"
-            value={profile.location}
+            value={profile.Location}
           />
         </div>
       </ProfileSection>
+        </>
+      )}
 
       <ProfileSection
         title={`Skills & Competencies (${skills.length})`}
@@ -693,7 +724,7 @@ function ProfileItem({
         <span>{label}</span>
       </div>
 
-      <strong>{value}</strong>
+      <strong>{value ?? "-"}</strong>
     </div>
   );
 }

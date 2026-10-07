@@ -64,6 +64,15 @@ export const getEmployeeSkills =
     return response.data;
   };
 
+export const getEmployeeProfile =
+  async (employeeId) => {
+    const response = await axios.get(
+      `${PROFILE_API_URL}/${employeeId}`
+    );
+
+    return response.data;
+  };
+
 export const addEmployeeSkill =
   async (skillData) => {
     const response = await axios.post(
