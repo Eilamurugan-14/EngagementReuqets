@@ -16,13 +16,11 @@ import Dialog from "@mui/material/Dialog";
 import DialogTitle from "@mui/material/DialogTitle";
 import DialogContent from "@mui/material/DialogContent";
 import DialogActions from "@mui/material/DialogActions";
+import Divider from "@mui/material/Divider";
 import Button from "@mui/material/Button";
-import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutlined";
-import TrendingUpIcon from "@mui/icons-material/TrendingUp";
-import SearchIcon from "@mui/icons-material/Search";
-import CategoryIcon from "@mui/icons-material/Category";
-import InsightsIcon from "@mui/icons-material/Insights";
-import AccountCircleOutlinedIcon from "@mui/icons-material/AccountCircleOutlined";
+import IconButton from "@mui/material/IconButton";
+import CloseIcon from "@mui/icons-material/Close";
+import CheckCircleOutlineIcon from "@mui/icons-material/CheckCircleOutlined";
 import "react-toastify/dist/ReactToastify.css";
 import "./styles/App.css";
 
@@ -31,53 +29,57 @@ const RELEASE_VERSION = "skills-matrix-v1";
 const releaseNotes = {
   version: RELEASE_VERSION,
   title: "Skills Matrix & Competencies",
-  description:
-    "Track, manage, and showcase your professional skills directly from your profile.",
+  releaseDate: "October 2026",
+  summary:
+    "A new Skills Matrix & Competencies experience has been added to the Employee Profile page. Employees can now manage, maintain, and showcase professional skills and expertise across software, engineering, manufacturing, quality, and domain areas.",
   features: [
     {
-      icon: <AddCircleOutlineIcon />,
       title: "Add Skills",
       description:
-        "Add software, engineering, manufacturing, and domain skills.",
+        "Add professional skills directly from your profile.",
     },
     {
-      icon: <TrendingUpIcon />,
-      title: "Update Proficiency",
+      title: "Update Proficiency Levels",
       description:
-        "Maintain proficiency levels from Basic Awareness to Expert.",
+        "Track expertise from Basic Awareness to Expert.",
     },
     {
-      icon: <SearchIcon />,
       title: "Search Skills",
       description:
         "Quickly find skills by name or category.",
     },
     {
-      icon: <CategoryIcon />,
       title: "Categorized Skills",
       description:
-        "Review skills grouped with clear category badges.",
+        "View skills grouped using category badges.",
     },
     {
-      icon: <InsightsIcon />,
-      title: "Skill Insights",
+      title: "Engineering & Technical Skills",
       description:
-        "View competencies in a structured, professional format.",
+        "Support software, mechanical, manufacturing, electrical, quality, and engineering competencies.",
     },
     {
-      icon: <AccountCircleOutlinedIcon />,
-      title: "Profile Integration",
+      title: "Skills Dashboard",
       description:
-        "Keep your skills together with your employee profile.",
+        "View skills in a structured card-based experience.",
     },
   ],
+  improvements: [
+    "Better profile visibility",
+    "Centralized competency management",
+    "Improved employee skill tracking",
+    "Enhanced skill discoverability through search and sorting",
+  ],
+  whyThisMatters:
+    "This feature helps employees showcase their expertise and keep professional capabilities visible. It supports career development discussions, highlights growth opportunities, and contributes to future workforce planning initiatives.",
   benefits: [
     "Showcase expertise",
-    "Maintain skill visibility",
-    "Support career growth",
-    "Enable better workforce planning",
-    "Highlight learning and development opportunities",
+    "Maintain professional visibility",
+    "Support career development discussions",
+    "Highlight growth opportunities",
+    "Contribute to future workforce planning initiatives",
   ],
+  
 };
 
 function App() {
@@ -208,45 +210,77 @@ function SkillsReleaseNotes() {
         id="skills-release-title"
         className="skills-release-heading"
       >
-        🚀 What's New
+        <span>🚀 What's New</span>
+        <IconButton
+          className="skills-release-close"
+          aria-label="Close release notes"
+          onClick={acknowledgeRelease}
+        >
+          <CloseIcon />
+        </IconButton>
+        <span className="skills-release-version">Version 1.0</span>
+        <span className="skills-release-date">
+          Release Date: {releaseNotes.releaseDate}
+        </span>
       </DialogTitle>
       <DialogContent className="skills-release-content">
-        <h2>{releaseNotes.title}</h2>
-        <p className="skills-release-description">
-          {releaseNotes.description}
-        </p>
+        <header className="skills-release-header">
+          <h2>{releaseNotes.title}</h2>
+        </header>
 
-        <div className="skills-release-grid">
-          {releaseNotes.features.map((feature) => (
-            <article
-              className="skills-release-feature"
-              key={feature.title}
-            >
-              <div className="skills-release-feature-icon">
-                {feature.icon}
-              </div>
-              <div>
-                <h3>{feature.title}</h3>
-                <p>{feature.description}</p>
-              </div>
-            </article>
-          ))}
-        </div>
+        <section className="skills-release-section">
+          <h3>Summary</h3>
+          <p>{releaseNotes.summary}</p>
+        </section>
 
-        <section className="skills-release-benefits">
-          <h3>Why this matters</h3>
-          <p>This feature helps employees:</p>
-          <ul>
+        <Divider className="skills-release-divider" />
+
+        <section className="skills-release-section">
+          <h3>New Features</h3>
+          <div className="skills-release-grid">
+            {releaseNotes.features.map((feature) => (
+              <article
+                className="skills-release-feature"
+                key={feature.title}
+              >
+                <CheckCircleOutlineIcon className="skills-release-check" />
+                <div>
+                  <h4>{feature.title}</h4>
+                  <p>{feature.description}</p>
+                </div>
+              </article>
+            ))}
+          </div>
+        </section>
+
+        <Divider className="skills-release-divider" />
+
+        <section className="skills-release-section">
+          <h3>Improvements</h3>
+          <ul className="skills-release-list">
+            {releaseNotes.improvements.map((improvement) => (
+              <li key={improvement}>{improvement}</li>
+            ))}
+          </ul>
+        </section>
+
+        <Divider className="skills-release-divider" />
+
+        <section className="skills-release-section">
+          <h3>Why This Matters</h3>
+          <p>{releaseNotes.whyThisMatters}</p>
+          <ul className="skills-release-list">
             {releaseNotes.benefits.map((benefit) => (
               <li key={benefit}>{benefit}</li>
             ))}
           </ul>
         </section>
+
+        <Divider className="skills-release-divider" />
+
+        
       </DialogContent>
       <DialogActions className="skills-release-actions">
-        <Button onClick={acknowledgeRelease}>
-          Got It
-        </Button>
         <Button
           variant="contained"
           onClick={exploreSkills}
