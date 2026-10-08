@@ -4,12 +4,18 @@ const router = express.Router();
 
 const {
   getEmployeeProfile,
+  getAnnouncements,
   getEmployeeSkills,
   addEmployeeSkill,
   deleteEmployeeSkill,
   updateEmployeeSkill,
 } = require(
   "../controllers/profileController"
+);
+
+router.get(
+  "/announcements",
+  getAnnouncements
 );
 
 router.get(

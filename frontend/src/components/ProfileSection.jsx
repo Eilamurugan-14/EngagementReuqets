@@ -3,6 +3,7 @@ import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 
 function ProfileSection({
+  id,
   title,
   icon,
   children,
@@ -12,7 +13,7 @@ function ProfileSection({
     useState(defaultOpen);
 
   return (
-    <section className="profile-section">
+    <section id={id} className="profile-section">
 
       <button
         type="button"

@@ -73,6 +73,15 @@ export const getEmployeeProfile =
     return response.data;
   };
 
+export const getAnnouncements =
+  async () => {
+    const response = await axios.get(
+      `${PROFILE_API_URL}/announcements`
+    );
+
+    return response.data;
+  };
+
 export const addEmployeeSkill =
   async (skillData) => {
     const response = await axios.post(

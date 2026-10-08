@@ -52,6 +52,31 @@ async function getEmployeeProfile(
   }
 }
 
+async function getAnnouncements(
+  req,
+  res
+) {
+  try {
+    const rows = await all(`
+SELECT
+    AnnouncementId,
+    Title,
+    Message
+FROM Announcements
+WHERE IsActive = 1
+`);
+
+    res.json(rows);
+  } catch (error) {
+    console.error(error);
+
+    res.status(500).json({
+      message: error.message,
+      details: error.odbcErrors,
+    });
+  }
+}
+
 async function getEmployeeSkills(
   req,
   res
@@ -255,6 +280,7 @@ async function updateEmployeeSkill(
 
 module.exports = {
   getEmployeeProfile,
+  getAnnouncements,
   getEmployeeSkills,
   addEmployeeSkill,
   deleteEmployeeSkill,

@@ -21,6 +21,8 @@ import Autocomplete from "@mui/material/Autocomplete";
 import TextField from "@mui/material/TextField";
 import InputAdornment from "@mui/material/InputAdornment";
 import SearchIcon from "@mui/icons-material/Search";
+import MenuItem from "@mui/material/MenuItem";
+import Select from "@mui/material/Select";
 
 import Tooltip from "@mui/material/Tooltip";
 
@@ -56,6 +58,8 @@ const [profileError, setProfileError] =
 const [skills, setSkills] = useState([]);
 const [searchTerm, setSearchTerm] = useState("");
 const [currentPage, setCurrentPage] = useState(1);
+const [sortOption, setSortOption] =
+  useState("proficiency-desc");
 const [allSkills, setAllSkills] =
   useState([]);
 
@@ -96,20 +100,48 @@ const filteredSkills = skills.filter((skill) => {
     category.includes(normalizedSearchTerm)
   );
 });
-const sortedSkills = [...filteredSkills].sort((firstSkill, secondSkill) => {
-  const proficiencyDifference =
-    Number(secondSkill.ProficiencyLevel) -
-    Number(firstSkill.ProficiencyLevel);
-
-  if (proficiencyDifference !== 0) {
-    return proficiencyDifference;
-  }
-
-  return (firstSkill.SkillName || "").localeCompare(
+const compareNames = (firstSkill, secondSkill) =>
+  (firstSkill.SkillName || "").localeCompare(
     secondSkill.SkillName || "",
     undefined,
     { sensitivity: "base" }
   );
+const sortedSkills = [...filteredSkills].sort((firstSkill, secondSkill) => {
+  switch (sortOption) {
+    case "proficiency-asc":
+      return (
+        Number(firstSkill.ProficiencyLevel) -
+          Number(secondSkill.ProficiencyLevel) ||
+        compareNames(firstSkill, secondSkill)
+      );
+    case "skill-name-asc":
+      return compareNames(firstSkill, secondSkill);
+    case "skill-name-desc":
+      return compareNames(secondSkill, firstSkill);
+    case "category-asc":
+      return (
+        (firstSkill.Category || "").localeCompare(
+          secondSkill.Category || "",
+          undefined,
+          { sensitivity: "base" }
+        ) || compareNames(firstSkill, secondSkill)
+      );
+    case "category-desc":
+      return (
+        (secondSkill.Category || "").localeCompare(
+          firstSkill.Category || "",
+          undefined,
+          { sensitivity: "base" }
+        ) || compareNames(firstSkill, secondSkill)
+      );
+    case "proficiency-desc":
+    default:
+      return (
+        Number(secondSkill.ProficiencyLevel) -
+          Number(firstSkill.ProficiencyLevel) ||
+        compareNames(firstSkill, secondSkill)
+      );
+  }
 });
 const totalPages = Math.ceil(
   filteredSkills.length / ITEMS_PER_PAGE
@@ -479,6 +511,7 @@ function formatDate(date) {
       )}
 
       <ProfileSection
+        id="skills-section"
         title={`Skills & Competencies (${skills.length})`}
         icon={<PsychologyIcon />}
       >
@@ -501,13 +534,50 @@ function formatDate(date) {
         ),
       }}
     />
-    <button
-      type="button"
-      className="add-skill-btn"
-      onClick={openAddDialog}
-    >
-      + Add Skill
-    </button>
+    <div className="skills-toolbar-controls">
+      <div className="skills-sort-control">
+        <label id="skills-sort-label" htmlFor="skills-sort-select">
+          Sort By:
+        </label>
+        <Select
+          id="skills-sort-select"
+          labelId="skills-sort-label"
+          className="skills-sort-select"
+          value={sortOption}
+          size="small"
+          onChange={(event) => {
+            setSortOption(event.target.value);
+            setCurrentPage(1);
+          }}
+        >
+          <MenuItem value="proficiency-desc">
+            Proficiency (High → Low)
+          </MenuItem>
+          <MenuItem value="proficiency-asc">
+            Proficiency (Low → High)
+          </MenuItem>
+          <MenuItem value="skill-name-asc">
+            Skill Name (A → Z)
+          </MenuItem>
+          <MenuItem value="skill-name-desc">
+            Skill Name (Z → A)
+          </MenuItem>
+          <MenuItem value="category-asc">
+            Category (A → Z)
+          </MenuItem>
+          <MenuItem value="category-desc">
+            Category (Z → A)
+          </MenuItem>
+        </Select>
+      </div>
+      <button
+        type="button"
+        className="add-skill-btn"
+        onClick={openAddDialog}
+      >
+        + Add Skill
+      </button>
+    </div>
   </div>
 
   <div className="skills-list">
