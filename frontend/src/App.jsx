@@ -187,6 +187,10 @@ function SkillsReleaseNotes() {
     setOpen(false);
   }
 
+  function viewReleaseLater() {
+    setOpen(false);
+  }
+
   function exploreSkills() {
     acknowledgeRelease();
     navigate("/profile");
@@ -281,6 +285,12 @@ function SkillsReleaseNotes() {
         
       </DialogContent>
       <DialogActions className="skills-release-actions">
+        <Button
+          className="skills-release-view-later"
+          onClick={viewReleaseLater}
+        >
+          View Later
+        </Button>
         <Button
           variant="contained"
           onClick={exploreSkills}

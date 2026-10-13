@@ -193,6 +193,11 @@
   background: #006f8f;
 }
 
+.skills-release-view-later.MuiButton-root {
+  color: rgb(0, 125, 163);
+  text-transform: none;
+}
+
 @media (max-width: 640px) {
   .skills-release-heading {
     padding: 18px 60px 14px 20px;

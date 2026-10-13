@@ -15,7 +15,7 @@
 
 .profile-header-card {
   background: white;
-  border-radius: 12px;
+  border-radius: 4px;
   padding: 24px;
   display: flex;
   gap: 20px;
@@ -52,7 +52,7 @@
 
 .profile-section {
   background: white;
-  border-radius: 12px;
+  border-radius: 4px;
   padding: 4px;
   margin-bottom: 20px;
 }
@@ -66,7 +66,7 @@
 .profile-item {
   background:  rgb(247, 250, 252);
   padding: 12px;
-  border-radius: 8px;
+  border-radius: 4px;
   font-weight: 500;
 }
 
@@ -96,12 +96,12 @@
 .empty-card {
   background: #f5f7fa;
   padding: 20px;
-  border-radius: 8px;
+  border-radius: 4px;
 }
 
 .profile-section {
   background: white;
-  border-radius: 12px;
+  border-radius: 4px;
   margin-bottom: 20px;
   overflow: hidden;
 }
@@ -109,6 +109,7 @@
 .profile-section-header {
   width: 100%;
   border: none;
+  border-radius: 4px;
   background: white;
   padding: 14px 20px;
 
@@ -176,7 +177,7 @@
   height: 42px;
 
   border: none;
-  border-radius: 6px;
+  border-radius: 4px;
 
   background: rgb(0, 125, 163);
   color: white;
@@ -214,7 +215,7 @@
 .skills-sort-select.MuiInputBase-root {
   height: 42px;
   min-width: 230px;
-  border-radius: 8px;
+  border-radius: 4px;
   background: #fff;
 }
 
@@ -320,7 +321,7 @@
   height: 38px;
   padding: 0 12px;
   border: 1px solid #d1d5db;
-  border-radius: 8px;
+  border-radius: 4px;
   background: #fff;
   color: #374151;
   cursor: pointer;
@@ -362,7 +363,7 @@
   min-height: 42px;
   padding: 0 12px;
   border: 1px solid #d1d5db;
-  border-radius: 6px;
+  border-radius: 4px;
   background: #fff;
   color: #374151;
   font: inherit;
@@ -370,6 +371,11 @@
 
 .skill-dialog-primary-btn.MuiButton-contained:not(.Mui-disabled) {
   background-color: rgb(0, 125, 163);
+}
+
+.skill-dialog-primary-btn.MuiButton-root,
+.skill-dialog-cancel-btn.MuiButton-root {
+  border-radius: 4px;
 }
 
 .skill-dialog-primary-btn.MuiButton-contained:not(.Mui-disabled):hover {
@@ -389,7 +395,7 @@
 .skill-card {
   background: rgb(247, 250, 252);
 
-  border-radius: 8px;
+  border-radius: 4px;
 
   padding: 12px;
 
@@ -454,7 +460,7 @@
   height: 32px;
 
   border: none;
-  border-radius: 6px;
+  border-radius: 4px;
 
   background: transparent;
 
@@ -485,7 +491,7 @@
   background: white;
 
   border: 1px solid #d1d5db;
-  border-radius: 8px;
+  border-radius: 4px;
 
   padding: 8px 16px;
 

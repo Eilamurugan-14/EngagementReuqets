@@ -75,3 +75,5 @@ ModifiedBy NVARCHAR(100) NULL,
 ModifiedDate DATETIME NULL;
 
 select * from ProficiencyLevels;
+
+EXEC sp_help 'EmployeeProfile';
