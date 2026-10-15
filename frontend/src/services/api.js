@@ -116,3 +116,14 @@ export const deleteEmployeeSkill =
 
     return response.data;
   };
+
+  export const getProficiencyLevels =
+  async () => {
+
+    const response =
+      await axios.get(
+        `${PROFILE_API_URL}/proficiency-levels`
+      );
+
+    return response.data;
+};

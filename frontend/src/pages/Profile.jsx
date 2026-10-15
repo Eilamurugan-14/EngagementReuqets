@@ -44,6 +44,7 @@ import {
   updateEmployeeSkill,
 } from "../services/api";
 
+
 const ITEMS_PER_PAGE = 15;
 
 function Profile() {
@@ -52,7 +53,7 @@ function Profile() {
 const [profile, setProfile] = useState(null);
 const [profileLoading, setProfileLoading] =
   useState(true);
-const [profileError, setProfileError] =
+  const [profileError, setProfileError] =
   useState("");
 
 const [skills, setSkills] = useState([]);
@@ -86,6 +87,10 @@ const [deleteDialogOpen, setDeleteDialogOpen] =
 
 const [skillToDelete, setSkillToDelete] =
   useState(null);
+const [
+  proficiencyLevels,
+  setProficiencyLevels
+] = useState([]);
 
 const normalizedSearchTerm =
   searchTerm.trim().toLowerCase();
@@ -205,11 +210,19 @@ async function loadEmployeeProfile() {
 
 async function loadSkills() {
   try {
+
     const data = await getSkills();
 
-    setAllSkills(data);
+    setAllSkills(data.skills);
+
+    setProficiencyLevels(
+      data.proficiencyLevels
+    );
+
   } catch (error) {
+
     console.error(error);
+
   }
 }
 
@@ -606,8 +619,10 @@ function formatDate(date) {
                     {skill.SkillName}
                   </div>
 
-                  <div className="skill-category">
-                    {skill.Category}
+                  <div
+                    className={`skill-category level-${skill.ProficiencyLevel}`}
+                  >
+                    {skill.LevelName}
                   </div>
 
                 </div>
@@ -663,7 +678,7 @@ function formatDate(date) {
 
             <div className="skill-level">
               {
-                skill.LevelName
+                skill.Category
               }
             </div>
 
@@ -755,21 +770,72 @@ function formatDate(date) {
       <label className="skill-dialog-label" htmlFor="add-skill-level">
         Proficiency Level
       </label>
-      <select
+     <Select
         id="add-skill-level"
-        className="skill-dialog-select"
+        displayEmpty
         value={newLevel}
-        onChange={(event) => setNewLevel(event.target.value)}
+        fullWidth
+        size="small"
+        onChange={(event) =>
+          setNewLevel(event.target.value)
+        }
+        renderValue={(selected) => {
+          if (!selected) {
+           if (!selected) {
+              return (
+                <span className="select-placeholder">
+                  Select Proficiency Level
+                </span>
+              );
+            }
+          }
+
+          const level =
+            proficiencyLevels.find(
+              p =>
+                p.ProficiencyLevelId ===
+                Number(selected)
+            );
+
+          return level
+            ? `${level.ProficiencyLevelId} - ${level.LevelName}`
+            : "";
+        }}
       >
-        <option value="" disabled>
-          Select Proficiency Level
-        </option>
-        <option value={1}>1 - Basic Awareness</option>
-        <option value={2}>2 - Beginner</option>
-        <option value={3}>3 - Working Knowledge</option>
-        <option value={4}>4 - Advanced</option>
-        <option value={5}>5 - Expert / Can Give KT</option>
-      </select>
+        {
+          proficiencyLevels.map(level => (
+            <MenuItem
+              key={level.ProficiencyLevelId}
+              value={level.ProficiencyLevelId}
+            >
+              {level.ProficiencyLevelId} - {level.LevelName}
+            </MenuItem>
+          ))
+        }
+      </Select>
+
+      <div className="proficiency-levels-info">
+
+        <strong>Proficiency Level Guide</strong>
+
+        {proficiencyLevels.map(level => (
+          <div
+            key={level.ProficiencyLevelId}
+            className="proficiency-level-item"
+          >
+            <strong>
+              {level.ProficiencyLevelId} - {level.LevelName}
+            </strong>
+
+            <div>
+              {level.Description}
+            </div>
+          </div>
+        ))}
+
+      </div>
+
+    
     </DialogContent>
     <DialogActions>
       <Button
@@ -815,20 +881,46 @@ function formatDate(date) {
       <label className="skill-dialog-label" htmlFor="edit-skill-level">
         Proficiency Level
       </label>
-      <select
-        id="edit-skill-level"
-        className="skill-dialog-select"
-        value={editingLevel}
-        onChange={(event) =>
-          setEditingLevel(Number(event.target.value))
+      <Select
+          fullWidth
+          size="small"
+          value={editingLevel}
+          onChange={(event) =>
+            setEditingLevel(
+              Number(event.target.value)
+            )
+          }
+        >
+       
+       {
+          proficiencyLevels.map(level => (
+           <MenuItem
+              key={level.ProficiencyLevelId}
+              value={level.ProficiencyLevelId}
+            >
+              {level.ProficiencyLevelId} - {level.LevelName}
+            </MenuItem>
+          ))
         }
-      >
-        <option value={1}>1 - Basic Awareness</option>
-        <option value={2}>2 - Beginner</option>
-        <option value={3}>3 - Working Knowledge</option>
-        <option value={4}>4 - Advanced</option>
-        <option value={5}>5 - Expert / Can Give KT</option>
-      </select>
+      </Select>
+
+      <div className="proficiency-description">
+
+        <strong>Description:</strong>
+
+        <br />
+
+        {
+          proficiencyLevels.find(
+            level =>
+              level.ProficiencyLevelId ===
+              Number(editingLevel)
+          )?.Description
+        }
+
+      </div>
+
+    
     </DialogContent>
     <DialogActions>
       <Button

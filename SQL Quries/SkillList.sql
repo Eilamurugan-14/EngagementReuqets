@@ -350,3 +350,5 @@ DEFAULT GETDATE(),
 ModifiedBy NVARCHAR(100) NULL,
 
 ModifiedDate DATETIME NULL;
+
+UPDATE SkillsMaster SET IsActive=1 WHERE SkillId=208;

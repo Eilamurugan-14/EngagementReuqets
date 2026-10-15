@@ -360,13 +360,9 @@
 }
 
 .skill-dialog-select {
-  min-height: 42px;
-  padding: 0 12px;
-  border: 1px solid #d1d5db;
+  min-width: 100%;
+  margin-top: 8px;
   border-radius: 4px;
-  background: #fff;
-  color: #374151;
-  font: inherit;
 }
 
 .skill-dialog-primary-btn.MuiButton-contained:not(.Mui-disabled) {
@@ -436,6 +432,26 @@
   font-size: 14px;
 }
 .proficiency-dot.filled {
+  color: rgb(0, 125, 163);
+}
+
+.skill-stars.level-1 .proficiency-dot.filled {
+  color: rgb(0, 125, 163, 0.28);
+}
+
+.skill-stars.level-2 .proficiency-dot.filled {
+  color: rgb(0, 125, 163, 0.44);
+}
+
+.skill-stars.level-3 .proficiency-dot.filled {
+  color: rgb(0, 125, 163, 0.62);
+}
+
+.skill-stars.level-4 .proficiency-dot.filled {
+  color: rgb(0, 125, 163, 0.8);
+}
+
+.skill-stars.level-5 .proficiency-dot.filled {
   color: rgb(0, 125, 163);
 }
 
@@ -574,4 +590,71 @@
   font-size: 15px;
 
   margin: 0;
+}
+
+.proficiency-description {
+  margin-top: 12px;
+  padding: 12px;
+  background-color: #f4fafc;
+  border-left: 4px solid rgb(0,125,163);
+  border-radius: 4px;
+  font-size: 14px;
+  line-height: 1.5;
+  color: #444;
+}
+
+.proficiency-levels-info {
+  margin-top: 16px;
+  padding: 12px;
+  background: #f4fafc;
+  border-left: 4px solid rgb(0,125,163);
+  border-radius: 4px;
+}
+
+.proficiency-level-item {
+  margin-top: 10px;
+}
+
+.proficiency-level-item strong {
+  display: block;
+  margin-bottom: 4px;
+  color: rgb(0,125,163);
+}
+
+
+.skill-badge {
+  padding: 4px 10px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 600;
+}
+/* Basic */
+.skill-category.level-1 {
+  background: #E5E7EB;
+  color: #4B5563;
+}
+
+.skill-category.level-2 {
+  background: #DBEAFE;
+  color: #1D4ED8;
+}
+
+.skill-category.level-3 {
+  background: #FEF3C7;
+  color:  #B45309;
+}
+
+.skill-category.level-4 {
+  background: #D1FAE5;
+  color: #065F46;
+}
+
+.skill-category.level-5 {
+  background: rgb(0,125,163);
+  color:  #E0F2FE;
+}
+
+.select-placeholder {
+  color: var(--mui-palette-text-disabled, rgba(0, 0, 0, 0.38));
+  font-weight: 400;
 }

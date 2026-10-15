@@ -12,7 +12,20 @@ async function getSkills(req, res) {
       ORDER BY SkillName
     `);
 
-    res.json(rows);
+    const proficiencyLevels = await all(`
+      SELECT
+        ProficiencyLevelId,
+        LevelName,
+        Description
+      FROM ProficiencyLevels
+      ORDER BY ProficiencyLevelId
+    `);
+
+    res.json({
+      skills: rows,
+      proficiencyLevels,
+    });
+
   } catch (error) {
     console.error(
       "Error fetching skills:",
@@ -24,7 +37,6 @@ async function getSkills(req, res) {
     });
   }
 }
-
 module.exports = {
   getSkills,
 };

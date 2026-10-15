@@ -105,6 +105,7 @@ async function getEmployeeSkills(
     INNER JOIN ProficiencyLevels pl
     ON es.ProficiencyLevel =
       pl.ProficiencyLevelId
+    WHERE es.EmployeeId = ?
       `,
       [req.params.employeeId]
     );
@@ -130,6 +131,17 @@ async function addEmployeeSkill(
       skillId,
       proficiencyLevel,
     } = req.body;
+
+    if (
+      !proficiencyLevel ||
+      proficiencyLevel < 1 ||
+      proficiencyLevel > 5
+    ) {
+      return res.status(400).json({
+        message:
+          "Proficiency level must be between 1 and 5",
+      });
+    }
 
     const existing = await get(
       `
@@ -189,6 +201,22 @@ async function deleteEmployeeSkill(
   res
 ) {
   try {
+
+    const existing = await get(
+      `
+      SELECT *
+      FROM EmployeeSkills
+      WHERE EmployeeSkillId = ?
+      `,
+      [req.params.id]
+    );
+
+    if (!existing) {
+      return res.status(404).json({
+        message: "Skill not found",
+      });
+    }
+
     await run(
       `
       DELETE FROM EmployeeSkills
@@ -201,6 +229,7 @@ async function deleteEmployeeSkill(
       message:
         "Skill deleted successfully",
     });
+
   } catch (error) {
     console.error(error);
 
@@ -210,7 +239,6 @@ async function deleteEmployeeSkill(
     });
   }
 }
-
 async function updateEmployeeSkill(
   req,
   res
@@ -277,10 +305,39 @@ async function updateEmployeeSkill(
   }
 }
 
+async function getProficiencyLevels(
+  req,
+  res
+) {
+  try {
+
+    const rows = await all(`
+      SELECT
+        ProficiencyLevelId,
+        LevelName,
+        Description
+      FROM ProficiencyLevels
+      ORDER BY ProficiencyLevelId
+    `);
+
+    res.json(rows);
+
+  } catch (error) {
+
+    console.error(error);
+
+    res.status(500).json({
+      message:
+        "Unable to fetch proficiency levels",
+    });
+  }
+}
+
 
 module.exports = {
   getEmployeeProfile,
   getAnnouncements,
+  getProficiencyLevels,
   getEmployeeSkills,
   addEmployeeSkill,
   deleteEmployeeSkill,

@@ -101,3 +101,39 @@ DEFAULT 'SYSTEM',
 ModifiedBy NVARCHAR(100) NULL,
 
 ModifiedDate DATETIME NULL;
+
+SELECT * FROM EmployeeSkills;
+
+SELECT *
+FROM EmployeeSkills
+WHERE EmployeeId NOT IN
+(
+    SELECT EmployeeId
+    FROM EmployeeProfile
+);
+
+DELETE FROM EmployeeSkills WHERE EmployeeId='INT999';
+
+ALTER TABLE EmployeeSkills
+ADD CONSTRAINT FK_EmployeeSkills_EmployeeProfile
+FOREIGN KEY(EmployeeId)
+REFERENCES EmployeeProfile(EmployeeId);
+
+CREATE VIEW vwEmployeeSkills
+AS
+SELECT
+    es.EmployeeSkillId,
+    es.EmployeeId,
+    es.SkillId,
+    sm.SkillName,
+    sm.Category,
+    es.ProficiencyLevel,
+    pl.LevelName
+FROM EmployeeSkills es
+INNER JOIN SkillsMaster sm
+    ON es.SkillId = sm.SkillId
+INNER JOIN ProficiencyLevels pl
+    ON es.ProficiencyLevel =
+       pl.ProficiencyLevelId;
+
+SELECT * FROM vwEmployeeSkills;

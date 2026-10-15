@@ -77,3 +77,33 @@ ModifiedDate DATETIME NULL;
 select * from ProficiencyLevels;
 
 EXEC sp_help 'EmployeeProfile';
+
+UPDATE ProficiencyLevels
+SET
+    LevelName = 'Basic',
+    Description = 'Basic understanding of concepts with up to 1 year of exposure.'
+WHERE ProficiencyLevelId = 1;
+
+UPDATE ProficiencyLevels
+SET
+    LevelName = 'Beginner',
+    Description = 'Able to perform simple tasks with guidance and 1+ years of experience.'
+WHERE ProficiencyLevelId = 2;
+
+UPDATE ProficiencyLevels
+SET
+    LevelName = 'Intermediate',
+    Description = 'Intermediate knowledge with hands-on experience and around 2 years of experience.'
+WHERE ProficiencyLevelId = 3;
+
+UPDATE ProficiencyLevels
+SET
+    LevelName = 'Advanced',
+    Description = 'Strong practical expertise with 3-5 years of experience and ability to work independently.'
+WHERE ProficiencyLevelId = 4;
+
+UPDATE ProficiencyLevels
+SET
+    LevelName = 'Expert',
+    Description = 'Expert-level proficiency with 5+ years of experience, capable of mentoring and providing KT.'
+WHERE ProficiencyLevelId = 5;
