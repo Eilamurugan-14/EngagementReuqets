@@ -1,17 +1,13 @@
 import { toast } from "react-toastify";
-import CheckCircleOutlineIcon from "@mui/icons-material/CheckCircleOutline";
-import ErrorOutlineIcon from "@mui/icons-material/ErrorOutline";
-import WarningAmberIcon from "@mui/icons-material/WarningAmber";
-import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
+
+
 export const showSuccessToast = (
   message
 ) => {
   toast.success(
   <div className="custom-toast">
 
-    <div className="toast-icon success">
-      <CheckCircleOutlineIcon />
-    </div>
+
 
     <div className="toast-content">
       <div className="toast-title">
@@ -36,9 +32,7 @@ export const showErrorToast = (
         Error
       </div>
 
-      <div className="toast-icon error">
-        <ErrorOutlineIcon />
-      </div>
+     
 
       <div className="toast-message">
         {message}
@@ -56,9 +50,7 @@ export const showWarningToast = (
         Warning
       </div>
 
-      <div className="toast-icon warning">
-        <WarningAmberIcon />
-      </div>
+     
 
       <div className="toast-message">
         {message}
@@ -76,9 +68,7 @@ export const showInfoToast = (
         Information
       </div>
 
-      <div className="toast-icon info">
-        <InfoOutlinedIcon />
-      </div>
+     
 
       <div className="toast-message">
         {message}

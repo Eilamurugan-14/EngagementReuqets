@@ -600,28 +600,28 @@
 }
 /* Basic */
 .skill-category.level-1 {
-  background: #F3F4F6;
-  color: #6B7280;
+  background:  #F4F4F5;
+  color: #71717A;
 }
 
 .skill-category.level-2 {
-  background: #FDE7D9;
-  color:  #D97706;
+  background: #CFFAFE;
+  color:  #0E7490;
 }
 
 .skill-category.level-3 {
-  background: #FEF3C7;
-  color:  #CA8A04;
+  background: #DCE7F7;
+  color:  #1E40AF;
 }
 
 .skill-category.level-4 {
-  background: #F3E8FF;
-  color:  #A855F7;
+  background: #EDE9FE;
+  color:  #6D28D9;
 }
 
 .skill-category.level-5 {
   background: #DCFCE7;
-  color:  #16A34A;
+  color:  #166534;
 }
 
 .select-placeholder {
@@ -749,4 +749,28 @@
   font-weight: 600;
 
   color: #202020;
+}
+
+/* Primary Buttons */
+
+.add-skill-btn,
+.skill-dialog-primary-btn.MuiButton-contained {
+  background-color: #007DA3 !important;
+  color: white;
+}
+
+.add-skill-btn:hover,
+.skill-dialog-primary-btn.MuiButton-contained:hover {
+  background-color: #007092 !important;
+}
+
+.add-skill-btn:active,
+.skill-dialog-primary-btn.MuiButton-contained:active {
+  background-color: #006381 !important;
+}
+
+.add-skill-btn:disabled,
+.skill-dialog-primary-btn.Mui-disabled {
+  background-color: #BFC6CC !important;
+  color: #FFFFFF !important;
 }
