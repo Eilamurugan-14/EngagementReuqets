@@ -24,7 +24,7 @@ import SearchIcon from "@mui/icons-material/Search";
 import MenuItem from "@mui/material/MenuItem";
 import Select from "@mui/material/Select";
 
-import Tooltip from "@mui/material/Tooltip";
+//import Tooltip from "@mui/material/Tooltip";
 
 import EditIcon from "@mui/icons-material/Edit";
 
@@ -33,7 +33,11 @@ import DialogTitle from "@mui/material/DialogTitle";
 import DialogContent from "@mui/material/DialogContent";
 import DialogActions from "@mui/material/DialogActions";
 import Button from "@mui/material/Button";
-import { toast } from "react-toastify";
+import {
+  showSuccessToast,
+  showWarningToast,
+  showErrorToast,
+} from "../utils/toastUtils";
 
 import {
   getSkills,
@@ -254,7 +258,7 @@ function closeAddDialog() {
 
 async function addSkill() {
   if (!selectedSkill || !newLevel) {
-    toast.warning("Select a skill and proficiency level.");
+    showWarningToast("Select a skill and proficiency level.");
     return;
   }
 
@@ -267,9 +271,9 @@ async function addSkill() {
 
     closeAddDialog();
     await loadEmployeeSkills();
-    toast.success("Skill added successfully");
+    showSuccessToast("Skill added successfully");
   } catch (error) {
-    toast.error(
+    showErrorToast(
       error?.response?.data?.message ||
         "Unable to add skill"
     );
@@ -309,10 +313,10 @@ async function confirmDeleteSkill() {
 
     await loadEmployeeSkills();
     closeDeleteDialog();
-    toast.success("Skill deleted successfully");
+    showSuccessToast("Skill deleted successfully");
   } catch (error) {
     console.error(error);
-    toast.error(
+    showErrorToast(
       error?.response?.data?.message ||
         "Unable to delete skill"
     );
@@ -332,17 +336,18 @@ async function saveSkillLevel() {
 
     await loadEmployeeSkills();
     closeEditDialog();
-    toast.success("Skill updated successfully");
+    showSuccessToast("Skill updated successfully");
   } catch (error) {
     console.error(error);
-    toast.error(
+    showErrorToast(
       error?.response?.data?.message ||
         "Unable to update skill"
     );
   }
 }
 
-function renderProficiency(level) {
+/*
+  function renderProficiency(level) {
   return Array.from(
     { length: 5 },
     (_, index) => (
@@ -359,7 +364,7 @@ function renderProficiency(level) {
     )
   );
 }
-
+*/
 function formatDate(date) {
   if (!date) {
     return "-";
@@ -536,7 +541,7 @@ function formatDate(date) {
       placeholder="Search skills by name or category..."
       value={searchTerm}
       onChange={(event) => {
-        setSearchTerm(event.target.value)
+        setSearchTerm(event.target.value);
         setCurrentPage(1);
       }}
       InputProps={{
@@ -619,12 +624,6 @@ function formatDate(date) {
                     {skill.SkillName}
                   </div>
 
-                  <div
-                    className={`skill-category level-${skill.ProficiencyLevel}`}
-                  >
-                    {skill.LevelName}
-                  </div>
-
                 </div>
 
               <div className="skill-actions">
@@ -651,7 +650,7 @@ function formatDate(date) {
               </div>
 
             </div>
-
+          {/*
             <Tooltip
               arrow
               placement="top"
@@ -667,6 +666,8 @@ function formatDate(date) {
                   </div>
                 }
             >
+
+              
               <div
                 className={`skill-stars level-${skill.ProficiencyLevel}`}
                 role="img"
@@ -674,7 +675,13 @@ function formatDate(date) {
               >
                 {renderProficiency(skill.ProficiencyLevel)}
               </div>
-            </Tooltip>
+            </Tooltip> */}
+
+             <div
+                    className={`skill-category level-${skill.ProficiencyLevel}`}
+              >
+                    {skill.LevelName}
+              </div>
 
             <div className="skill-level">
               {
@@ -780,7 +787,7 @@ function formatDate(date) {
           setNewLevel(event.target.value)
         }
         renderValue={(selected) => {
-          if (!selected) {
+          
            if (!selected) {
               return (
                 <span className="select-placeholder">
@@ -788,7 +795,7 @@ function formatDate(date) {
                 </span>
               );
             }
-          }
+          
 
           const level =
             proficiencyLevels.find(
@@ -797,18 +804,26 @@ function formatDate(date) {
                 Number(selected)
             );
 
-          return level
-            ? `${level.ProficiencyLevelId} - ${level.LevelName}`
-            : "";
+          return level ? (
+            <span
+              className={`skill-category level-${level.ProficiencyLevelId}`}
+            >
+              {level.LevelName}
+            </span>
+          ) : "";
         }}
       >
         {
           proficiencyLevels.map(level => (
-            <MenuItem
+           <MenuItem
               key={level.ProficiencyLevelId}
               value={level.ProficiencyLevelId}
             >
-              {level.ProficiencyLevelId} - {level.LevelName}
+              <span
+                className={`skill-category level-${level.ProficiencyLevelId}`}
+              >
+                {level.LevelName}
+              </span>
             </MenuItem>
           ))
         }
@@ -898,7 +913,11 @@ function formatDate(date) {
               key={level.ProficiencyLevelId}
               value={level.ProficiencyLevelId}
             >
-              {level.ProficiencyLevelId} - {level.LevelName}
+              <span
+                className={`skill-category level-${level.ProficiencyLevelId}`}
+              >
+                {level.LevelName}
+              </span>
             </MenuItem>
           ))
         }

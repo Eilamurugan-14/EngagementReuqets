@@ -160,7 +160,6 @@
   flex-wrap: nowrap;
   margin-bottom: 16px;
 }
-
 .skills-search {
   flex: 1 1 360px;
   width: auto;
@@ -170,25 +169,29 @@
 }
 
 .skills-search .MuiOutlinedInput-root {
-  border-radius: 8px;
+  border-radius: 3px;
 }
 
+
+
+.skills-search .MuiInputLabel-root.Mui-focused {
+  color: rgb(0, 125, 163);
+}
+
+
+
 .add-skill-btn {
-  height: 42px;
+  height: 36px;
+  border-radius: 3px;
+  padding: 10px 16px;
 
   border: none;
-  border-radius: 4px;
 
   background: rgb(0, 125, 163);
   color: white;
 
-  padding: 0 20px;
-
-  font-weight: 600;
-
+  font-weight: 500;
   cursor: pointer;
-  white-space: nowrap;
-  transition: 0.2s ease;
 }
 
 .add-skill-btn:hover {
@@ -215,7 +218,7 @@
 .skills-sort-select.MuiInputBase-root {
   height: 42px;
   min-width: 230px;
-  border-radius: 4px;
+  border-radius: 3px;
   background: #fff;
 }
 
@@ -321,7 +324,7 @@
   height: 38px;
   padding: 0 12px;
   border: 1px solid #d1d5db;
-  border-radius: 4px;
+  border-radius: 3px;
   background: #fff;
   color: #374151;
   cursor: pointer;
@@ -350,7 +353,7 @@
   display: flex;
   flex-direction: column;
   gap: 16px;
-  padding-top: 24px;
+  padding: 24px !important;
 }
 
 .skill-dialog-label {
@@ -371,7 +374,10 @@
 
 .skill-dialog-primary-btn.MuiButton-root,
 .skill-dialog-cancel-btn.MuiButton-root {
-  border-radius: 4px;
+  height: 36px;
+  border-radius: 3px;
+  padding: 10px 16px;
+  text-transform: none;
 }
 
 .skill-dialog-primary-btn.MuiButton-contained:not(.Mui-disabled):hover {
@@ -393,7 +399,7 @@
 
   border-radius: 4px;
 
-  padding: 12px;
+  padding: 16px 24px;
 
   min-height: 50px;
 }
@@ -409,7 +415,7 @@
 .skill-grid-card {
   display: flex;
   flex-direction: column;
-
+  
   height: 100%;
 }
 
@@ -420,40 +426,18 @@
 }
 
 /* ---------- Skill Name ---------- */
-
 .skill-name {
   font-size: 15px;
   font-weight: 400;
-
   color: #111827;
+
+  margin-bottom: 6px;
 }
 .proficiency-dot {
   color: #d1d5db;
   font-size: 14px;
 }
-.proficiency-dot.filled {
-  color: rgb(0, 125, 163);
-}
 
-.skill-stars.level-1 .proficiency-dot.filled {
-  color: rgb(0, 125, 163, 0.28);
-}
-
-.skill-stars.level-2 .proficiency-dot.filled {
-  color: rgb(0, 125, 163, 0.44);
-}
-
-.skill-stars.level-3 .proficiency-dot.filled {
-  color: rgb(0, 125, 163, 0.62);
-}
-
-.skill-stars.level-4 .proficiency-dot.filled {
-  color: rgb(0, 125, 163, 0.8);
-}
-
-.skill-stars.level-5 .proficiency-dot.filled {
-  color: rgb(0, 125, 163);
-}
 
 
 
@@ -542,21 +526,7 @@
   color: rgb(0, 125, 163);
 }
 
-.skill-category {
-  display: inline-block;
 
-  width: fit-content;
-
-  padding: 2px 8px;
-
-  border-radius: 20px;
-
-  font-size: 12px;
-  font-weight: 500;
-
-  background: #e6f4ff;
-  color: rgb(0, 125, 163);
-}
 
 .skill-title-section {
   display: flex;
@@ -618,7 +588,7 @@
 .proficiency-level-item strong {
   display: block;
   margin-bottom: 4px;
-  color: rgb(0,125,163);
+  color: #202020;
 }
 
 
@@ -630,31 +600,153 @@
 }
 /* Basic */
 .skill-category.level-1 {
-  background: #E5E7EB;
-  color: #4B5563;
+  background: #F3F4F6;
+  color: #6B7280;
 }
 
 .skill-category.level-2 {
-  background: #DBEAFE;
-  color: #1D4ED8;
+  background: #FDE7D9;
+  color:  #D97706;
 }
 
 .skill-category.level-3 {
   background: #FEF3C7;
-  color:  #B45309;
+  color:  #CA8A04;
 }
 
 .skill-category.level-4 {
-  background: #D1FAE5;
-  color: #065F46;
+  background: #F3E8FF;
+  color:  #A855F7;
 }
 
 .skill-category.level-5 {
-  background: rgb(0,125,163);
-  color:  #E0F2FE;
+  background: #DCFCE7;
+  color:  #16A34A;
 }
 
 .select-placeholder {
   color: var(--mui-palette-text-disabled, rgba(0, 0, 0, 0.38));
   font-weight: 400;
+}
+
+/* Empty dots */
+.proficiency-dot {
+  color: #E5E7EB;
+}
+
+/* Basic */
+.skill-stars.level-1 .proficiency-dot.filled {
+  color: #9CA3AF;
+}
+
+/* Beginner */
+.skill-stars.level-2 .proficiency-dot.filled {
+  color: #FB923C;
+}
+
+/* Intermediate */
+.skill-stars.level-3 .proficiency-dot.filled {
+  color: #EAB308;
+}
+
+/* Advanced */
+.skill-stars.level-4 .proficiency-dot.filled {
+  color: #A855F7;
+}
+
+/* Expert */
+.skill-stars.level-5 .proficiency-dot.filled {
+  color: #22C55E;
+}
+
+.proficiency-option.level-1 {
+  color: #6B7280;
+}
+
+.proficiency-option.level-2 {
+  color: #D97706;
+}
+
+.proficiency-option.level-3 {
+  color: #CA8A04;
+}
+
+.proficiency-option.level-4 {
+  color: #A855F7;
+}
+
+.proficiency-option.level-5 {
+  color: #16A34A;
+}
+
+.skill-category {
+  display: inline-flex;
+  align-items: center;
+
+  height: 24px;
+  width: fit-content;
+  padding: 6px 8px;
+
+  border-radius: 3px;
+
+  font-size: 12px;
+  font-weight: 500;
+  margin-bottom: 6px;
+  box-sizing: border-box;
+}
+
+.MuiMenuItem-root .skill-category {
+  font-size: 12px;
+  padding: 2px 8px;
+}
+
+/* TextField Focus */
+.MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline {
+  border-color: rgb(0, 125, 163) !important;
+}
+
+/* Floating Label Focus */
+.MuiInputLabel-root.Mui-focused {
+  color: rgb(0, 125, 163) !important;
+}
+
+/* Select Focus */
+.Mui-focused .MuiOutlinedInput-notchedOutline {
+  border-color: rgb(0, 125, 163) !important;
+}
+
+.MuiMenuItem-root.Mui-selected {
+  background-color: rgba(0, 125, 163, 0.12) !important;
+}
+
+.MuiMenuItem-root.Mui-selected:hover {
+  background-color: rgba(0, 125, 163, 0.18) !important;
+}
+
+.MuiAutocomplete-option[aria-selected="true"] {
+  background-color: rgba(0, 125, 163, 0.12) !important;
+}
+
+.MuiOutlinedInput-root.Mui-focused
+  .MuiOutlinedInput-notchedOutline {
+  border-color: rgb(0, 125, 163) !important;
+  border-width: 2px !important;
+}
+
+.MuiDialogActions-root {
+  background-color: #F2F3F5;
+  border-top: 1px solid #E5E7EB;
+
+  padding: 24px !important;
+
+  justify-content: flex-end;
+}
+
+.MuiDialogTitle-root {
+  padding: 24px 24px 12px 24px !important;
+
+  font-size: 28px;
+  font-weight: 600;
+
+  color: #202020;
 }

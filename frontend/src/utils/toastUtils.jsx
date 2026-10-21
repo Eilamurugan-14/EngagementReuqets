@@ -1,0 +1,88 @@
+import { toast } from "react-toastify";
+import CheckCircleOutlineIcon from "@mui/icons-material/CheckCircleOutline";
+import ErrorOutlineIcon from "@mui/icons-material/ErrorOutline";
+import WarningAmberIcon from "@mui/icons-material/WarningAmber";
+import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
+export const showSuccessToast = (
+  message
+) => {
+  toast.success(
+  <div className="custom-toast">
+
+    <div className="toast-icon success">
+      <CheckCircleOutlineIcon />
+    </div>
+
+    <div className="toast-content">
+      <div className="toast-title">
+        Success
+      </div>
+
+      <div className="toast-message">
+        {message}
+      </div>
+    </div>
+
+  </div>
+);
+};
+
+export const showErrorToast = (
+  message
+) => {
+  toast.error(
+    <div className="custom-toast">
+      <div className="toast-title">
+        Error
+      </div>
+
+      <div className="toast-icon error">
+        <ErrorOutlineIcon />
+      </div>
+
+      <div className="toast-message">
+        {message}
+      </div>
+    </div>
+  );
+};
+
+export const showWarningToast = (
+  message
+) => {
+  toast.warning(
+    <div className="custom-toast">
+      <div className="toast-title">
+        Warning
+      </div>
+
+      <div className="toast-icon warning">
+        <WarningAmberIcon />
+      </div>
+
+      <div className="toast-message">
+        {message}
+      </div>
+    </div>
+  );
+};
+
+export const showInfoToast = (
+  message
+) => {
+  toast.info(
+    <div className="custom-toast">
+      <div className="toast-title">
+        Information
+      </div>
+
+      <div className="toast-icon info">
+        <InfoOutlinedIcon />
+      </div>
+
+      <div className="toast-message">
+        {message}
+      </div>
+    </div>
+  );
+};

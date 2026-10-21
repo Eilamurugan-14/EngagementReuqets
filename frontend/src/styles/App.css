@@ -198,6 +198,85 @@
   text-transform: none;
 }
 
+.Toastify__toast {
+  border-radius: 4px;
+  background: #ffffff;
+  color: #202020;
+
+  padding: 0;
+  min-height: 56px;
+
+  box-shadow:
+    0 2px 12px rgba(0,0,0,0.12);
+}
+
+.Toastify__toast-body {
+  padding: 16px;
+  margin: 0;
+}
+
+.toast-title {
+  font-size: 14px;
+  font-weight: 600;
+  color: #202020;
+  margin-bottom: 2px;
+}
+
+.toast-message {
+  font-size: 14px;
+  color: #555;
+}
+
+.custom-toast {
+  display: flex;
+  align-items: stretch;
+
+  margin: -16px;
+}
+
+.toast-icon {
+  width: 52px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  color: white;
+}
+
+.toast-icon.success {
+  background: #008A1E;
+}
+
+.toast-icon.warning {
+  background: #B85A00;
+}
+
+.toast-icon.error {
+  background: #9D1235;
+}
+
+.toast-icon.info {
+  background: #005F7A;
+}
+
+.toast-content {
+  padding: 12px 16px;
+  background: white;
+
+  flex: 1;
+}
+
+.toast-title {
+  font-weight: 600;
+  color: #202020;
+}
+
+.toast-message {
+  color: #555;
+  margin-top: 2px;
+}
+
 @media (max-width: 640px) {
   .skills-release-heading {
     padding: 18px 60px 14px 20px;

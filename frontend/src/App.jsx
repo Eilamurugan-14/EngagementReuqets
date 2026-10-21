@@ -133,7 +133,7 @@ function App() {
         autoClose={3000}
         pauseOnHover
         closeButton
-        theme="colored"
+        hideProgressBar
       />
       <SkillsReleaseNotes />
       <Header
