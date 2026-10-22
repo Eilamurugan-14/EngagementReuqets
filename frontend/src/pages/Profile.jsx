@@ -684,9 +684,9 @@ function formatDate(date) {
               </div>
 
             <div className="skill-level">
-              {
-                skill.Category
-              }
+              
+                Category : {skill.Category}
+              
             </div>
 
           </div>
