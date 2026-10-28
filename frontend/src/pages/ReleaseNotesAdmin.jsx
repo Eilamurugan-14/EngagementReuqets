@@ -34,6 +34,10 @@ import MenuItem from "@mui/material/MenuItem";
 
 import AssignmentTurnedInOutlinedIcon from "@mui/icons-material/AssignmentTurnedInOutlined";
 
+
+import Autocomplete from "@mui/material/Autocomplete";
+import Chip from "@mui/material/Chip";
+
 function ReleaseNotesAdmin() {
   const [releaseNotes, setReleaseNotes] =
     useState([]);
@@ -56,8 +60,8 @@ function ReleaseNotesAdmin() {
   const [releaseType, setReleaseType] =
   useState("Major Release");
 
-  const [audience, setAudience] =
-  useState("All Employees");
+  const [audiences, setAudiences] =
+  useState(["All Employees"]);
 
   const [summary, setSummary] =
   useState("");
@@ -76,6 +80,14 @@ function ReleaseNotesAdmin() {
 
   const [actionRequired, setActionRequired] =
   useState("");
+
+const [visibleSections, setVisibleSections] =
+  useState([
+    "summary",
+    "features",
+    "benefits",
+    "improvements",
+  ]);
 
   const [editingNote, setEditingNote] =
   useState(null);
@@ -108,12 +120,28 @@ function handleEdit(note) {
   setVersion(note.Version || "");
   setSummary(note.Summary || "");
 
+
   const parsedContent =
     note.ContentJson
       ? JSON.parse(
           note.ContentJson
         )
       : [];
+
+   const visibilityBlock =
+    parsedContent.find(
+      block =>
+        block.type === "visibility"
+    );
+
+   setVisibleSections(
+    visibilityBlock?.sections || [
+      "summary",
+      "features",
+      "benefits",
+      "improvements",
+    ]
+  );
 
   const featuresBlock =
     parsedContent.find(
@@ -190,9 +218,9 @@ const audienceBlock =
   "Major Release"
 );
 
-setAudience(
+setAudiences(
   audienceBlock?.value ||
-  "All Employees"
+  ["All Employees"]
 );
 
   setAddDialogOpen(true);
@@ -240,9 +268,15 @@ function openAddDialog() {
   setReleaseType(
   "Major Release"
 );
+setVisibleSections([
+  "summary",
+  "features",
+  "benefits",
+  "improvements",
+]);
 
-setAudience(
-  "All Employees"
+setAudiences(
+  ["All Employees"]
 );
   setAddDialogOpen(true);
 }
@@ -272,6 +306,10 @@ async function saveReleaseNote() {
 
     const contentJson =
     JSON.stringify([
+      {
+        type: "visibility",
+        sections: visibleSections,
+      },
 
       {
         type: "releaseType",
@@ -280,7 +318,7 @@ async function saveReleaseNote() {
 
       {
         type: "audience",
-        value: audience,
+        value: audiences,
       },
       {
         type: "summary",
@@ -397,7 +435,6 @@ const content =
         selectedNote.ContentJson
       )
     : [];
-    
 
 
 
@@ -499,6 +536,55 @@ const content =
       Release Information
     </div>
 
+    <div className="builder-section-header">
+  Visible Sections
+</div>
+
+<div className="content-builder-card">
+
+  <Autocomplete
+    multiple
+    options={[
+      "summary",
+      "features",
+      "benefits",
+      "improvements",
+      "knownIssues",
+      "actionRequired",
+    ]}
+    value={visibleSections}
+    onChange={(_, value) =>
+      setVisibleSections(value)
+    }
+    renderTags={(value, getTagProps) =>
+      value.map((option, index) => (
+
+        <Chip
+          label={
+            option === "knownIssues"
+              ? "Known Issues"
+              : option === "actionRequired"
+              ? "Action Required"
+              : option.charAt(0).toUpperCase() +
+                option.slice(1)
+          }
+          {...getTagProps({ index })}
+          key={option}
+        />
+
+      ))
+    }
+    renderInput={(params) => (
+      <TextField
+        {...params}
+        label="Visible Sections"
+        placeholder="Select sections"
+      />
+    )}
+  />
+
+</div>
+
     <div className="content-builder-card">
 
       <TextField
@@ -563,37 +649,39 @@ const content =
 
     <div className="content-builder-card">
 
+  <Autocomplete
+    multiple
+    options={[
+      "All Employees",
+      "HR",
+      "Managers",
+      "Engineering",
+    ]}
+    value={audiences}
+    onChange={(_, value) =>
+      setAudiences(value)
+    }
+    renderTags={(value, getTagProps) =>
+      value.map((option, index) => (
+
+        <Chip
+          label={option}
+          {...getTagProps({ index })}
+          key={option}
+        />
+
+      ))
+    }
+    renderInput={(params) => (
       <TextField
-        select
-        label="Audience"
-        value={audience}
-        onChange={(event) =>
-          setAudience(
-            event.target.value
-          )
-        }
-        fullWidth
-        size="small"
-      >
-        <MenuItem value="All Employees">
-          All Employees
-        </MenuItem>
+        {...params}
+        label="Target Audience"
+        placeholder="Select audience"
+      />
+    )}
+  />
 
-        <MenuItem value="Managers">
-          Managers
-        </MenuItem>
-
-        <MenuItem value="HR">
-          HR
-        </MenuItem>
-
-        <MenuItem value="Engineering">
-          Engineering
-        </MenuItem>
-
-      </TextField>
-
-    </div>
+</div>
 
     <div className="builder-section-header">
       Content Builder
@@ -728,18 +816,12 @@ const content =
           gap: "8px",
         }}
       >
-        <span className="preview-pill">
-          {releaseType}
-        </span>
-
-        <span className="preview-pill">
-          {audience}
-        </span>
       </div>
 
     </div>
 
-    {summary && (
+    {visibleSections.includes("summary") &&
+      summary && (
 
       <section className="preview-section">
 
@@ -756,7 +838,8 @@ const content =
 
     )}
 
-    {features.trim() && (
+    {visibleSections.includes ("features") &&
+    features.trim() && (
 
       <section className="preview-section">
 
@@ -787,7 +870,8 @@ const content =
 
     )}
 
-    {benefits.trim() && (
+    {visibleSections.includes("benefits") &&
+    benefits.trim() && (
 
       <section className="preview-section">
 
@@ -818,7 +902,8 @@ const content =
 
     )}
 
-    {improvements.trim() && (
+    {visibleSections.includes("improvements") &&
+    improvements.trim() && (
 
       <section className="preview-section">
 
@@ -849,7 +934,8 @@ const content =
 
     )}
 
-    {knownIssues.trim() && (
+    {visibleSections.includes("knownIssues") &&
+    knownIssues.trim() && (
 
       <section className="preview-section">
 
@@ -880,7 +966,8 @@ const content =
 
     )}
 
-    {actionRequired.trim() && (
+    {visibleSections.includes("actionRequired") &&
+    actionRequired.trim() && (
 
       <section className="preview-section">
 

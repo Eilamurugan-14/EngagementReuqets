@@ -205,16 +205,17 @@ async function getLatestPublishedReleaseNote(
   try {
 
     const rows = await all(`
-      SELECT TOP 1
-        ReleaseNoteId,
-        Title,
-        Version,
-        Summary,
-        ContentJson
-      FROM XopsReleaseNotes
-      WHERE IsPublished = 1
-      ORDER BY ReleaseNoteId DESC
-    `);
+    SELECT TOP 1
+    ReleaseNoteId,
+    Title,
+    Version,
+    Summary,
+    ContentJson,
+CAST(CreatedDate AS VARCHAR(50)) AS CreatedDateFROM XopsReleaseNotes
+WHERE IsPublished = 1
+ORDER BY ReleaseNoteId DESC;
+
+  `);
 
     res.json(
       rows.length

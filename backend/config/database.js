@@ -74,22 +74,44 @@ async function all(
     );
 
   try {
+
     const query =
       formatQuery(
         sql,
         parameters
       );
 
-  const result =
-  await conn.query(query);
+    console.log(
+      "\nExecuting Query:\n",
+      query
+    );
 
+    const result =
+      await conn.query(query);
 
+    console.log(
+      "Rows Returned:",
+      result?.length
+    );
 
-return Array.isArray(result)
-  ? result
-  : [];
+    return Array.isArray(result)
+      ? result
+      : [];
+
+  } catch (error) {
+
+    console.error(
+      "Database Error:"
+    );
+
+    console.error(error);
+
+    throw error;
+
   } finally {
+
     await conn.close();
+
   }
 }
 
