@@ -80,12 +80,14 @@ async function all(
         parameters
       );
 
-    const result =
-      await conn.query(query);
+  const result =
+  await conn.query(query);
 
-    return Array.isArray(result)
-      ? result
-      : [];
+
+
+return Array.isArray(result)
+  ? result
+  : [];
   } finally {
     await conn.close();
   }

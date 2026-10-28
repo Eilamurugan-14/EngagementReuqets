@@ -8,6 +8,9 @@ const SKILLS_API_URL =
 const PROFILE_API_URL =
   "http://localhost:5000/api/profile";
 
+const RELEASE_NOTES_API_URL =
+  "http://localhost:5000/api/release-notes";
+
 // Get all requests
 export const getRequests = async () => {
   const response = await axios.get(API_URL);
@@ -123,6 +126,83 @@ export const deleteEmployeeSkill =
     const response =
       await axios.get(
         `${PROFILE_API_URL}/proficiency-levels`
+      );
+
+    return response.data;
+};
+
+export const getReleaseNotes =
+  async () => {
+    const response =
+      await axios.get(
+        RELEASE_NOTES_API_URL
+      );
+
+    return response.data;
+  };
+
+  export const addReleaseNote =
+  async (releaseNoteData) => {
+    const response =
+      await axios.post(
+        RELEASE_NOTES_API_URL,
+        releaseNoteData
+      );
+
+    return response.data;
+  };
+
+  export const updateReleaseNote =
+  async (
+    id,
+    releaseNoteData
+  ) => {
+    const response =
+      await axios.put(
+        `${RELEASE_NOTES_API_URL}/${id}`,
+        releaseNoteData
+      );
+
+    return response.data;
+  };
+
+  export const deleteReleaseNote =
+  async (id) => {
+    const response =
+      await axios.delete(
+        `${RELEASE_NOTES_API_URL}/${id}`
+      );
+
+    return response.data;
+  };
+
+  export const togglePublish =
+  async (id) => {
+    const response =
+      await axios.patch(
+        `${RELEASE_NOTES_API_URL}/${id}/publish`
+      );
+
+    return response.data;
+  };
+
+  export const getLatestPublishedReleaseNote =
+  async () => {
+
+    const response =
+      await axios.get(
+        `${RELEASE_NOTES_API_URL}/latest-published`
+      );
+
+    return response.data;
+};
+
+  export const getPublishedReleaseNotes =
+  async () => {
+
+    const response =
+      await axios.get(
+        `${RELEASE_NOTES_API_URL}/published`
       );
 
     return response.data;

@@ -8,10 +8,16 @@ import FactCheckIcon from "@mui/icons-material/FactCheck";
 import PersonIcon from "@mui/icons-material/Person";
 import GroupsIcon from "@mui/icons-material/Groups";
 
+
 function Sidebar({ collapsed, mobileOpen, onNavigate }) {
   const menuItems = [
     { label: "Dashboard", path: "/", icon: <DashboardIcon /> },
     { label: "Profile", path: "/profile", icon: <PersonIcon /> },
+    {
+      label: "Admin",
+      path: "/release-notes",
+      icon: <PersonIcon />,
+    },
     {
       label: "Engagement Request",
       path: "/requests",

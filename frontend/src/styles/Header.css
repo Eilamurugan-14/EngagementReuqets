@@ -49,3 +49,6 @@
   font-weight: 600;
   cursor: pointer;
 }
+.header-right .MuiBadge-badge {
+  background-color: #007DA3;
+}

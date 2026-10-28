@@ -1,0 +1,333 @@
+.ag-theme-quartz {
+  --ag-selected-row-background-color:
+    rgba(0, 125, 163, 0.08);
+
+  --ag-range-selection-background-color:
+    rgba(0, 125, 163, 0.12);
+
+  --ag-input-focus-border-color:
+    #007DA3;
+
+  --ag-checkbox-checked-color:
+    #007DA3;
+
+  --ag-alpine-active-color:
+    #007DA3;
+}
+
+.release-notes-page {
+  flex: 1;
+  padding: 16px;
+  background: #f2f2f2;
+}
+
+.release-notes-title {
+  margin-bottom: 16px;
+  padding-bottom: 12px;
+
+  font-size: 24px;
+  font-weight: 500;
+
+  border-bottom: 1px solid #d1d5db;
+}
+
+.add-release-note-btn {
+  height: 36px;
+
+  border: none;
+
+  border-radius: 3px;
+
+  background: #007DA3;
+
+  color: white;
+
+  padding: 10px 16px;
+
+  cursor: pointer;
+
+  margin-bottom: 16px;
+}
+
+.release-notes-list {
+  display: grid;
+
+  gap: 16px;
+}
+
+.release-note-card {
+  background: white;
+
+  border-radius: 4px;
+
+  padding: 16px;
+
+  border: 1px solid #E5E7EB;
+}
+
+.admin-panel-card {
+  background: white;
+
+  border-radius: 4px;
+
+  padding: 16px;
+}
+
+.admin-panel-card .MuiTabs-indicator {
+  background-color: #007DA3;
+}
+
+.admin-panel-card .Mui-selected {
+  color: #007DA3 !important;
+}
+
+.admin-panel-card .MuiTabs-root {
+  margin-bottom: 16px;
+}
+
+.release-notes-toolbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  gap: 16px;
+
+  margin-bottom: 16px;
+}
+
+.release-notes-search {
+  flex: 1;
+  max-width: 420px;
+
+  height: 36px;
+
+  padding: 0 12px;
+
+  border: 1px solid #D1D5DB;
+  border-radius: 3px;
+
+  font-size: 14px;
+
+  outline: none;
+}
+
+.release-notes-search:focus {
+  border-color: #007DA3;
+
+  box-shadow:
+    0 0 0 2px
+    rgba(0, 125, 163, 0.15);
+}
+
+.status-published {
+  color: #0fb618;
+  font-weight: bold;
+}
+
+.status-unpublished {
+  color: #007DA3;
+  font-weight: bold;
+}
+
+.release-preview-header {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.release-preview-badge {
+  color: #007DA3;
+
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.release-preview-title {
+  margin: 0;
+
+  color: #111827;
+
+  font-size: 28px;
+  font-weight: 600;
+}
+
+.release-preview-version {
+  color: #6B7280;
+
+  font-size: 14px;
+}
+
+.preview-section {
+  padding: 24px 0;
+
+  border-top: 1px solid #E5E7EB;
+}
+
+.preview-section h3 {
+  color: #111827;
+
+  font-size: 16px;
+
+  margin-bottom: 8px;
+}
+
+.preview-section p {
+  color: #4B5563;
+
+  line-height: 1.6;
+}
+
+.preview-section-title {
+  margin-bottom: 16px;
+
+  font-size: 18px;
+  font-weight: 600;
+
+  color: #111827;
+}
+
+.preview-summary {
+  background: #F4FAFC;
+
+  border-left: 4px solid #007DA3;
+
+  padding: 16px;
+
+  border-radius: 4px;
+
+  color: #374151;
+
+  line-height: 1.7;
+}
+
+.release-preview-version {
+  display: inline-flex;
+
+  width: fit-content;
+
+  background: #E6F7FB;
+
+  color: #007DA3;
+
+  padding: 4px 10px;
+
+  border-radius: 999px;
+
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.preview-list {
+  display: flex;
+   border-left: 4px solid #007DA3;
+  flex-direction: column;
+
+  gap: 10px;
+}
+
+.preview-list-item {
+  padding: 12px 16px;
+   
+  background: #F8FAFC;
+
+  border-radius: 4px;
+
+  color: #374151;
+}
+
+.release-preview-dialog
+  .MuiDialogContent-root {
+  padding: 24px !important;
+}
+
+.release-preview-titlebar {
+  display: flex;
+
+  justify-content: space-between;
+
+  align-items: flex-start;
+}
+
+.release-note-view-later {
+  color: #007DA3 !important;
+
+  font-weight: 600 !important;
+}
+
+.release-note-view-later:hover {
+  background-color: rgba(
+    0,
+    125,
+    163,
+    0.08
+  ) !important;
+}
+
+.content-builder-card {
+  padding: 16px;
+
+  border: 1px solid #E5E7EB;
+
+  border-radius: 8px;
+
+  background: #FAFCFD;
+}
+
+.preview-title-row {
+  display: flex;
+
+  align-items: center;
+
+  gap: 8px;
+
+  color: #007DA3;
+
+  font-weight: 600;
+}
+
+.preview-pill {
+  background: #E6F7FB;
+
+  color: #007DA3;
+
+  padding: 4px 10px;
+
+  border-radius: 999px;
+
+  font-size: 12px;
+
+  font-weight: 600;
+}
+
+.builder-layout {
+  display: grid;
+
+  grid-template-columns:
+    1fr 1fr;
+
+  gap: 24px;
+
+  min-height: 600px;
+}
+
+.builder-form {
+  display: flex;
+
+  flex-direction: column;
+
+  gap: 20px;
+
+  max-height: 650px;
+
+  overflow-y: auto;
+
+  padding-right: 12px;
+}
+.builder-preview {
+  border-left:
+    1px solid #E5E7EB;
+
+  padding-left: 24px;
+
+  overflow-y: auto;
+}
