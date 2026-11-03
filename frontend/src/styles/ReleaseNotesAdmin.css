@@ -374,3 +374,30 @@
 
   font-weight: 600 !important;
 }
+
+.release-preview-date {
+  margin-top: 6px;
+
+  font-size: 13px;
+
+  color: #6b7280;
+
+  font-weight: 500;
+}
+
+.release-preview-date {
+  margin-top: 6px;
+  font-size: 13px;
+  color: #6b7280;
+  font-weight: 500;
+}
+
+.release-preview-close {
+  margin-left: auto;
+}
+
+.release-preview-header-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}

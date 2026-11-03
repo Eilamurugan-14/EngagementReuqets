@@ -64,3 +64,14 @@ FROM XopsReleaseNotes;
 
 sp_help XopsReleaseNotes
 
+ALTER TABLE XopsReleaseNotes
+ADD PublishedDateText NVARCHAR(50) NULL;
+
+UPDATE XopsReleaseNotes
+SET PublishedDateText =
+  CONVERT(
+    VARCHAR(50),
+    PublishedDate,
+    106
+  )
+WHERE PublishedDate IS NOT NULL;

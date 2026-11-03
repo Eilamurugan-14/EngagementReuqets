@@ -12,7 +12,6 @@ async function getReleaseNotes(req, res) {
       Title,
       Version,
       IsPublished,
-      PublishedDate,
       CreatedBy,
       CreatedDate,
       Summary,
@@ -161,6 +160,89 @@ async function togglePublish(req, res) {
   try {
     const { id } = req.params;
 
+    const note = await get(
+      `
+      SELECT
+        IsPublished,
+        ContentJson
+      FROM XopsReleaseNotes
+      WHERE ReleaseNoteId = ?
+      `,
+      [id]
+    );
+    console.log(
+  "IsPublished:",
+  note.IsPublished,
+  typeof note.IsPublished
+);
+    let content = [];
+
+    try {
+      content = note?.ContentJson
+        ? JSON.parse(note.ContentJson)
+        : [];
+    } catch {
+      content = [];
+    }
+
+    if (Number(note.IsPublished) === 0) {
+
+      const publishedDate =
+        new Date().toLocaleDateString(
+          "en-IN",
+          {
+            day: "numeric",
+            month: "short",
+            year: "numeric",
+          }
+        );
+
+      const existingBlockIndex =
+        content.findIndex(
+          block =>
+            block.type ===
+            "publishedInfo"
+        );
+
+      if (existingBlockIndex >= 0) {
+
+        content[
+          existingBlockIndex
+        ].value =
+          publishedDate;
+
+      } else {
+
+        content.unshift({
+          type: "publishedInfo",
+          value: publishedDate,
+        });
+
+      }
+      console.log(
+  "Updated ContentJson:",
+  JSON.stringify(
+    content,
+    null,
+    2
+  )
+);
+
+
+      await run(
+        `
+        UPDATE XopsReleaseNotes
+        SET
+          ContentJson = ?
+        WHERE ReleaseNoteId = ?
+        `,
+        [
+          JSON.stringify(content),
+          id,
+        ]
+      );
+    }
+
     await run(
       `
       UPDATE XopsReleaseNotes
@@ -170,15 +252,7 @@ async function togglePublish(req, res) {
             WHEN IsPublished = 1
               THEN 0
             ELSE 1
-          END,
-
-        PublishedDate =
-          CASE
-            WHEN IsPublished = 0
-              THEN GETDATE()
-            ELSE NULL
           END
-
       WHERE ReleaseNoteId = ?
       `,
       [id]
@@ -188,13 +262,16 @@ async function togglePublish(req, res) {
       message:
         "Publish status updated",
     });
+
   } catch (error) {
+
     console.error(error);
 
     res.status(500).json({
       message:
         "Unable to update publish status",
     });
+
   }
 }
 
@@ -206,16 +283,15 @@ async function getLatestPublishedReleaseNote(
 
     const rows = await all(`
     SELECT TOP 1
-    ReleaseNoteId,
-    Title,
-    Version,
-    Summary,
-    ContentJson,
-CAST(CreatedDate AS VARCHAR(50)) AS CreatedDateFROM XopsReleaseNotes
-WHERE IsPublished = 1
-ORDER BY ReleaseNoteId DESC;
-
-  `);
+      ReleaseNoteId,
+      Title,
+      Version,
+      Summary,
+      ContentJson
+    FROM XopsReleaseNotes
+    WHERE IsPublished = 1
+    ORDER BY ReleaseNoteId DESC
+   `);
 
     res.json(
       rows.length

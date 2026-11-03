@@ -6,7 +6,6 @@ import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
 
 import ReleaseNotesGrid from "../components/grids/ReleaseNotesGrid";
-
 import {
   getReleaseNotes,
   addReleaseNote,
@@ -21,19 +20,9 @@ import DialogContent from "@mui/material/DialogContent";
 import DialogActions from "@mui/material/DialogActions";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
-import DescriptionOutlinedIcon from "@mui/icons-material/DescriptionOutlined";
-
-import AutoAwesomeOutlinedIcon from "@mui/icons-material/AutoAwesomeOutlined";
-
-import EmojiEventsOutlinedIcon from "@mui/icons-material/EmojiEventsOutlined";
-
-import TrendingUpOutlinedIcon from "@mui/icons-material/TrendingUpOutlined";
-
-import WarningAmberOutlinedIcon from "@mui/icons-material/WarningAmberOutlined";
 import MenuItem from "@mui/material/MenuItem";
-
-import AssignmentTurnedInOutlinedIcon from "@mui/icons-material/AssignmentTurnedInOutlined";
-
+import ReleaseNotePreview
+from "../components/ReleaseNotePreview";
 
 import Autocomplete from "@mui/material/Autocomplete";
 import Chip from "@mui/material/Chip";
@@ -307,6 +296,18 @@ async function saveReleaseNote() {
     const contentJson =
     JSON.stringify([
       {
+        type: "publishedInfo",
+        value: new Date().toLocaleDateString(
+          "en-IN",
+          {
+            day: "numeric",
+            month: "short",
+            year: "numeric",
+          }
+        ),
+      },
+  
+      {
         type: "visibility",
         sections: visibleSections,
       },
@@ -429,12 +430,6 @@ async function confirmDeleteReleaseNote() {
     loadReleaseNotes();
   }, []);
 
-const content =
-  selectedNote?.ContentJson
-    ? JSON.parse(
-        selectedNote.ContentJson
-      )
-    : [];
 
 
 
@@ -795,203 +790,65 @@ const content =
 
   <div className="builder-preview">
 
-    <div className="release-preview-header">
+  <div className="builder-preview">
 
-      <div className="release-preview-badge">
-        🚀 What's New
-      </div>
-
-      <h2 className="release-preview-title">
-        {title || "Release Title"}
-      </h2>
-
-      <div className="release-preview-version">
-        Version {version || "1.0"}
-      </div>
-
-      <div
-        style={{
-          marginTop: "8px",
-          display: "flex",
-          gap: "8px",
-        }}
-      >
-      </div>
-
-    </div>
-
-    {visibleSections.includes("summary") &&
-      summary && (
-
-      <section className="preview-section">
-
-        <div className="preview-title-row">
-          <DescriptionOutlinedIcon fontSize="small" />
-          Summary
-        </div>
-
-        <div className="preview-summary">
-          {summary}
-        </div>
-
-      </section>
-
-    )}
-
-    {visibleSections.includes ("features") &&
-    features.trim() && (
-
-      <section className="preview-section">
-
-        <div className="preview-title-row">
-          <AutoAwesomeOutlinedIcon fontSize="small" />
-          Features
-        </div>
-
-        <div className="preview-list">
-
-          {features
+  <ReleaseNotePreview
+    releaseNote={{
+      Title: title,
+      Version: version,
+      Summary: summary,
+      ContentJson: JSON.stringify([
+        {
+          type: "visibility",
+          sections: visibleSections,
+        },
+        {
+          type: "publishedInfo",
+          value:
+            new Date().toLocaleDateString(
+              "en-IN",
+              {
+                day: "numeric",
+                month: "short",
+                year: "numeric",
+              }
+            ),
+        },
+        {
+          type: "features",
+          items: features
             .split("\n")
-            .filter(Boolean)
-            .map(item => (
-
-              <div
-                key={item}
-                className="preview-list-item"
-              >
-                • {item}
-              </div>
-
-            ))}
-
-        </div>
-
-      </section>
-
-    )}
-
-    {visibleSections.includes("benefits") &&
-    benefits.trim() && (
-
-      <section className="preview-section">
-
-        <div className="preview-title-row">
-          <EmojiEventsOutlinedIcon fontSize="small" />
-          Benefits
-        </div>
-
-        <div className="preview-list">
-
-          {benefits
+            .filter(Boolean),
+        },
+        {
+          type: "benefits",
+          items: benefits
             .split("\n")
-            .filter(Boolean)
-            .map(item => (
-
-              <div
-                key={item}
-                className="preview-list-item"
-              >
-                • {item}
-              </div>
-
-            ))}
-
-        </div>
-
-      </section>
-
-    )}
-
-    {visibleSections.includes("improvements") &&
-    improvements.trim() && (
-
-      <section className="preview-section">
-
-        <div className="preview-title-row">
-          <TrendingUpOutlinedIcon fontSize="small" />
-          Improvements
-        </div>
-
-        <div className="preview-list">
-
-          {improvements
+            .filter(Boolean),
+        },
+        {
+          type: "improvements",
+          items: improvements
             .split("\n")
-            .filter(Boolean)
-            .map(item => (
-
-              <div
-                key={item}
-                className="preview-list-item"
-              >
-                • {item}
-              </div>
-
-            ))}
-
-        </div>
-
-      </section>
-
-    )}
-
-    {visibleSections.includes("knownIssues") &&
-    knownIssues.trim() && (
-
-      <section className="preview-section">
-
-        <div className="preview-title-row">
-          <WarningAmberOutlinedIcon fontSize="small" />
-          Known Issues
-        </div>
-
-        <div className="preview-list">
-
-          {knownIssues
+            .filter(Boolean),
+        },
+        {
+          type: "knownIssues",
+          items: knownIssues
             .split("\n")
-            .filter(Boolean)
-            .map(item => (
+            .filter(Boolean),
+        },
+        {
+          type: "actionRequired",
+          content: actionRequired,
+        },
+      ]),
+    }}
+  />
 
-              <div
-                key={item}
-                className="preview-list-item"
-              >
-                • {item}
-              </div>
+</div>
 
-            ))}
-
-        </div>
-
-      </section>
-
-    )}
-
-    {visibleSections.includes("actionRequired") &&
-    actionRequired.trim() && (
-
-      <section className="preview-section">
-
-        <div className="preview-title-row">
-          <AssignmentTurnedInOutlinedIcon fontSize="small" />
-          Action Required
-        </div>
-
-        <div
-          className="preview-summary"
-          style={{
-            borderLeft:
-              "4px solid #007DA3",
-          }}
-        >
-          {actionRequired}
-        </div>
-
-      </section>
-
-    )}
-
-  </div>
-
+</div>
 </div>
 </DialogContent>
   <DialogActions>
@@ -1150,212 +1007,11 @@ const content =
   fullWidth
   className="release-preview-dialog"
 >
-  <DialogTitle>
-
-    <div className="release-preview-header">
-
-      <div className="release-preview-badge">
-        🚀 What's New
-      </div>
-
-      <h2 className="release-preview-title">
-        {selectedNote?.Title}
-      </h2>
-
-      <div className="release-preview-version">
-        Version {selectedNote?.Version}
-      </div>
-
-    </div>
-
-  </DialogTitle>
-
   <DialogContent>
 
-  {selectedNote?.Summary && (
-
-    <section className="preview-section">
-
-      <h3 className="preview-section-title">Summary</h3>
-
-      <p className="preview-summary">
-        {selectedNote.Summary}
-      </p>
-
-    </section>
-
-  )}
-
-  {content.find(
-    block =>
-      block.type === "features"
-  )?.items?.length > 0 && (
-
-    <section className="preview-section">
-
-      <h3 className="preview-section-title">
-        ✨ Features
-      </h3>
-
-      <div className="preview-list">
-
-        {content
-          .find(
-            block =>
-              block.type === "features"
-          )
-          .items.map(item => (
-
-            <div
-              key={item}
-              className="preview-list-item"
-            >
-              • {item}
-            </div>
-
-          ))}
-
-      </div>
-
-    </section>
-
-  )}
-
-  {content.find(
-    block =>
-      block.type === "benefits"
-  )?.items?.length > 0 && (
-
-    <section className="preview-section">
-
-      <h3 className="preview-section-title">
-        🎯 Benefits
-      </h3>
-
-      <div className="preview-list">
-
-        {content
-          .find(
-            block =>
-              block.type === "benefits"
-          )
-          .items.map(item => (
-
-            <div
-              key={item}
-              className="preview-list-item"
-            >
-              • {item}
-            </div>
-
-          ))}
-
-      </div>
-
-    </section>
-
-  )}
-
-  {content.find(
-  block =>
-    block.type === "improvements"
-)?.items?.length > 0 && (
-
-  <section className="preview-section">
-
-    <h3 className="preview-section-title">
-      🚀 Improvements
-    </h3>
-
-    <div className="preview-list">
-
-      {content
-        .find(
-          block =>
-            block.type === "improvements"
-        )
-        .items.map(item => (
-
-          <div
-            key={item}
-            className="preview-list-item"
-          >
-            • {item}
-          </div>
-
-        ))}
-
-    </div>
-
-  </section>
-
-)}
-
-{content.find(
-  block =>
-    block.type === "knownIssues"
-)?.items?.length > 0 && (
-
-  <section className="preview-section">
-
-    <h3 className="preview-section-title">
-      ⚠ Known Issues
-    </h3>
-
-    <div className="preview-list">
-
-      {content
-        .find(
-          block =>
-            block.type === "knownIssues"
-        )
-        .items.map(item => (
-
-          <div
-            key={item}
-            className="preview-list-item"
-          >
-            • {item}
-          </div>
-
-        ))}
-
-    </div>
-
-  </section>
-
-)}
-
-{content.find(
-  block =>
-    block.type === "actionRequired"
-)?.content && (
-
-  <section className="preview-section">
-
-    <h3 className="preview-section-title">
-      📌 Action Required
-    </h3>
-
-    <div
-      className="preview-summary"
-      style={{
-        borderLeft:
-          "4px solid #007DA3",
-      }}
-    >
-      {
-        content.find(
-          block =>
-            block.type ===
-            "actionRequired"
-        ).content
-      }
-    </div>
-
-  </section>
-
-)}
+  <ReleaseNotePreview
+    releaseNote={selectedNote}
+  />
 
 </DialogContent>
 

@@ -4,16 +4,16 @@ import {
 } from "react";
 
 import Dialog from "@mui/material/Dialog";
-import DialogTitle from "@mui/material/DialogTitle";
 import DialogContent from "@mui/material/DialogContent";
 import DialogActions from "@mui/material/DialogActions";
 import Button from "@mui/material/Button";
-import IconButton from "@mui/material/IconButton";
-import CloseIcon from "@mui/icons-material/Close";
 
 import {
   getLatestPublishedReleaseNote,
 } from "../services/api";
+
+import ReleaseNotePreview
+from "./ReleaseNotePreview";
 
 function ReleaseNotePopup() {
 
@@ -90,6 +90,18 @@ function viewLater() {
         )
       : [];
 
+  const publishedInfo =
+  content.find(
+    block =>
+      block.type ===
+      "publishedInfo"
+  );
+
+  console.log(
+  "publishedInfo",
+  publishedInfo
+);
+
   return (
     <Dialog
       open={open}
@@ -99,122 +111,15 @@ function viewLater() {
       className="release-preview-dialog"
     >
 
-  <DialogTitle>
+<DialogContent>
 
-  <div className="release-preview-titlebar">
+  <ReleaseNotePreview
+    releaseNote={releaseNote}
+    onClose={acknowledgeRelease}
+  />
 
-    <div className="release-preview-header">
+</DialogContent>
 
-      <div className="release-preview-badge">
-        🚀 What's New
-      </div>
-
-      <h2 className="release-preview-title">
-        {releaseNote?.Title}
-      </h2>
-
-      <div className="release-preview-version">
-        Version {releaseNote?.Version}
-      </div>
-
-    </div>
-
-    <IconButton
-    onClick={acknowledgeRelease}
-    aria-label="Close release notes"
-    >
-      <CloseIcon />
-    </IconButton>
-
-  </div>
-
-</DialogTitle>
-
-      <DialogContent>
-
-        <section className="preview-section">
-
-          <h3 className="preview-section-title">
-            Summary
-          </h3>
-
-          <div className="preview-summary">
-            {releaseNote?.Summary}
-          </div>
-
-        </section>
-
-        {content.find(
-          block =>
-            block.type === "features"
-        )?.items?.length > 0 && (
-
-          <section className="preview-section">
-
-            <h3 className="preview-section-title">
-              ✨ Features
-            </h3>
-
-            <div className="preview-list">
-
-              {content
-                .find(
-                  block =>
-                    block.type === "features"
-                )
-                .items.map(item => (
-
-                  <div
-                    key={item}
-                    className="preview-list-item"
-                  >
-                    ✓ {item}
-                  </div>
-
-                ))}
-
-            </div>
-
-          </section>
-
-        )}
-
-        {content.find(
-          block =>
-            block.type === "benefits"
-        )?.items?.length > 0 && (
-
-          <section className="preview-section">
-
-            <h3 className="preview-section-title">
-              🎯 Benefits
-            </h3>
-
-            <div className="preview-list">
-
-              {content
-                .find(
-                  block =>
-                    block.type === "benefits"
-                )
-                .items.map(item => (
-
-                  <div
-                    key={item}
-                    className="preview-list-item"
-                  >
-                    ✓ {item}
-                  </div>
-
-                ))}
-
-            </div>
-
-          </section>
-
-        )}
-
-      </DialogContent>
 
      <DialogActions>
 

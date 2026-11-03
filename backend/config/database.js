@@ -81,28 +81,13 @@ async function all(
         parameters
       );
 
-    console.log(
-      "\nExecuting Query:\n",
-      query
-    );
-
     const result =
       await conn.query(query);
-
-    console.log(
-      "Rows Returned:",
-      result?.length
-    );
-
     return Array.isArray(result)
       ? result
       : [];
 
   } catch (error) {
-
-    console.error(
-      "Database Error:"
-    );
 
     console.error(error);
 
