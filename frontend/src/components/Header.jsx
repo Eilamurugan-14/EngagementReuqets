@@ -44,9 +44,17 @@ function Header({ onMenuClick, mobileOpen }) {
 const [activeTab, setActiveTab] =
   useState("release-notes");
 
+  const [showReleaseHistory, setShowReleaseHistory] =
+    useState(false);
+
+  const visibleReleaseNotes = showReleaseHistory
+    ? releaseNotes
+    : releaseNotes.slice(0, 3);
+
   function openNotifications(
   event
 ) {
+  setShowReleaseHistory(false);
   setAnchorEl(
     event.currentTarget
   );
@@ -281,7 +289,14 @@ useEffect(() => {
 
 ) : (
 
-  releaseNotes.map(note => (
+  <div
+    id="release-history-list"
+    style={{
+      maxHeight: 330,
+      overflowY: "auto",
+    }}
+  >
+  {visibleReleaseNotes.map(note => (
 
     <MenuItem
       key={
@@ -399,7 +414,8 @@ useEffect(() => {
 
     </MenuItem>
 
-  ))
+  ))}
+  </div>
 )
 
 )}
@@ -416,26 +432,32 @@ useEffect(() => {
 
 )}
 
-<div
-  style={{
-    borderTop:
-      "1px solid #E5E7EB",
-
-    padding: "12px 20px",
-
-    textAlign: "center",
-
-    color: "#007DA3",
-
-    fontWeight: 600,
-
-    cursor: "pointer",
-
-    background: "#FAFCFD",
-  }}
->
-  View Release History →
-</div>
+{activeTab === "release-notes" && (
+    <button
+      type="button"
+      aria-controls="release-history-list"
+      aria-expanded={showReleaseHistory}
+      onClick={() =>
+        setShowReleaseHistory((showHistory) => !showHistory)
+      }
+      style={{
+        width: "100%",
+        border: 0,
+        borderTop: "1px solid #E5E7EB",
+        padding: "12px 20px",
+        flexShrink: 0,
+        textAlign: "center",
+        color: "#007DA3",
+        fontWeight: 600,
+        cursor: "pointer",
+        background: "#FAFCFD",
+      }}
+    >
+      {showReleaseHistory
+        ? "Show Less ↑"
+        : "View Release History →"}
+    </button>
+  )}
 
 </Menu>
 

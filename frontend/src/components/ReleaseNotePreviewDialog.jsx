@@ -1,11 +1,11 @@
 import Dialog from "@mui/material/Dialog";
-import DialogTitle from "@mui/material/DialogTitle";
 import DialogContent from "@mui/material/DialogContent";
 import DialogActions from "@mui/material/DialogActions";
 import Button from "@mui/material/Button";
 
 import ReleaseNotePreview
 from "./ReleaseNotePreview";
+import { getPublishedDate } from "../utils/releaseNoteUtils";
 
 function ReleaseNotePreviewDialog({
   open,
@@ -22,30 +22,11 @@ function ReleaseNotePreviewDialog({
       className="release-preview-dialog"
     >
 
-      <DialogTitle>
-
-        <div className="release-preview-header">
-
-          <div className="release-preview-badge">
-            🚀 What's New
-          </div>
-
-          <h2 className="release-preview-title">
-            {releaseNote?.Title}
-          </h2>
-
-          <div className="release-preview-version">
-            Version {releaseNote?.Version}
-          </div>
-
-        </div>
-
-      </DialogTitle>
-
       <DialogContent>
 
         <ReleaseNotePreview
           releaseNote={releaseNote}
+          publishedDate={getPublishedDate(releaseNote)}
         />
 
       </DialogContent>

@@ -1,4 +1,5 @@
 const { all, get, run } = require("../config/database");
+const { isDeleteLocked } = require("../utils/releaseNoteRetention");
 
 
 
@@ -13,11 +14,10 @@ async function getReleaseNotes(req, res) {
       Version,
       IsPublished,
       CreatedBy,
-      CreatedDate,
       Summary,
       ContentJson
     FROM XopsReleaseNotes
-    ORDER BY CreatedDate DESC
+    ORDER BY ReleaseNoteId DESC
   `);
 
     res.json(rows);
@@ -133,6 +133,30 @@ async function updateReleaseNote(req, res) {
 async function deleteReleaseNote(req, res) {
   try {
     const { id } = req.params;
+
+    const note = await get(
+      `
+      SELECT
+        IsPublished,
+        ContentJson
+      FROM XopsReleaseNotes
+      WHERE ReleaseNoteId = ?
+      `,
+      [id]
+    );
+
+    if (!note) {
+      return res.status(404).json({
+        message: "Release note not found",
+      });
+    }
+
+    if (isDeleteLocked(note)) {
+      return res.status(403).json({
+        message:
+          "Published release notes older than 7 days cannot be deleted.",
+      });
+    }
 
     await run(
       `

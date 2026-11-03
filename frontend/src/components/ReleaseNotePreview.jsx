@@ -6,8 +6,11 @@ import WarningAmberOutlinedIcon from "@mui/icons-material/WarningAmberOutlined";
 import AssignmentTurnedInOutlinedIcon from "@mui/icons-material/AssignmentTurnedInOutlined";
 import IconButton from "@mui/material/IconButton";
 import CloseIcon from "@mui/icons-material/Close";
+import { getPublishedDate } from "../utils/releaseNoteUtils";
+
 function ReleaseNotePreview({
   releaseNote,
+  publishedDate,
   onClose,
 }) {
 
@@ -18,12 +21,8 @@ function ReleaseNotePreview({
         )
       : [];
 
-  const publishedInfo =
-    content.find(
-      block =>
-        block.type ===
-        "publishedInfo"
-    );
+  const displayedPublishedDate =
+    publishedDate ?? getPublishedDate(releaseNote);
 
   const visibilityBlock =
     content.find(
@@ -111,13 +110,11 @@ const visibleSections =
           }
         </div>
 
-        {publishedInfo?.value && (
-
+        {releaseNote && (
           <div className="release-preview-date">
             Published on{" "}
-            {publishedInfo.value}
+            {displayedPublishedDate}
           </div>
-
         )}
 
       </div>

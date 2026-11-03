@@ -26,6 +26,10 @@ from "../components/ReleaseNotePreview";
 
 import Autocomplete from "@mui/material/Autocomplete";
 import Chip from "@mui/material/Chip";
+import {
+  getPublishedDate,
+  getReleaseNoteContent,
+} from "../utils/releaseNoteUtils";
 
 function ReleaseNotesAdmin() {
   const [releaseNotes, setReleaseNotes] =
@@ -110,12 +114,7 @@ function handleEdit(note) {
   setSummary(note.Summary || "");
 
 
-  const parsedContent =
-    note.ContentJson
-      ? JSON.parse(
-          note.ContentJson
-        )
-      : [];
+  const parsedContent = getReleaseNoteContent(note);
 
    const visibilityBlock =
     parsedContent.find(
@@ -124,12 +123,14 @@ function handleEdit(note) {
     );
 
    setVisibleSections(
-    visibilityBlock?.sections || [
-      "summary",
-      "features",
-      "benefits",
-      "improvements",
-    ]
+     Array.isArray(visibilityBlock?.sections)
+       ? visibilityBlock.sections
+       : [
+       "summary",
+       "features",
+       "benefits",
+       "improvements",
+     ]
   );
 
   const featuresBlock =
@@ -178,23 +179,27 @@ const audienceBlock =
   );
 
   setFeatures(
-    featuresBlock?.items?.join("\n")
-      || ""
+    Array.isArray(featuresBlock?.items)
+      ? featuresBlock.items.join("\n")
+      : ""
   );
 
   setBenefits(
-    benefitsBlock?.items?.join("\n")
-      || ""
+    Array.isArray(benefitsBlock?.items)
+      ? benefitsBlock.items.join("\n")
+      : ""
   );
 
   setImprovements(
-    improvementsBlock?.items?.join("\n")
-      || ""
+    Array.isArray(improvementsBlock?.items)
+      ? improvementsBlock.items.join("\n")
+      : ""
   );
 
   setKnownIssues(
-    knownIssuesBlock?.items?.join("\n")
-      || ""
+    Array.isArray(knownIssuesBlock?.items)
+      ? knownIssuesBlock.items.join("\n")
+      : ""
   );
 
   setActionRequired(
@@ -208,8 +213,11 @@ const audienceBlock =
 );
 
 setAudiences(
-  audienceBlock?.value ||
-  ["All Employees"]
+  Array.isArray(audienceBlock?.value)
+    ? audienceBlock.value
+    : audienceBlock?.value
+      ? [audienceBlock.value]
+      : ["All Employees"]
 );
 
   setAddDialogOpen(true);
@@ -292,20 +300,19 @@ function closePreviewDialog() {
 
 async function saveReleaseNote() {
   try {
+    const isEditingPublishedNote =
+      editingNote?.IsPublished === true ||
+      Number(editingNote?.IsPublished) === 1;
+    const publishedDate = getPublishedDate(editingNote);
 
     const contentJson =
     JSON.stringify([
-      {
-        type: "publishedInfo",
-        value: new Date().toLocaleDateString(
-          "en-IN",
-          {
-            day: "numeric",
-            month: "short",
-            year: "numeric",
-          }
-        ),
-      },
+      ...(isEditingPublishedNote && publishedDate !== "-"
+        ? [{
+            type: "publishedInfo",
+            value: publishedDate,
+          }]
+        : []),
   
       {
         type: "visibility",
@@ -797,23 +804,20 @@ async function confirmDeleteReleaseNote() {
       Title: title,
       Version: version,
       Summary: summary,
+      IsPublished:
+        editingNote?.IsPublished ?? false,
       ContentJson: JSON.stringify([
         {
           type: "visibility",
           sections: visibleSections,
         },
-        {
-          type: "publishedInfo",
-          value:
-            new Date().toLocaleDateString(
-              "en-IN",
-              {
-                day: "numeric",
-                month: "short",
-                year: "numeric",
-              }
-            ),
-        },
+        ...(editingNote?.IsPublished === true ||
+        Number(editingNote?.IsPublished) === 1
+          ? [{
+              type: "publishedInfo",
+              value: getPublishedDate(editingNote),
+            }]
+          : []),
         {
           type: "features",
           items: features

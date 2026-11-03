@@ -17,8 +17,15 @@ import {
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import VisibilityIcon from "@mui/icons-material/Visibility";
+import Tooltip from "@mui/material/Tooltip";
 
 import "../../styles/EmployeeGrid.css";
+import { isDeleteLocked } from "../../utils/releaseNoteRetention";
+import {
+  getPublishedDate,
+  getReleaseAudience,
+  getReleaseType,
+} from "../../utils/releaseNoteUtils";
 
 ModuleRegistry.registerModules([
   AllCommunityModule,
@@ -39,7 +46,7 @@ const releaseNotesColumnDefs = [
     headerName: "Title",
     field: "Title",
     minWidth: 160,
-    width: 500,
+    width: 300,
     filter: true
   },
 
@@ -59,12 +66,9 @@ const releaseNotesColumnDefs = [
 
   {
     headerName: "Published Date",
-    field: "PublishedDate",
+    field: "ContentJson",
     minWidth: 180,
-    valueFormatter: ({ value }) =>
-      value
-        ? new Date(value).toLocaleDateString()
-        : "-",
+    valueGetter: ({ data }) => getPublishedDate(data),
   },
 
   {
@@ -73,15 +77,22 @@ const releaseNotesColumnDefs = [
     minWidth: 180,
   },
 
-  {
-    headerName: "Created Date",
-    field: "CreatedDate",
-    minWidth: 180,
-    valueFormatter: ({ value }) =>
-      value
-        ? new Date(value).toLocaleDateString()
-        : "-",
+   {
+    headerName: "Release Type",
+    field: "ContentJson",
+    flex: 1,
+    minWidth: 150,
+    valueGetter: ({ data }) => getReleaseType(data),
   },
+
+  {
+    headerName: "Audience",
+    field: "ContentJson",
+    flex: 1,
+    minWidth: 180,
+    valueGetter: ({ data }) => getReleaseAudience(data),
+  },
+
 ];
 
 function ReleaseNoteActionRenderer({
@@ -93,6 +104,7 @@ function ReleaseNoteActionRenderer({
     data.IsPublished === true ||
     data.IsPublished === 1 ||
     data.IsPublished === "1";
+  const deleteLocked = isDeleteLocked(data);
 
   return (
     <div
@@ -125,16 +137,27 @@ function ReleaseNoteActionRenderer({
         <EditIcon className="edit-icon" />
       </button>
 
-      <button
-        type="button"
-        className="icon-btn"
-        aria-label={`Delete ${data.Title}`}
-        onClick={() =>
-          context.onDelete?.(data)
+      <Tooltip
+        title={
+          deleteLocked
+            ? "Published release notes older than 7 days cannot be deleted."
+            : ""
         }
       >
-        <DeleteIcon className="edit-icon" />
-      </button>
+        <span>
+          <button
+            type="button"
+            className="icon-btn"
+            aria-label={`Delete ${data.Title}`}
+            disabled={deleteLocked}
+            onClick={() =>
+              context.onDelete?.(data)
+            }
+          >
+            <DeleteIcon className="edit-icon" />
+          </button>
+        </span>
+      </Tooltip>
 
       <button
         type="button"

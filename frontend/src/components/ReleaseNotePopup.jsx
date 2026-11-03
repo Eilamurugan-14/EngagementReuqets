@@ -14,6 +14,7 @@ import {
 
 import ReleaseNotePreview
 from "./ReleaseNotePreview";
+import { getPublishedDate } from "../utils/releaseNoteUtils";
 
 function ReleaseNotePopup() {
 
@@ -83,24 +84,8 @@ function viewLater() {
   setOpen(false);
 }
 
-  const content =
-    releaseNote?.ContentJson
-      ? JSON.parse(
-          releaseNote.ContentJson
-        )
-      : [];
-
-  const publishedInfo =
-  content.find(
-    block =>
-      block.type ===
-      "publishedInfo"
-  );
-
-  console.log(
-  "publishedInfo",
-  publishedInfo
-);
+  const publishedDate =
+    getPublishedDate(releaseNote);
 
   return (
     <Dialog
@@ -115,6 +100,7 @@ function viewLater() {
 
   <ReleaseNotePreview
     releaseNote={releaseNote}
+    publishedDate={publishedDate}
     onClose={acknowledgeRelease}
   />
 
