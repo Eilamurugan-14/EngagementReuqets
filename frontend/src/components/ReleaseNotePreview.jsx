@@ -1,38 +1,29 @@
-import DescriptionOutlinedIcon from "@mui/icons-material/DescriptionOutlined";
+import AssignmentTurnedInOutlinedIcon from "@mui/icons-material/AssignmentTurnedInOutlined";
 import AutoAwesomeOutlinedIcon from "@mui/icons-material/AutoAwesomeOutlined";
+import DescriptionOutlinedIcon from "@mui/icons-material/DescriptionOutlined";
 import EmojiEventsOutlinedIcon from "@mui/icons-material/EmojiEventsOutlined";
 import TrendingUpOutlinedIcon from "@mui/icons-material/TrendingUpOutlined";
 import WarningAmberOutlinedIcon from "@mui/icons-material/WarningAmberOutlined";
-import AssignmentTurnedInOutlinedIcon from "@mui/icons-material/AssignmentTurnedInOutlined";
-import IconButton from "@mui/material/IconButton";
 import CloseIcon from "@mui/icons-material/Close";
-import { getPublishedDate } from "../utils/releaseNoteUtils";
+import IconButton from "@mui/material/IconButton";
+import { getPublishedDate, getReleaseNoteContent, getReleaseType } from "../utils/releaseNoteUtils";
+import ReleaseNoteSection from "./ReleaseNoteSection";
+import "../styles/ReleaseNoteExperience.css";
 
 function ReleaseNotePreview({
   releaseNote,
   publishedDate,
   onClose,
 }) {
-
-  const content =
-    releaseNote?.ContentJson
-      ? JSON.parse(
-          releaseNote.ContentJson
-        )
-      : [];
-
+  const content = getReleaseNoteContent(releaseNote);
   const displayedPublishedDate =
     publishedDate ?? getPublishedDate(releaseNote);
+  const releaseType = getReleaseType(releaseNote);
 
-  const visibilityBlock =
-    content.find(
-      block =>
-        block.type ===
-        "visibility"
-    );
-
-const visibleSections =
-  visibilityBlock?.sections || [
+  const visibilityBlock = content.find(
+    (block) => block.type === "visibility"
+  );
+  const visibleSections = visibilityBlock?.sections || [
     "summary",
     "features",
     "benefits",
@@ -41,267 +32,123 @@ const visibleSections =
     "actionRequired",
   ];
 
-  const features =
-    content.find(
-      block =>
-        block.type ===
-        "features"
-    )?.items || [];
+  const features = content.find(
+    (block) => block.type === "features"
+  )?.items || [];
+  const benefits = content.find(
+    (block) => block.type === "benefits"
+  )?.items || [];
+  const improvements = content.find(
+    (block) => block.type === "improvements"
+  )?.items || [];
+  const knownIssues = content.find(
+    (block) => block.type === "knownIssues"
+  )?.items || [];
+  const actionRequired = content.find(
+    (block) => block.type === "actionRequired"
+  )?.content || "";
+  const sectionsToDisplay = new Set(visibleSections);
 
-  const benefits =
-    content.find(
-      block =>
-        block.type ===
-        "benefits"
-    )?.items || [];
+  if (knownIssues.length > 0) {
+    sectionsToDisplay.add("knownIssues");
+  }
 
-  const improvements =
-    content.find(
-      block =>
-        block.type ===
-        "improvements"
-    )?.items || [];
+  if (actionRequired) {
+    sectionsToDisplay.add("actionRequired");
+  }
 
-  const knownIssues =
-    content.find(
-      block =>
-        block.type ===
-        "knownIssues"
-    )?.items || [];
-
-  const actionRequired =
-    content.find(
-      block =>
-        block.type ===
-        "actionRequired"
-    )?.content || "";
+  const sections = [
+    {
+      key: "summary",
+      title: "Summary",
+      icon: DescriptionOutlinedIcon,
+      content: releaseNote?.Summary,
+    },
+    {
+      key: "features",
+      title: "Features",
+      icon: AutoAwesomeOutlinedIcon,
+      items: features,
+    },
+    {
+      key: "benefits",
+      title: "Benefits",
+      icon: EmojiEventsOutlinedIcon,
+      items: benefits,
+    },
+    {
+      key: "improvements",
+      title: "Improvements",
+      icon: TrendingUpOutlinedIcon,
+      items: improvements,
+    },
+    {
+      key: "knownIssues",
+      title: "Known Issues",
+      icon: WarningAmberOutlinedIcon,
+      items: knownIssues,
+    },
+    {
+      key: "actionRequired",
+      title: "Action Required",
+      icon: AssignmentTurnedInOutlinedIcon,
+      content: actionRequired,
+      emphasis: true,
+    },
+  ];
 
   return (
-    <>
-
-     <div className="release-preview-header">
-
-  <div className="release-preview-header-row">
-
-    <div className="release-preview-badge">
-      🚀 What's New
-    </div>
-
-    {onClose && (
-      <IconButton
-        size="small"
-        onClick={onClose}
-      >
-        <CloseIcon />
-      </IconButton>
-    )}
-
-  </div>
-
-        <h2 className="release-preview-title">
-          {releaseNote?.Title ||
-            "Release Title"}
-        </h2>
-
-        <div className="release-preview-version">
-          Version {
-            releaseNote?.Version ||
-            "1.0"
-          }
+    <div className="release-note-preview">
+      <header className="release-note-sticky-header">
+        <div className="release-note-header-copy">
+          <div className="release-note-eyebrow">
+            <span aria-hidden="true">🚀</span>
+            <span>What&apos;s New</span>
+          </div>
+          <h2 className="release-note-title">
+            {releaseNote?.Title || "Release Title"}
+          </h2>
+          <div className="release-note-meta">
+            <span className="release-note-version">
+              Version {releaseNote?.Version || "1.0"}
+            </span>
+            {releaseType !== "-" && (
+              <span className="release-note-type">{releaseType}</span>
+            )}
+            {releaseNote && displayedPublishedDate !== "-" && (
+              <span className="release-note-date">
+                Published {displayedPublishedDate}
+              </span>
+            )}
+          </div>
         </div>
-
-        {releaseNote && (
-          <div className="release-preview-date">
-            Published on{" "}
-            {displayedPublishedDate}
-          </div>
-        )}
-
-      </div>
-
-      {visibleSections.includes(
-        "summary"
-      ) &&
-        releaseNote?.Summary && (
-
-        <section className="preview-section">
-
-          <div className="preview-title-row">
-            <DescriptionOutlinedIcon
-              fontSize="small"
-            />
-            Summary
-          </div>
-
-          <div className="preview-summary">
-            {releaseNote.Summary}
-          </div>
-
-        </section>
-
-      )}
-
-      {visibleSections.includes(
-        "features"
-      ) &&
-        features.length > 0 && (
-
-        <section className="preview-section">
-
-          <div className="preview-title-row">
-            <AutoAwesomeOutlinedIcon
-              fontSize="small"
-            />
-            Features
-          </div>
-
-          <div className="preview-list">
-
-            {features.map(item => (
-
-              <div
-                key={item}
-                className="preview-list-item"
-              >
-                • {item}
-              </div>
-
-            ))}
-
-          </div>
-
-        </section>
-
-      )}
-
-      {visibleSections.includes(
-        "benefits"
-      ) &&
-        benefits.length > 0 && (
-
-        <section className="preview-section">
-
-          <div className="preview-title-row">
-            <EmojiEventsOutlinedIcon
-              fontSize="small"
-            />
-            Benefits
-          </div>
-
-          <div className="preview-list">
-
-            {benefits.map(item => (
-
-              <div
-                key={item}
-                className="preview-list-item"
-              >
-                • {item}
-              </div>
-
-            ))}
-
-          </div>
-
-        </section>
-
-      )}
-
-      {visibleSections.includes(
-        "improvements"
-      ) &&
-        improvements.length > 0 && (
-
-        <section className="preview-section">
-
-          <div className="preview-title-row">
-            <TrendingUpOutlinedIcon
-              fontSize="small"
-            />
-            Improvements
-          </div>
-
-          <div className="preview-list">
-
-            {improvements.map(item => (
-
-              <div
-                key={item}
-                className="preview-list-item"
-              >
-                • {item}
-              </div>
-
-            ))}
-
-          </div>
-
-        </section>
-
-      )}
-
-      {visibleSections.includes(
-        "knownIssues"
-      ) &&
-        knownIssues.length > 0 && (
-
-        <section className="preview-section">
-
-          <div className="preview-title-row">
-            <WarningAmberOutlinedIcon
-              fontSize="small"
-            />
-            Known Issues
-          </div>
-
-          <div className="preview-list">
-
-            {knownIssues.map(item => (
-
-              <div
-                key={item}
-                className="preview-list-item"
-              >
-                • {item}
-              </div>
-
-            ))}
-
-          </div>
-
-        </section>
-
-      )}
-
-      {visibleSections.includes(
-        "actionRequired"
-      ) &&
-        actionRequired && (
-
-        <section className="preview-section">
-
-          <div className="preview-title-row">
-            <AssignmentTurnedInOutlinedIcon
-              fontSize="small"
-            />
-            Action Required
-          </div>
-
-          <div
-            className="preview-summary"
-            style={{
-              borderLeft:
-                "4px solid #007DA3",
-            }}
+        {onClose && (
+          <IconButton
+            className="release-note-close"
+            aria-label="Close release note"
+            onClick={onClose}
+            size="small"
           >
-            {actionRequired}
-          </div>
+            <CloseIcon fontSize="small" />
+          </IconButton>
+        )}
+      </header>
 
-        </section>
-
-      )}
-
-    </>
+      <div className="release-note-sections">
+        {sections.map((section) => (
+          sectionsToDisplay.has(section.key) && (
+            <ReleaseNoteSection
+              key={section.key}
+              title={section.title}
+              icon={section.icon}
+              content={section.content}
+              items={section.items}
+              emphasis={section.emphasis}
+            />
+          )
+        ))}
+      </div>
+    </div>
   );
 }
 

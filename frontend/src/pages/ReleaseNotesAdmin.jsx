@@ -80,6 +80,8 @@ const [visibleSections, setVisibleSections] =
     "features",
     "benefits",
     "improvements",
+    "knownIssues",
+    "actionRequired",
   ]);
 
   const [editingNote, setEditingNote] =
@@ -130,6 +132,8 @@ function handleEdit(note) {
        "features",
        "benefits",
        "improvements",
+       "knownIssues",
+       "actionRequired",
      ]
   );
 
@@ -270,6 +274,8 @@ setVisibleSections([
   "features",
   "benefits",
   "improvements",
+  "knownIssues",
+  "actionRequired",
 ]);
 
 setAudiences(
@@ -796,9 +802,6 @@ async function confirmDeleteReleaseNote() {
   </div>
 
   <div className="builder-preview">
-
-  <div className="builder-preview">
-
   <ReleaseNotePreview
     releaseNote={{
       Title: title,
@@ -818,6 +821,14 @@ async function confirmDeleteReleaseNote() {
               value: getPublishedDate(editingNote),
             }]
           : []),
+        {
+          type: "releaseType",
+          value: releaseType,
+        },
+        {
+          type: "audience",
+          value: audiences,
+        },
         {
           type: "features",
           items: features
@@ -852,7 +863,6 @@ async function confirmDeleteReleaseNote() {
 
 </div>
 
-</div>
 </div>
 </DialogContent>
   <DialogActions>
@@ -1009,12 +1019,13 @@ async function confirmDeleteReleaseNote() {
   onClose={closePreviewDialog}
   maxWidth="md"
   fullWidth
-  className="release-preview-dialog"
+  className="release-note-view-dialog"
 >
-  <DialogContent>
+  <DialogContent className="release-note-view-content">
 
   <ReleaseNotePreview
     releaseNote={selectedNote}
+    onClose={closePreviewDialog}
   />
 
 </DialogContent>

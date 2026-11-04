@@ -19,14 +19,15 @@ function ReleaseNotePreviewDialog({
       onClose={onClose}
       maxWidth="md"
       fullWidth
-      className="release-preview-dialog"
+      className="release-note-view-dialog"
     >
 
-      <DialogContent>
+      <DialogContent className="release-note-view-content">
 
         <ReleaseNotePreview
           releaseNote={releaseNote}
           publishedDate={getPublishedDate(releaseNote)}
+          onClose={onClose}
         />
 
       </DialogContent>

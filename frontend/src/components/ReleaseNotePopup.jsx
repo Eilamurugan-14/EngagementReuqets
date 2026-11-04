@@ -93,27 +93,35 @@ function viewLater() {
       onClose={viewLater}
       maxWidth="md"
       fullWidth
-      className="release-preview-dialog"
+      className="release-note-popup"
     >
 
-<DialogContent>
+      <DialogContent className="release-note-popup-content">
 
-  <ReleaseNotePreview
-    releaseNote={releaseNote}
-    publishedDate={publishedDate}
-    onClose={acknowledgeRelease}
-  />
+        <ReleaseNotePreview
+          releaseNote={releaseNote}
+          publishedDate={publishedDate}
+          onClose={acknowledgeRelease}
+        />
 
-</DialogContent>
+      </DialogContent>
 
 
-     <DialogActions>
+      <DialogActions className="release-note-popup-actions">
 
         <Button
             onClick={viewLater}
             className="release-note-view-later"
         >
             View Later
+        </Button>
+
+        <Button
+          onClick={acknowledgeRelease}
+          variant="contained"
+          className="release-note-got-it"
+        >
+          Got It
         </Button>
 
         </DialogActions>
