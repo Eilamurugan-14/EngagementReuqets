@@ -36,6 +36,7 @@ function ReleaseNotePreviewDialog({
 
         <Button
           onClick={onClose}
+          className="release-note-close-action"
         >
           Close
         </Button>

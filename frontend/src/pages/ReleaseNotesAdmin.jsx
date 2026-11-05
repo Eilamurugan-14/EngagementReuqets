@@ -875,6 +875,7 @@ async function confirmDeleteReleaseNote() {
     <Button
       variant="contained"
       onClick={saveReleaseNote}
+      className="release-note-primary-action"
     >
       {dialogMode === "add"
   ? "Create"

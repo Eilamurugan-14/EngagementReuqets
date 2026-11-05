@@ -93,8 +93,28 @@
 }
 
 .release-note-type {
-  background: #f0edff;
-  color: #5b4aa5;
+  background: #eef2f6;
+  color: #475569;
+}
+
+.release-note-type--major {
+  background: #e9e3ff;
+  color: #5636a6;
+}
+
+.release-note-type--minor {
+  background: #dff4e8;
+  color: #176b3a;
+}
+
+.release-note-type--hotfix {
+  background: #ffebe8;
+  color: #b42318;
+}
+
+.release-note-type--announcement {
+  background: #fff2d6;
+  color: #8a5700;
 }
 
 .release-note-date {
@@ -214,6 +234,17 @@
   text-transform: none;
 }
 
+.release-note-close-action.MuiButton-root {
+  color: #007da3;
+  font-weight: 650;
+  text-transform: none;
+}
+
+.release-note-close-action.MuiButton-root:hover {
+  background: rgba(0, 125, 163, 0.08);
+}
+
+.release-note-primary-action.MuiButton-root,
 .release-note-popup-actions .release-note-got-it.MuiButton-root {
   min-width: 94px;
   padding: 8px 18px;
@@ -224,6 +255,7 @@
   text-transform: none;
 }
 
+.release-note-primary-action.MuiButton-root:hover,
 .release-note-popup-actions .release-note-got-it.MuiButton-root:hover {
   background: #006987;
   box-shadow: 0 4px 12px rgba(0, 125, 163, 0.2);

@@ -19,6 +19,12 @@ function ReleaseNotePreview({
   const displayedPublishedDate =
     publishedDate ?? getPublishedDate(releaseNote);
   const releaseType = getReleaseType(releaseNote);
+  const releaseTypeClass = {
+    "Major Release": "release-note-type--major",
+    "Minor Release": "release-note-type--minor",
+    Hotfix: "release-note-type--hotfix",
+    Announcement: "release-note-type--announcement",
+  }[releaseType] || "";
 
   const visibilityBlock = content.find(
     (block) => block.type === "visibility"
@@ -113,7 +119,9 @@ function ReleaseNotePreview({
               Version {releaseNote?.Version || "1.0"}
             </span>
             {releaseType !== "-" && (
-              <span className="release-note-type">{releaseType}</span>
+              <span className={`release-note-type ${releaseTypeClass}`}>
+                {releaseType}
+              </span>
             )}
             {releaseNote && displayedPublishedDate !== "-" && (
               <span className="release-note-date">
