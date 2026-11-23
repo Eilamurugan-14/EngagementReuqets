@@ -7,6 +7,7 @@ import DescriptionIcon from "@mui/icons-material/Description";
 import FactCheckIcon from "@mui/icons-material/FactCheck";
 import PersonIcon from "@mui/icons-material/Person";
 import GroupsIcon from "@mui/icons-material/Groups";
+import HistoryIcon from "@mui/icons-material/History";
 
 
 function Sidebar({ collapsed, mobileOpen, onNavigate }) {
@@ -14,8 +15,13 @@ function Sidebar({ collapsed, mobileOpen, onNavigate }) {
     { label: "Dashboard", path: "/", icon: <DashboardIcon /> },
     { label: "Profile", path: "/profile", icon: <PersonIcon /> },
     {
-      label: "Admin",
+      label: "Release Notes",
       path: "/release-notes",
+      icon: <HistoryIcon />,
+    },
+    {
+      label: "Admin",
+      path: "/release-notes/admin",
       icon: <PersonIcon />,
     },
     {
@@ -47,7 +53,7 @@ function Sidebar({ collapsed, mobileOpen, onNavigate }) {
           >
             <NavLink
               to={item.path}
-              end={item.path === "/"}
+              end={item.path === "/" || item.path === "/release-notes"}
               onClick={onNavigate}
               aria-label={item.label}
               className={({ isActive }) =>

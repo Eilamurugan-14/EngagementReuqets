@@ -1,0 +1,10 @@
+$kind: collection
+variables:
+  timesheetId: ""
+  weekNo: ""
+  employeeRefreshToken: ""
+  managerRefreshToken: ""
+auth:
+  - id: e25c4946-e1fa-4227-ba2f-2503c3e03fd6
+    type: noauth
+    name: No Auth

@@ -14,6 +14,7 @@ import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import "./styles/App.css";
 import ReleaseNotesAdmin from "./pages/ReleaseNotesAdmin";
+import ReleaseNotesCenter from "./pages/ReleaseNotesCenter";
 import ReleaseNotePopup from "./components/ReleaseNotePopup";
 
 function App() {
@@ -71,7 +72,7 @@ function App() {
       />
 
       <ReleaseNotePopup />
-      
+
       <Header
         onMenuClick={handleMenuClick}
         mobileOpen={mobileOpen}
@@ -100,7 +101,8 @@ function App() {
             <Route path="/approvals" element={<ApprovalRequests />} />
             <Route path="/gcc-approvals" element={<GCCApprovalRequests />} />
             <Route path="/profile" element={<Profile />} />
-            <Route path="/release-notes" element={<ReleaseNotesAdmin />} />
+            <Route path="/release-notes" element={<ReleaseNotesCenter />} />
+            <Route path="/release-notes/admin" element={<ReleaseNotesAdmin />} />
           </Routes>
         </main>
       </div>

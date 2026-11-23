@@ -355,6 +355,12 @@
   padding-left: 24px;
 }
 
+.release-note-demo-action-container {
+  display: flex;
+  justify-content: flex-start;
+  margin: 0 0 16px;
+}
+
 .builder-section-header {
   grid-column: 1 / -1;
 

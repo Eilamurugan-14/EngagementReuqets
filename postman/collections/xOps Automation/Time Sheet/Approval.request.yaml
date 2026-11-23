@@ -1,0 +1,52 @@
+$kind: http-request
+description: ""
+url: "{{base_url}}/api/manager/timesheet/approval"
+method: POST
+headers:
+  Cookie: "{{managerRefreshToken}}"
+body:
+  type: json
+  content: "{\r
+
+    \  \"timesheetIDs\": [{{timesheetId}}],\r
+
+    \  \"statusID\": 3,\r
+
+    \  \"username\": \"sa.eilamurugan.sankar@xylem.com\",\r
+
+    \  \"managerComment\": \"\",\r
+
+    \  \"WeekIDs\": [\r
+
+    \    {\r
+
+    \      \"tID\": {{timesheetId}},\r
+
+    \      \"weekNo\": \"{{weekNo}}\"\r
+
+    \    }\r
+
+    \  ]\r
+
+    }"
+scripts:
+  - type: afterResponse
+    code: "let approvals = pm.response.json();\r
+
+      \r
+
+      let timesheetId = Number(pm.collectionVariables.get(\"timesheetId\"));\r
+
+      \r
+
+      let found = approvals.find(x => x.ID === timesheetId);\r
+
+      \r
+
+      pm.test(\"Submitted timesheet found in approval queue\", function () {\r
+
+      \    pm.expect(found).to.not.be.undefined;\r
+
+      });"
+    language: text/javascript
+order: 2000

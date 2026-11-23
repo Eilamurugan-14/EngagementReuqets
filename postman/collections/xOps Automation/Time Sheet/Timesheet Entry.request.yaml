@@ -1,0 +1,117 @@
+$kind: http-request
+url: "{{base_url}}/api/mytimesheet/entry"
+method: POST
+headers:
+  Cookie: "{{employeeRefreshToken}}"
+body:
+  type: json
+  content: "{\r
+
+    \    \"username\": \"SA.Eilamurugan.Sankar@xylem.com\",\r
+
+    \    \"monthYear\": \"2026-08\",\r
+
+    \    \"DailyEntries\": {\r
+
+    \        \"Week 5\": {\r
+
+    \            \"__meta\": {\r
+
+    \                \"StatusID\": 2,\r
+
+    \                \"ApprovedBy\": null,\r
+
+    \                \"SubmittedTo\": 482,\r
+
+    \                \"SubmittedOn\": \"2026-11-18T09:01:41.722Z\"\r
+
+    \            },\r
+
+    \            \"5432 | Execution\": {\r
+
+    \                \"ProjectID\": 5432,\r
+
+    \                \"TaskName\": \"Execution\",\r
+
+    \                \"Billable\": 0,\r
+
+    \                \"Sunday\": 0,\r
+
+    \                \"Monday\": 8,\r
+
+    \                \"Tuesday\": 8,\r
+
+    \                \"Wednesday\": 8,\r
+
+    \                \"Thursday\": 8,\r
+
+    \                \"Friday\": 8,\r
+
+    \                \"Saturday\": 0,\r
+
+    \                \"Remarks\": \"\",\r
+
+    \                \"TotalHours\": 40,\r
+
+    \                \"WeekNo\": 5\r
+
+    \            }\r
+
+    \        }\r
+
+    \    },\r
+
+    \    \"StatusID\": null\r
+
+    }"
+scripts:
+  - type: afterResponse
+    code: "let response = pm.response.json();\r
+
+      \r
+
+      let timesheetId = response[0].ID;\r
+
+      \r
+
+      pm.collectionVariables.set(\r
+
+      \    \"timesheetId\",\r
+
+      \    timesheetId\r
+
+      );\r
+
+      \r
+
+      let requestBody = JSON.parse(\r
+
+      \    pm.request.body.raw\r
+
+      );\r
+
+      \r
+
+      let weekNo = Object.keys(\r
+
+      \    requestBody.DailyEntries\r
+
+      )[0];\r
+
+      \r
+
+      pm.collectionVariables.set(\r
+
+      \    \"weekNo\",\r
+
+      \    weekNo\r
+
+      );\r
+
+      \r
+
+      console.log(\"Timesheet ID:\", timesheetId);\r
+
+      console.log(\"Week No:\", weekNo);\r\n"
+    language: text/javascript
+order: 1000

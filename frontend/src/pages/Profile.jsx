@@ -777,57 +777,57 @@ function formatDate(date) {
       <label className="skill-dialog-label" htmlFor="add-skill-level">
         Proficiency Level
       </label>
-     <Select
-        id="add-skill-level"
-        displayEmpty
-        value={newLevel}
-        fullWidth
-        size="small"
-        onChange={(event) =>
-          setNewLevel(event.target.value)
-        }
-        renderValue={(selected) => {
+       <Select
+          id="add-skill-level"
+          displayEmpty
+          value={newLevel}
+          fullWidth
+          size="small"
+          onChange={(event) =>
+            setNewLevel(event.target.value)
+          }
+          renderValue={(selected) => {
           
-           if (!selected) {
-              return (
-                <span className="select-placeholder">
-                  Select Proficiency Level
-                </span>
+             if (!selected) {
+                return (
+                  <span className="select-placeholder">
+                    Select Proficiency Level
+                  </span>
+                );
+              }
+          
+
+            const level =
+              proficiencyLevels.find(
+                p =>
+                  p.ProficiencyLevelId ===
+                  Number(selected)
               );
-            }
-          
 
-          const level =
-            proficiencyLevels.find(
-              p =>
-                p.ProficiencyLevelId ===
-                Number(selected)
-            );
-
-          return level ? (
-            <span
-              className={`skill-category level-${level.ProficiencyLevelId}`}
-            >
-              {level.LevelName}
-            </span>
-          ) : "";
-        }}
-      >
-        {
-          proficiencyLevels.map(level => (
-           <MenuItem
-              key={level.ProficiencyLevelId}
-              value={level.ProficiencyLevelId}
-            >
+            return level ? (
               <span
                 className={`skill-category level-${level.ProficiencyLevelId}`}
               >
                 {level.LevelName}
               </span>
-            </MenuItem>
-          ))
-        }
-      </Select>
+            ) : "";
+          }}
+        >
+          {
+            proficiencyLevels.map(level => (
+             <MenuItem
+                key={level.ProficiencyLevelId}
+                value={level.ProficiencyLevelId}
+              >
+                <span
+                  className={`skill-category level-${level.ProficiencyLevelId}`}
+                >
+                  {level.LevelName}
+                </span>
+              </MenuItem>
+            ))
+          }
+        </Select>
 
       <div className="proficiency-levels-info">
 

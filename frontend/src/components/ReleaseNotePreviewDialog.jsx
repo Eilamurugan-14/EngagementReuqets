@@ -5,6 +5,7 @@ import Button from "@mui/material/Button";
 
 import ReleaseNotePreview
 from "./ReleaseNotePreview";
+import ReleaseNoteDemoAction from "./ReleaseNoteDemoAction";
 import { getPublishedDate } from "../utils/releaseNoteUtils";
 
 function ReleaseNotePreviewDialog({
@@ -33,6 +34,8 @@ function ReleaseNotePreviewDialog({
       </DialogContent>
 
       <DialogActions>
+
+        <ReleaseNoteDemoAction releaseNote={releaseNote} />
 
         <Button
           onClick={onClose}

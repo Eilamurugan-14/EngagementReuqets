@@ -19,8 +19,10 @@ import RocketLaunchIcon from "@mui/icons-material/RocketLaunch";
 
 import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
+import { useNavigate } from "react-router-dom";
 
 function Header({ onMenuClick, mobileOpen }) {
+  const navigate = useNavigate();
 
   const [anchorEl, setAnchorEl] =
   useState(null);
@@ -44,17 +46,11 @@ function Header({ onMenuClick, mobileOpen }) {
 const [activeTab, setActiveTab] =
   useState("release-notes");
 
-  const [showReleaseHistory, setShowReleaseHistory] =
-    useState(false);
-
-  const visibleReleaseNotes = showReleaseHistory
-    ? releaseNotes
-    : releaseNotes.slice(0, 3);
+  const visibleReleaseNotes = releaseNotes.slice(0, 3);
 
   function openNotifications(
   event
 ) {
-  setShowReleaseHistory(false);
   setAnchorEl(
     event.currentTarget
   );
@@ -63,6 +59,11 @@ const [activeTab, setActiveTab] =
  function closeNotifications() {
   setAnchorEl(null);
 }
+
+ function viewReleaseHistory() {
+   closeNotifications();
+   navigate("/release-notes");
+ }
 
 function openReleaseNote(
   note
@@ -435,11 +436,7 @@ useEffect(() => {
 {activeTab === "release-notes" && (
     <button
       type="button"
-      aria-controls="release-history-list"
-      aria-expanded={showReleaseHistory}
-      onClick={() =>
-        setShowReleaseHistory((showHistory) => !showHistory)
-      }
+      onClick={viewReleaseHistory}
       style={{
         width: "100%",
         border: 0,
@@ -453,9 +450,7 @@ useEffect(() => {
         background: "#FAFCFD",
       }}
     >
-      {showReleaseHistory
-        ? "Show Less ↑"
-        : "View Release History →"}
+      View Release History →
     </button>
   )}
 

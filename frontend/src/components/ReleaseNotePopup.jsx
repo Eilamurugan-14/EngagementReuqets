@@ -14,17 +14,15 @@ import {
 
 import ReleaseNotePreview
 from "./ReleaseNotePreview";
+import ReleaseNoteDemoAction from "./ReleaseNoteDemoAction";
 import { getPublishedDate } from "../utils/releaseNoteUtils";
 
 function ReleaseNotePopup() {
-
   const [open, setOpen] =
     useState(false);
 
   const [releaseNote, setReleaseNote] =
     useState(null);
-
-
 
   async function loadLatestReleaseNote() {
 
@@ -95,25 +93,22 @@ function viewLater() {
       fullWidth
       className="release-note-popup"
     >
-
       <DialogContent className="release-note-popup-content">
-
         <ReleaseNotePreview
           releaseNote={releaseNote}
           publishedDate={publishedDate}
           onClose={acknowledgeRelease}
         />
-
       </DialogContent>
 
-
       <DialogActions className="release-note-popup-actions">
+        <ReleaseNoteDemoAction releaseNote={releaseNote} />
 
         <Button
-            onClick={viewLater}
-            className="release-note-view-later"
+          onClick={viewLater}
+          className="release-note-view-later"
         >
-            View Later
+          View Later
         </Button>
 
         <Button
@@ -123,9 +118,7 @@ function viewLater() {
         >
           Got It
         </Button>
-
-        </DialogActions>
-
+      </DialogActions>
     </Dialog>
   );
 }

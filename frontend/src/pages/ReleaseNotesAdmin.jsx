@@ -23,6 +23,8 @@ import Button from "@mui/material/Button";
 import MenuItem from "@mui/material/MenuItem";
 import ReleaseNotePreview
 from "../components/ReleaseNotePreview";
+import ReleaseNoteDemoAction
+from "../components/ReleaseNoteDemoAction";
 
 import Autocomplete from "@mui/material/Autocomplete";
 import Chip from "@mui/material/Chip";
@@ -802,6 +804,7 @@ async function confirmDeleteReleaseNote() {
   </div>
 
   <div className="builder-preview">
+
   <ReleaseNotePreview
     releaseNote={{
       Title: title,
@@ -860,6 +863,9 @@ async function confirmDeleteReleaseNote() {
       ]),
     }}
   />
+  <div className="release-note-demo-action-container">
+    <ReleaseNoteDemoAction releaseNote={{ Title: title }} />
+  </div>
 
 </div>
 
