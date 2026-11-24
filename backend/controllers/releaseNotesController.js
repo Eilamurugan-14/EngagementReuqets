@@ -194,11 +194,6 @@ async function togglePublish(req, res) {
       `,
       [id]
     );
-    console.log(
-  "IsPublished:",
-  note.IsPublished,
-  typeof note.IsPublished
-);
     let content = [];
 
     try {
@@ -243,44 +238,37 @@ async function togglePublish(req, res) {
         });
 
       }
-      console.log(
-  "Updated ContentJson:",
-  JSON.stringify(
-    content,
-    null,
-    2
-  )
-);
-
-
+      // ContentJson.publishedInfo remains the UI source of truth. Keep the
+      // SQL PublishedDate for future reporting, auditing, analytics, and
+      // querying; the frontend must not switch to it because of the existing
+      // ODBC date display issue.
       await run(
         `
         UPDATE XopsReleaseNotes
         SET
-          ContentJson = ?
+          ContentJson = ?,
+          PublishedDate = GETDATE(),
+          IsPublished = 1
         WHERE ReleaseNoteId = ?
+          AND IsPublished = 0
         `,
         [
           JSON.stringify(content),
           id,
         ]
       );
+    } else {
+      await run(
+        `
+        UPDATE XopsReleaseNotes
+        SET
+          IsPublished = 0
+        WHERE ReleaseNoteId = ?
+          AND IsPublished = 1
+        `,
+        [id]
+      );
     }
-
-    await run(
-      `
-      UPDATE XopsReleaseNotes
-      SET
-        IsPublished =
-          CASE
-            WHEN IsPublished = 1
-              THEN 0
-            ELSE 1
-          END
-      WHERE ReleaseNoteId = ?
-      `,
-      [id]
-    );
 
     res.json({
       message:

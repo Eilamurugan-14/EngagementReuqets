@@ -3,7 +3,12 @@ import Alert from "@mui/material/Alert";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import Chip from "@mui/material/Chip";
+import InputAdornment from "@mui/material/InputAdornment";
+import Menu from "@mui/material/Menu";
+import MenuItem from "@mui/material/MenuItem";
 import Paper from "@mui/material/Paper";
+import FilterListIcon from "@mui/icons-material/FilterList";
+import SearchIcon from "@mui/icons-material/Search";
 import TextField from "@mui/material/TextField";
 import Typography from "@mui/material/Typography";
 import { getPublishedReleaseNotes } from "../services/api";
@@ -47,6 +52,73 @@ function getPublishedTimestamp(note) {
   return Number.isNaN(timestamp) ? 0 : timestamp;
 }
 
+function formatPublishedDate(date) {
+  const parsedDate = new Date(date);
+
+  if (Number.isNaN(parsedDate.getTime())) {
+    return date;
+  }
+
+  return parsedDate.toLocaleDateString("en-GB", {
+    day: "2-digit",
+    month: "short",
+    year: "numeric",
+  }).toUpperCase();
+}
+
+function getMonthLabel(date) {
+  if (date === "Date unavailable") {
+    return date;
+  }
+
+  const parsedDate = new Date(date);
+
+  if (Number.isNaN(parsedDate.getTime())) {
+    return date;
+  }
+
+  return parsedDate.toLocaleDateString("en-US", {
+    month: "long",
+    year: "numeric",
+  });
+}
+
+function getDateTimeAttribute(date) {
+  const timestamp = Date.parse(date);
+
+  return Number.isNaN(timestamp)
+    ? undefined
+    : new Date(timestamp).toISOString().slice(0, 10);
+}
+
+function groupReleaseNotesByMonth(notes) {
+  const months = new Map();
+
+  notes.forEach((note) => {
+    const publishedDate = getPublishedDate(note);
+    const date = publishedDate === "-"
+      ? "Date unavailable"
+      : publishedDate;
+    const month = getMonthLabel(date);
+    const monthGroup = months.get(month) || new Map();
+    const dateGroup = monthGroup.get(date) || [];
+
+    dateGroup.push(note);
+    monthGroup.set(date, dateGroup);
+    months.set(month, monthGroup);
+  });
+
+  return Array.from(months, ([month, dateGroups]) => ({
+    month,
+    count: Array.from(dateGroups.values())
+      .reduce((total, dateNotes) => total + dateNotes.length, 0),
+    dates: Array.from(dateGroups, ([date, dateNotes]) => ({
+      date,
+      notes: dateNotes,
+    })),
+  }));
+}
+
 function ReleaseTimelineItem({ note, onReadMore }) {
   const releaseType = getReleaseType(note);
   const releaseTypeStyle =
@@ -61,74 +133,87 @@ function ReleaseTimelineItem({ note, onReadMore }) {
       variant="outlined"
       sx={{
         p: { xs: 2, sm: 2.5 },
-        borderColor: "#e2e8f0",
+        borderColor: "#dce6ee",
         borderRadius: 2.5,
         backgroundColor: "#fff",
-        boxShadow: "0 4px 14px rgba(15, 23, 42, 0.045)",
+        boxShadow: "0 3px 12px rgba(20, 53, 78, 0.055)",
         transition:
-          "border-color 180ms ease, box-shadow 180ms ease, transform 180ms ease",
+          "transform 160ms ease, border-color 160ms ease, box-shadow 160ms ease",
         "&:hover": {
           transform: "translateY(-2px)",
-          borderColor: "#b7d4e0",
-          boxShadow: "0 10px 24px rgba(15, 66, 104, 0.09)",
+          borderColor: "#b6d6e5",
+          boxShadow: "0 6px 18px rgba(15, 66, 104, 0.09)",
         },
       }}
     >
-      <Typography
-        component="h2"
-        variant="h6"
-        sx={{
-          color: "#172b3a",
-          fontWeight: 700,
-          letterSpacing: "-0.02em",
-          lineHeight: 1.3,
-        }}
-      >
-        {note.Title}
-      </Typography>
-
       <Box
         sx={{
           display: "flex",
           alignItems: "center",
           flexWrap: "wrap",
-          gap: 0.75,
-          mt: 1.25,
+          columnGap: 1,
+          rowGap: 0.75,
         }}
       >
-        <Chip
-          size="small"
-          label={`Version ${note.Version || "—"}`}
+        <Typography
+          component="h2"
+          variant="subtitle1"
           sx={{
-            height: 25,
-            borderRadius: 999,
-            backgroundColor: "#e0f2fe",
-            color: "#075985",
+            flex: "0 1 auto",
+            color: "#20374c",
+            fontSize: { xs: "1rem", sm: "1.1rem" },
             fontWeight: 700,
-            "& .MuiChip-label": { px: 1.25 },
+            letterSpacing: "-0.02em",
+            lineHeight: 1.3,
           }}
-        />
-        {releaseType !== "-" && (
+        >
+          {note.Title}
+        </Typography>
+
+        <Box
+          sx={{
+            display: "flex",
+            alignItems: "center",
+            flexWrap: "wrap",
+            gap: 0.6,
+          }}
+        >
           <Chip
             size="small"
-            label={releaseType}
+            label={`Version ${note.Version || "—"}`}
             sx={{
-              height: 25,
+              height: 26,
               borderRadius: 999,
-              fontWeight: 650,
-              ...releaseTypeStyle,
-              "& .MuiChip-label": { px: 1.25 },
+              backgroundColor: "#e5f6fb",
+              color: "#087da3",
+              fontSize: "0.75rem",
+              fontWeight: 700,
+              "& .MuiChip-label": { px: 1 },
             }}
           />
-        )}
+          {releaseType !== "-" && (
+            <Chip
+              size="small"
+              label={releaseType}
+              sx={{
+                height: 26,
+                borderRadius: 999,
+                fontSize: "0.75rem",
+                fontWeight: 650,
+                ...releaseTypeStyle,
+                "& .MuiChip-label": { px: 1 },
+              }}
+            />
+          )}
+        </Box>
       </Box>
 
       <Typography
         sx={{
-          mt: 1.5,
-          color: "#475569",
-          lineHeight: 1.6,
-          fontSize: "0.95rem",
+          mt: 1,
+          color: "#63788c",
+          lineHeight: 1.55,
+          fontSize: "0.9rem",
           display: "-webkit-box",
           WebkitBoxOrient: "vertical",
           WebkitLineClamp: 3,
@@ -140,81 +225,94 @@ function ReleaseTimelineItem({ note, onReadMore }) {
 
       <Box sx={{ display: "flex", flexWrap: "wrap", gap: 1, mt: 2 }}>
         <Button
-          variant="outlined"
+          variant="contained"
           onClick={() => onReadMore(note)}
           sx={{
             minHeight: 36,
-            borderRadius: 1.75,
-            borderColor: "#087da3",
-            color: "#087da3",
+            px: 2,
+            borderRadius: 1.5,
+            backgroundColor: "#078bb2",
+            boxShadow: "none",
+            fontSize: "0.85rem",
             fontWeight: 650,
             textTransform: "none",
             "&:hover": {
-              borderColor: "#075985",
-              backgroundColor: "#f0f9ff",
+              backgroundColor: "#087da3",
+              boxShadow: "none",
             },
           }}
         >
-          Read More
+          Read More&nbsp; →
         </Button>
-        <ReleaseNoteDemoAction releaseNote={note} />
+        <ReleaseNoteDemoAction releaseNote={note} compact />
       </Box>
     </Paper>
   );
 }
 
-function ReleaseDateGroup({ date, notes, onReadMore }) {
+function ReleaseDateGroup({ date, notes, onReadMore, latestId }) {
   return (
     <Box
       sx={{
         display: "grid",
         gridTemplateColumns: {
-          xs: "20px minmax(0, 1fr)",
-          md: "150px 28px minmax(0, 1fr)",
+          xs: "78px 22px minmax(0, 1fr)",
+          sm: "128px 28px minmax(0, 1fr)",
         },
-        columnGap: { xs: 1.25, md: 2 },
+        columnGap: { xs: 0.75, sm: 1.25 },
         alignItems: "stretch",
-        mb: { xs: 1.5, md: 2 },
+        mb: 1.25,
       }}
     >
-      <Box
-        sx={{
-          gridColumn: { xs: 2, md: 1 },
-          gridRow: { xs: 1, md: `1 / span ${notes.length}` },
-          pt: { xs: 0.25, md: 1.5 },
-          pb: 1,
-          pr: { md: 1 },
-          textAlign: { xs: "left", md: "right" },
-        }}
-      >
+      <Box sx={{
+        gridColumn: 1,
+        gridRow: `1 / span ${notes.length}`,
+        pt: 1.25,
+        pr: 0.25,
+        textAlign: "right",
+      }}>
         <Typography
-          component="h2"
-          variant="overline"
+          component="time"
+          dateTime={getDateTimeAttribute(date)}
           sx={{
-            color: "#64748b",
-            fontSize: "0.72rem",
-            fontWeight: 750,
-            letterSpacing: "0.09em",
-            lineHeight: 1.4,
-            whiteSpace: { md: "nowrap" },
+            color: "#29445a",
+            fontSize: { xs: "0.68rem", sm: "0.78rem" },
+            fontWeight: 700,
+            letterSpacing: "0.045em",
+            whiteSpace: "nowrap",
           }}
         >
-          {date.toUpperCase()}
+          {formatPublishedDate(date)}
         </Typography>
+        {notes[0]?.ReleaseNoteId === latestId && (
+          <Typography
+            component="div"
+            sx={{
+              display: "inline-block",
+              mt: 0.6,
+              px: 0.75,
+              py: 0.15,
+              borderRadius: 0.75,
+              backgroundColor: "#e3f7fc",
+              color: "#087da3",
+              fontSize: "0.68rem",
+              fontWeight: 700,
+            }}
+          >
+            Latest
+          </Typography>
+        )}
       </Box>
 
       {notes.map((note, index) => {
-        const gridRow = {
-          xs: index + 2,
-          md: index + 1,
-        };
+        const gridRow = index + 1;
 
         return (
           <Fragment key={note.ReleaseNoteId}>
             <Box
               aria-hidden="true"
               sx={{
-                gridColumn: { xs: 1, md: 2 },
+                gridColumn: 2,
                 gridRow,
                 position: "relative",
                 display: "flex",
@@ -225,24 +323,24 @@ function ReleaseDateGroup({ date, notes, onReadMore }) {
                 sx={{
                   position: "absolute",
                   zIndex: 1,
-                  top: 16,
+                  top: 14,
                   left: "50%",
                   width: 12,
                   height: 12,
-                  border: "3px solid #e8f3f7",
+                  border: "2px solid #fff",
                   borderRadius: "50%",
-                  backgroundColor: "#087da3",
-                  boxShadow: "0 0 0 1px #8dbdce",
+                  backgroundColor: "#078bb2",
+                  boxShadow: "0 0 0 2px #b9e2ef",
                   transform: "translateX(-50%)",
                 }}
               />
             </Box>
             <Box
               sx={{
-                gridColumn: { xs: 2, md: 3 },
+                gridColumn: 3,
                 gridRow,
                 minWidth: 0,
-                pb: { xs: 2, md: 2.5 },
+                pb: 1.25,
               }}
             >
               <ReleaseTimelineItem
@@ -257,6 +355,64 @@ function ReleaseDateGroup({ date, notes, onReadMore }) {
   );
 }
 
+function ReleaseMonthGroup({ group, onReadMore, latestId }) {
+  return (
+    <Box sx={{ mb: 2.75 }}>
+      <Box
+        sx={{
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "space-between",
+          pb: 1,
+          mb: 1.25,
+          borderBottom: "1px solid #dce5eb",
+        }}
+      >
+        <Typography
+          component="h2"
+          sx={{
+            color: "#29445a",
+            fontSize: "1rem",
+            fontWeight: 700,
+          }}
+        >
+          {group.month}
+        </Typography>
+        <Typography
+          sx={{ color: "#8495a4", fontSize: "0.78rem" }}
+        >
+          {group.count} {group.count === 1 ? "release" : "releases"}
+        </Typography>
+      </Box>
+      <Box
+        sx={{
+          position: "relative",
+          "&::before": {
+            position: "absolute",
+            top: 12,
+            bottom: 12,
+            left: { xs: 95, sm: 152 },
+            width: "2px",
+            borderRadius: 2,
+            backgroundColor: "#dceaf1",
+            content: '""',
+          },
+        }}
+      >
+        {group.dates.map((dateGroup) => (
+          <ReleaseDateGroup
+            key={dateGroup.date}
+            date={dateGroup.date}
+            notes={dateGroup.notes}
+            onReadMore={onReadMore}
+            latestId={latestId}
+          />
+        ))}
+      </Box>
+    </Box>
+  );
+}
+
 function ReleaseNotesCenter() {
   const [releaseNotes, setReleaseNotes] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
@@ -267,6 +423,7 @@ function ReleaseNotesCenter() {
   const [previewOpen, setPreviewOpen] = useState(false);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
+  const [filterMenuAnchor, setFilterMenuAnchor] = useState(null);
 
   useEffect(() => {
     let active = true;
@@ -323,23 +480,10 @@ function ReleaseNotesCenter() {
       selectedReleaseType === "All" ||
       getReleaseType(note) === selectedReleaseType
   );
-  const dateGroups = new Map();
-
-  filteredReleaseNotes.forEach((note) => {
-    const publishedDate = getPublishedDate(note);
-    const date = publishedDate === "-"
-      ? "Date unavailable"
-      : publishedDate;
-    const notesForDate = dateGroups.get(date) || [];
-
-    notesForDate.push(note);
-    dateGroups.set(date, notesForDate);
-  });
-
-  const groupedReleaseNotes = Array.from(
-    dateGroups,
-    ([date, notes]) => ({ date, notes })
-  );
+  const groupedReleaseNotes =
+    groupReleaseNotesByMonth(filteredReleaseNotes);
+  const latestReleaseNoteId =
+    filteredReleaseNotes[0]?.ReleaseNoteId;
 
   function openPreview(note) {
     setSelectedReleaseNote(note);
@@ -357,29 +501,30 @@ function ReleaseNotesCenter() {
       sx={{
         minHeight: "calc(100vh - 60px)",
         px: { xs: 2, sm: 3, lg: 4 },
-        py: { xs: 1.5, md: 2 },
-        background:
-          "linear-gradient(180deg, #f8fafc 0%, #f1f6fa 100%)",
+        pt: { xs: 2, sm: 3 },
+        pb: 4,
+        backgroundColor: "#f3f6f8",
       }}
     >
-      <Box sx={{ maxWidth: 1200, mx: "auto" }}>
+      <Box sx={{ width: "100%", maxWidth: 1120, mx: "auto" }}>
         <Box
           sx={{
-            mb: { xs: 1.5, md: 2 },
-            p: { xs: 1.75, sm: 2, md: 2.25 },
-            border: "1px solid #e2e8f0",
-            borderRadius: 2.5,
+            mb: 3,
+            p: { xs: 2, sm: 2.5 },
+            border: "1px solid #dce8f0",
+            borderTop: "2px solid #079bc8",
+            borderRadius: 2.25,
             backgroundColor: "#fff",
-            boxShadow: "0 3px 12px rgba(15, 23, 42, 0.045)",
+            boxShadow: "0 3px 12px rgba(32, 71, 98, 0.055)",
           }}
         >
           <Box
             sx={{
               display: "flex",
-              alignItems: { xs: "stretch", md: "center" },
+              alignItems: { xs: "stretch", sm: "center" },
               justifyContent: "space-between",
-              flexDirection: { xs: "column", md: "row" },
-              gap: { xs: 1.5, md: 3 },
+              flexDirection: { xs: "column", sm: "row" },
+              gap: { xs: 1.25, sm: 2 },
             }}
           >
             <Box>
@@ -387,21 +532,20 @@ function ReleaseNotesCenter() {
                 id="release-notes-center-heading"
                 component="h1"
                 sx={{
-                  color: "#172b3a",
-                  fontSize: { xs: "1.45rem", sm: "1.7rem" },
-                  fontWeight: 750,
-                  letterSpacing: "-0.025em",
-                  lineHeight: 1.2,
+                  color: "#24394b",
+                  fontSize: { xs: "1.4rem", sm: "1.55rem" },
+                  fontWeight: 700,
+                  letterSpacing: "-0.02em",
+                  lineHeight: 1.25,
                 }}
               >
-                <span aria-hidden="true">🚀 </span>
                 Release Notes
               </Typography>
               <Typography
                 sx={{
                   mt: 0.5,
-                  color: "#64748b",
-                  fontSize: "0.9rem",
+                  color: "#728496",
+                  fontSize: "0.85rem",
                   lineHeight: 1.5,
                 }}
               >
@@ -410,64 +554,97 @@ function ReleaseNotesCenter() {
               </Typography>
             </Box>
 
-            <TextField
-              fullWidth
-              size="small"
-              label="Search release notes"
-              value={searchTerm}
-              onChange={(event) => setSearchTerm(event.target.value)}
+            <Box
               sx={{
-                flex: { md: "0 1 340px" },
-                "& .MuiOutlinedInput-root": {
-                  borderRadius: 1.75,
-                  backgroundColor: "#f8fafc",
-                  "& fieldset": { borderColor: "#dbe4ec" },
-                  "&:hover fieldset": { borderColor: "#9cc9d8" },
-                  "&.Mui-focused fieldset": { borderColor: "#087da3" },
-                },
+                display: "flex",
+                alignItems: "center",
+                gap: 1,
+                width: { xs: "100%", sm: "auto" },
+                flex: { sm: "0 1 400px" },
               }}
-            />
-          </Box>
-
-          <Box
-            component="nav"
-            aria-label="Filter release notes by type"
-            sx={{
-              display: "flex",
-              flexWrap: "wrap",
-              gap: 0.75,
-              mt: { xs: 1.5, md: 1.75 },
-            }}
-          >
-            {releaseTypeFilters.map((filter) => {
-              const isSelected =
-                selectedReleaseType === filter.value;
-
-              return (
-                <Chip
-                  key={filter.value}
-                  label={filter.label}
-                  clickable
-                  aria-pressed={isSelected}
-                  onClick={() =>
-                    setSelectedReleaseType(filter.value)
-                  }
-                  sx={{
-                    height: 30,
-                    borderRadius: 999,
-                    border: "1px solid",
-                    borderColor: isSelected ? "#087da3" : "#dbe4ec",
-                    backgroundColor: isSelected ? "#e8f5f9" : "#fff",
-                    color: isSelected ? "#075985" : "#52616b",
-                    fontSize: "0.8rem",
-                    fontWeight: isSelected ? 700 : 550,
-                    "&:hover": {
-                      backgroundColor: isSelected ? "#dff0f5" : "#f8fafc",
-                    },
-                  }}
-                />
-              );
-            })}
+            >
+              <TextField
+                fullWidth
+                size="small"
+                aria-label="Search release notes"
+                value={searchTerm}
+                onChange={(event) => setSearchTerm(event.target.value)}
+                placeholder="Search release notes"
+                InputProps={{
+                  startAdornment: (
+                    <InputAdornment position="start">
+                      <SearchIcon sx={{ color: "#71879a", fontSize: 18 }} />
+                    </InputAdornment>
+                  ),
+                }}
+                sx={{
+                  flex: 1,
+                  minWidth: 0,
+                  "& .MuiOutlinedInput-input": {
+                    py: 1,
+                    fontSize: "0.85rem",
+                  },
+                  "& .MuiOutlinedInput-root": {
+                    borderRadius: 1.5,
+                    backgroundColor: "#f7f9fb",
+                    "& fieldset": { borderColor: "#dce6ed" },
+                    "&:hover fieldset": { borderColor: "#9cc9d8" },
+                    "&.Mui-focused fieldset": { borderColor: "#079bc8" },
+                  },
+                }}
+              />
+              <Button
+                id="release-type-filter-button"
+                aria-controls={
+                  filterMenuAnchor ? "release-type-filter-menu" : undefined
+                }
+                aria-haspopup="true"
+                aria-expanded={filterMenuAnchor ? "true" : undefined}
+                variant="outlined"
+                startIcon={<FilterListIcon />}
+                onClick={(event) => setFilterMenuAnchor(event.currentTarget)}
+                sx={{
+                  minHeight: 40,
+                  flexShrink: 0,
+                  borderColor: "#dce6ed",
+                  borderRadius: 1.5,
+                  color: "#486176",
+                  fontSize: "0.85rem",
+                  fontWeight: 600,
+                  textTransform: "none",
+                  "&:hover": {
+                    borderColor: "#9cc9d8",
+                    backgroundColor: "#f7f9fb",
+                  },
+                }}
+              >
+                Filter
+              </Button>
+              <Menu
+                id="release-type-filter-menu"
+                anchorEl={filterMenuAnchor}
+                open={Boolean(filterMenuAnchor)}
+                onClose={() => setFilterMenuAnchor(null)}
+                slotProps={{
+                  list: {
+                    "aria-labelledby": "release-type-filter-button",
+                  },
+                }}
+              >
+                {releaseTypeFilters.map((filter) => (
+                  <MenuItem
+                    key={filter.value}
+                    selected={selectedReleaseType === filter.value}
+                    onClick={() => {
+                      setSelectedReleaseType(filter.value);
+                      setFilterMenuAnchor(null);
+                    }}
+                  >
+                    {filter.label}
+                  </MenuItem>
+                ))}
+              </Menu>
+            </Box>
           </Box>
         </Box>
 
@@ -490,25 +667,15 @@ function ReleaseNotesCenter() {
         ) : !error && (
           <Box
             sx={{
-              position: "relative",
-              pt: 1,
-              "&::before": {
-                position: "absolute",
-                top: { xs: 32, md: 22 },
-                bottom: 0,
-                left: { xs: "10px", md: "180px" },
-                width: "2px",
-                backgroundColor: "#d8e4eb",
-                content: '""',
-              },
+              pt: 0.25,
             }}
           >
             {groupedReleaseNotes.map((group) => (
-              <ReleaseDateGroup
-                key={group.date}
-                date={group.date}
-                notes={group.notes}
+              <ReleaseMonthGroup
+                key={group.month}
+                group={group}
                 onReadMore={openPreview}
+                latestId={latestReleaseNoteId}
               />
             ))}
           </Box>

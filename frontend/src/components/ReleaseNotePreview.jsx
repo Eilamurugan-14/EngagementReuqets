@@ -29,14 +29,16 @@ function ReleaseNotePreview({
   const visibilityBlock = content.find(
     (block) => block.type === "visibility"
   );
-  const visibleSections = visibilityBlock?.sections || [
-    "summary",
-    "features",
-    "benefits",
-    "improvements",
-    "knownIssues",
-    "actionRequired",
-  ];
+  const visibleSections = Array.isArray(visibilityBlock?.sections)
+    ? visibilityBlock.sections
+    : [
+        "summary",
+        "features",
+        "benefits",
+        "improvements",
+        "knownIssues",
+        "actionRequired",
+      ];
 
   const features = content.find(
     (block) => block.type === "features"

@@ -17,7 +17,7 @@ import ReleaseNotesAdmin from "./pages/ReleaseNotesAdmin";
 import ReleaseNotesCenter from "./pages/ReleaseNotesCenter";
 import ReleaseNotePopup from "./components/ReleaseNotePopup";
 
-function App() {
+function AppLayout() {
   const [sidebarCollapsed, setSidebarCollapsed] =
     useState(false);
   const [mobileOpen, setMobileOpen] =
@@ -62,7 +62,7 @@ function App() {
   }
 
   return (
-    <BrowserRouter>
+    <>
       <ToastContainer
         position="top-right"
         autoClose={3000}
@@ -106,10 +106,16 @@ function App() {
           </Routes>
         </main>
       </div>
-    </BrowserRouter>
+    </>
   );
 }
 
-
+function App() {
+  return (
+    <BrowserRouter>
+      <AppLayout />
+    </BrowserRouter>
+  );
+}
 
 export default App;
